@@ -16,7 +16,6 @@ public class RedisItemWriter extends ItemStreamSupport implements ItemWriter<Red
 	@Override
 	public void write(List<? extends RedisMaster> items) throws Exception {
 		repository.saveAll(items);
-
 	}
 
 }

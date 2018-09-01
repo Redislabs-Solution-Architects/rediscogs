@@ -4,8 +4,8 @@ import org.springframework.data.redis.core.RedisHash;
 
 import lombok.Data;
 
-@RedisHash("master")
 @Data
+@RedisHash("master")
 public class RedisMaster {
 	private String id;
 	private String title;

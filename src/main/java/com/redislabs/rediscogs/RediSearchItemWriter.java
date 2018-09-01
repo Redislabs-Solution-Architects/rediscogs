@@ -8,11 +8,10 @@ import org.springframework.batch.item.ExecutionContext;
 import org.springframework.batch.item.ItemStreamSupport;
 import org.springframework.batch.item.ItemWriter;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.autoconfigure.data.redis.RedisProperties;
 import org.springframework.stereotype.Component;
 
 import io.redisearch.Schema;
+import io.redisearch.Suggestion;
 import io.redisearch.client.Client;
 import lombok.extern.slf4j.Slf4j;
 import redis.clients.jedis.exceptions.JedisDataException;
@@ -22,23 +21,18 @@ import redis.clients.jedis.exceptions.JedisException;
 @Slf4j
 public class RediSearchItemWriter extends ItemStreamSupport implements ItemWriter<RedisMaster> {
 
-	private static final int DEFAULT_TIMEOUT = 1000;
-	private static final int DEFAULT_POOLSIZE = 1;
-
-	@Value("${redisearch-index:masterIdx}")
-	private String index;
-
 	@Autowired
-	private RedisProperties redisProps;
-
-	@Value("${redisearch-index:releases}")
-	private String redisearchIndex;
+	private RediSearchClientConfiguration rediSearchConfig;
+	@Autowired
+	private RediscogsConfiguration config;
 
 	private Client client;
+	private Client artistSuggestionClient;
 
 	@Override
 	public void open(ExecutionContext executionContext) {
-		this.client = new Client(index, redisProps.getHost(), redisProps.getPort(), getTimeout(), getPoolSize());
+		this.client = rediSearchConfig.getClient(config.getMastersIndex());
+		this.artistSuggestionClient = rediSearchConfig.getClient(config.getArtistsSuggestionIdx());
 		Schema schema = new Schema();
 		schema.addTextField("title", 1);
 		schema.addTextField("artist", 1);
@@ -53,25 +47,6 @@ public class RediSearchItemWriter extends ItemStreamSupport implements ItemWrite
 				log.info("Could not create index, might already exist");
 			}
 		}
-	}
-
-	private int getPoolSize() {
-		if (redisProps.getJedis().getPool() == null) {
-			return DEFAULT_POOLSIZE;
-		}
-		return redisProps.getJedis().getPool().getMaxActive();
-	}
-
-	private int getTimeout() {
-		if (redisProps.getTimeout() == null) {
-			return DEFAULT_TIMEOUT;
-		}
-		return (int) redisProps.getTimeout().getSeconds();
-	}
-
-	@Override
-	public void close() {
-		// TODO client.close();
 	}
 
 	@Override
@@ -90,6 +65,8 @@ public class RediSearchItemWriter extends ItemStreamSupport implements ItemWrite
 					log.error("Could not add document: {}", e.getMessage());
 				}
 			}
+			Suggestion suggestion = Suggestion.builder().str(item.getArtist()).build();
+			artistSuggestionClient.addSuggestion(suggestion, true);
 		}
 	}
 

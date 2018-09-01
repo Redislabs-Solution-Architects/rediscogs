@@ -2,6 +2,8 @@ package com.redislabs.rediscogs;
 
 import org.springframework.batch.item.ItemProcessor;
 
+import com.redislabs.rediscogs.xml.Master;
+
 public class MasterProcessor implements ItemProcessor<Master, RedisMaster> {
 
 	@Override
