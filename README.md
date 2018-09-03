@@ -19,7 +19,7 @@ cd rediscogs
 To run the server, cd into `server` and run:
  
 ```bash
-mvn spring-boot:run -Ddiscogs-api-token=<YOUR_DISCOGS_TOKEN> -Dspring.redis.host=<redisearch_host> -Dspring.redis.port=<redisearch_port>
+mvn spring-boot:run -Ddiscogs-api-token=<discogs_token> -Dspring.redis.host=<redisearch_host> -Dspring.redis.port=<redisearch_port>
 ```
 
 ### Client
