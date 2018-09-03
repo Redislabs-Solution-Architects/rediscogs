@@ -1,0 +1,21 @@
+.img {
+  height: 150px;
+  margin-bottom: 5%;
+}
+.album-card {
+  margin-bottom: 1%;
+  max-width: 150px;
+  align-self: flex-end;
+}
+.container {
+  min-height: 100%;
+  width: 100%;
+}
+.search-form {
+  width: 100%;
+  margin-left: 2%
+}
+.search-results {
+  width: 100%;
+  margin-left: 2%
+}

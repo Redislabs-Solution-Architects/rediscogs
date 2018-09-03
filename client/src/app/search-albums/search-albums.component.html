@@ -1,32 +1,11 @@
-<mat-card>
-    <form>
-    <mat-card-header>
-      <mat-card-title>
-        <h2>Search Albums</h2>
-      </mat-card-title>
-    </mat-card-header>
-    <mat-card-content>
-      <mat-form-field>
-        <input matInput placeholder="Enter search string" [formControl]="searchField">
-      </mat-form-field>
-      <mat-list>
-          <mat-list-item *ngFor="let album of results | async">
-            <h3 mat-line>{{album.title}}</h3>
-          </mat-list-item>
-        </mat-list>
-    </mat-card-content>
-    </form>
-</mat-card>
-<!--
-<form class="form-inline">
-  <div class="form-group">
-    <input type="search" class="form-control" placeholder="Enter search string" [formControl]="searchField">
-  </div>
-</form>
+<mat-form-field class="search-form">
+  <input matInput placeholder="Enter search string" [formControl]="searchField">
+</mat-form-field>
+<br>
 
-
-<div class="text-center">
-  <p class="lead" *ngIf="loading">Loading...</p>
+<div class="search-results" fxLayout="row wrap" fxLayout.xs="column" fxLayoutGap="1%" fxLayoutAlign="left" >
+    <mat-card class="album-card" *ngFor="let album of results | async">
+      <img mat-card-image src="{{album.imageUri}}" alt="{{album.title}}">
+      <mat-card-content>{{album.title}}</mat-card-content>
+    </mat-card>
 </div>
-
--->
