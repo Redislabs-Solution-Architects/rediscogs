@@ -3,7 +3,7 @@ RediSearch demo based on data from [discogs.com](https://data.discogs.com).
 
 ## Setup
 
-This demo requires Java 8 and [npm](https://www.npmjs.com)
+This demo requires Java 8, [Redisearch](https://oss.redislabs.com/redisearch/Quick_Start/) and [npm](https://www.npmjs.com)
 
 You will also need to register at Discogs.com and [generate an API token](https://www.discogs.com/settings/developers)
 
@@ -19,7 +19,7 @@ cd rediscogs
 To run the server, cd into `server` and run:
  
 ```bash
-mvn spring-boot:run -Ddiscogs-api-token=<YOUR_DISCOGS_TOKEN>
+mvn spring-boot:run -Ddiscogs-api-token=<YOUR_DISCOGS_TOKEN> -Dspring.redis.host=<redisearch_host> -Dspring.redis.port=<redisearch_port>
 ```
 
 ### Client
