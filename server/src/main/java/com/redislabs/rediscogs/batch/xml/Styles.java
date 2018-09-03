@@ -1,4 +1,4 @@
-package com.redislabs.rediscogs.xml;
+package com.redislabs.rediscogs.batch.xml;
 
 import java.util.List;
 

@@ -1,8 +1,10 @@
-package com.redislabs.rediscogs;
+package com.redislabs.rediscogs.batch;
 
 import org.springframework.batch.item.ItemProcessor;
 
-import com.redislabs.rediscogs.xml.Master;
+import com.redislabs.rediscogs.RedisMaster;
+import com.redislabs.rediscogs.batch.xml.Artists.Artist;
+import com.redislabs.rediscogs.batch.xml.Master;
 
 public class MasterProcessor implements ItemProcessor<Master, RedisMaster> {
 
@@ -13,7 +15,9 @@ public class MasterProcessor implements ItemProcessor<Master, RedisMaster> {
 		master.setTitle(xml.getTitle());
 		if (xml.getArtists() != null) {
 			if (xml.getArtists().getArtists() != null && xml.getArtists().getArtists().size() > 0) {
-				master.setArtist(xml.getArtists().getArtists().get(0).getName());
+				Artist artist = xml.getArtists().getArtists().get(0);
+				master.setArtist(artist.getName());
+				master.setArtistId(artist.getId());
 			}
 		}
 		if (xml.getGenres() != null && xml.getGenres().getGenres().size() > 0) {

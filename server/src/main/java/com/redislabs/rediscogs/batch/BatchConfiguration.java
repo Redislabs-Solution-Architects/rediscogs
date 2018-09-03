@@ -1,4 +1,4 @@
-package com.redislabs.rediscogs;
+package com.redislabs.rediscogs.batch;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
@@ -24,7 +24,9 @@ import org.springframework.core.io.UrlResource;
 import org.springframework.oxm.jaxb.Jaxb2Marshaller;
 import org.springframework.util.ResourceUtils;
 
-import com.redislabs.rediscogs.xml.Master;
+import com.redislabs.rediscogs.RedisMaster;
+import com.redislabs.rediscogs.RediscogsConfiguration;
+import com.redislabs.rediscogs.batch.xml.Master;
 
 @Configuration
 @EnableBatchProcessing

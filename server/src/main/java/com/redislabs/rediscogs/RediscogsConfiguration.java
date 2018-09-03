@@ -16,6 +16,8 @@ public class RediscogsConfiguration {
 	private String mastersIndex = "mastersIdx";
 	private String artistsSuggestionIdx = "artistsSuggestionIdx";
 	private String mastersFile;
+	private String discogsApiUrl;
+	private String discogsApiToken;
 	private int batchSize = 500;
 
 }

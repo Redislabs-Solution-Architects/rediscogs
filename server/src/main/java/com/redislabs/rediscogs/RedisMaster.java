@@ -10,6 +10,9 @@ public class RedisMaster {
 	private String id;
 	private String title;
 	private String artist;
+	private String artistId;
 	private String genre;
 	private Integer year;
+	private String imageUri;
+	private String imageUri150;
 }

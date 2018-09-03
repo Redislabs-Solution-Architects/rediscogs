@@ -1,4 +1,4 @@
-package com.redislabs.rediscogs;
+package com.redislabs.rediscogs.batch;
 
 import java.io.IOException;
 import java.util.zip.GZIPInputStream;

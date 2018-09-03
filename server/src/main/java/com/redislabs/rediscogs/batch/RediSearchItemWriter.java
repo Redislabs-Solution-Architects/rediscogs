@@ -1,4 +1,4 @@
-package com.redislabs.rediscogs;
+package com.redislabs.rediscogs.batch;
 
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -9,6 +9,10 @@ import org.springframework.batch.item.ItemStreamSupport;
 import org.springframework.batch.item.ItemWriter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
+import com.redislabs.rediscogs.RediSearchClientConfiguration;
+import com.redislabs.rediscogs.RedisMaster;
+import com.redislabs.rediscogs.RediscogsConfiguration;
 
 import io.redisearch.Schema;
 import io.redisearch.Suggestion;
@@ -36,6 +40,7 @@ public class RediSearchItemWriter extends ItemStreamSupport implements ItemWrite
 		Schema schema = new Schema();
 		schema.addTextField("title", 1);
 		schema.addTextField("artist", 1);
+		schema.addTextField("artistId", 1);
 		schema.addSortableNumericField("year");
 		schema.addTextField("genre", 1);
 		try {

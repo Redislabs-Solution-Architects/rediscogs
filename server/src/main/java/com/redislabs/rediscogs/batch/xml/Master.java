@@ -1,4 +1,4 @@
-package com.redislabs.rediscogs.xml;
+package com.redislabs.rediscogs.batch.xml;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -15,6 +15,8 @@ public class Master {
 
 	@XmlAttribute(name = "id")
 	String id;
+	@XmlElement(name = "title")
+	String title;
 	@XmlElement(name = "artists")
 	Artists artists;
 	@XmlElement(name = "genres")
@@ -23,7 +25,6 @@ public class Master {
 	Styles styles;
 	@XmlElement(name = "year")
 	String year;
-	@XmlElement(name = "title")
-	String title;
-
+	@XmlElement(name = "images")
+	Images images;
 }

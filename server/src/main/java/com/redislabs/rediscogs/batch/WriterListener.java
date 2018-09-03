@@ -1,8 +1,10 @@
-package com.redislabs.rediscogs;
+package com.redislabs.rediscogs.batch;
 
 import java.util.List;
 
 import org.springframework.batch.core.ItemWriteListener;
+
+import com.redislabs.rediscogs.RedisMaster;
 
 import lombok.extern.slf4j.Slf4j;
 
