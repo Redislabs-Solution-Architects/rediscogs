@@ -15,16 +15,20 @@ public class Master {
 
 	@XmlAttribute(name = "id")
 	String id;
-	@XmlElement(name = "title")
-	String title;
 	@XmlElement(name = "artists")
 	Artists artists;
+	@XmlElement(name = "data_quality")
+	String dataQuality;
 	@XmlElement(name = "genres")
 	Genres genres;
-	@XmlElement(name = "styles")
-	Styles styles;
-	@XmlElement(name = "year")
-	String year;
 	@XmlElement(name = "images")
 	Images images;
+	@XmlElement(name = "notes")
+	String notes;
+	@XmlElement(name = "styles")
+	Styles styles;
+	@XmlElement(name = "title")
+	String title;
+	@XmlElement(name = "year")
+	String year;
 }

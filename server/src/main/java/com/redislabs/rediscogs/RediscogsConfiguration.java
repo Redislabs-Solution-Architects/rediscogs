@@ -18,6 +18,8 @@ public class RediscogsConfiguration {
 	private String mastersFile;
 	private String discogsApiUrl;
 	private String discogsApiToken;
+	private String userAgent;
 	private int batchSize = 500;
+	private int searchResultsLimit = 12;
 
 }

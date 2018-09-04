@@ -25,7 +25,7 @@ public class Images {
 		@XmlAttribute(name = "uri")
 		private String uri;
 		@XmlAttribute(name = "height")
-		int height;
+		private int height;
 		@XmlAttribute(name = "width")
 		private int width;
 		@XmlAttribute(name = "type")

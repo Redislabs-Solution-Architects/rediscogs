@@ -38,11 +38,16 @@ public class RediSearchItemWriter extends ItemStreamSupport implements ItemWrite
 		this.client = rediSearchConfig.getClient(config.getMastersIndex());
 		this.artistSuggestionClient = rediSearchConfig.getClient(config.getArtistsSuggestionIdx());
 		Schema schema = new Schema();
-		schema.addTextField("title", 1);
 		schema.addTextField("artist", 1);
 		schema.addTextField("artistId", 1);
+		schema.addTextField("dataQuality", 1);
+		schema.addTextField("genres", 1);
+		schema.addNumericField("imageWidth");
+		schema.addNumericField("imageHeight");
+		schema.addTextField("notes", 1);
+		schema.addTextField("styles", 1);
+		schema.addTextField("title", 1);
 		schema.addSortableNumericField("year");
-		schema.addTextField("genre", 1);
 		try {
 			client.createIndex(schema, Client.IndexOptions.Default());
 		} catch (JedisException e) {
@@ -77,17 +82,35 @@ public class RediSearchItemWriter extends ItemStreamSupport implements ItemWrite
 
 	private Map<String, Object> getFields(RedisMaster item) {
 		Map<String, Object> fields = new LinkedHashMap<String, Object>();
-		if (item.getTitle() != null) {
-			fields.put("title", item.getTitle());
-		}
 		if (item.getArtist() != null) {
 			fields.put("artist", item.getArtist());
 		}
+		if (item.getArtist() != null) {
+			fields.put("artistId", item.getArtistId());
+		}
+		if (item.getDataQuality() != null) {
+			fields.put("dataQuality", item.getDataQuality());
+		}
+		if (item.getGenres() != null) {
+			fields.put("genres", item.getGenres());
+		}
+		if (item.getImageHeight() != null) {
+			fields.put("imageHeight", item.getImageHeight());
+		}
+		if (item.getImageWidth() != null) {
+			fields.put("imageWidth", item.getImageWidth());
+		}
+		if (item.getNotes() != null) {
+			fields.put("notes", item.getNotes());
+		}
+		if (item.getStyles() != null) {
+			fields.put("styles", item.getStyles());
+		}
+		if (item.getTitle() != null) {
+			fields.put("title", item.getTitle());
+		}
 		if (item.getYear() != null) {
 			fields.put("year", item.getYear());
-		}
-		if (item.getGenre() != null) {
-			fields.put("genre", item.getGenre());
 		}
 		return fields;
 	}

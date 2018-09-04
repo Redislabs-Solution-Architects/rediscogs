@@ -10,6 +10,9 @@ import java.util.stream.Stream;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.web.client.RestTemplateBuilder;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.RequestEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -43,6 +46,7 @@ class SearchController {
 	@GetMapping("/search-albums")
 	public List<RedisMaster> searchAlbums(@RequestParam("query") String queryString) {
 		Query query = new Query(queryString);
+		query.limit(0, config.getSearchResultsLimit());
 		SearchResult results = rediSearchConfig.getClient(config.getMastersIndex()).search(query);
 		List<RedisMaster> masters = new ArrayList<RedisMaster>();
 		for (Document doc : results.docs) {
@@ -56,8 +60,11 @@ class SearchController {
 						if (response.getImages() != null && response.getImages().size() > 0) {
 							master.setImageUri(response.getImages().get(0).getUri());
 							master.setImageUri150(response.getImages().get(0).getUri150());
-							repository.save(master);
 						}
+						if (response.getNotes() != null) {
+							master.setNotes(response.getNotes());
+						}
+						repository.save(master);
 					}
 					masters.add(master);
 				}
@@ -72,7 +79,10 @@ class SearchController {
 		UriComponentsBuilder builder = UriComponentsBuilder.fromUriString(config.getDiscogsApiUrl()).queryParam("token",
 				config.getDiscogsApiToken());
 		URI uri = builder.buildAndExpand(uriParams).toUri();
-		return restTemplate.getForObject(uri, MasterEntity.class);
+		HttpHeaders headers = new HttpHeaders();
+		headers.set("User-Agent", config.getUserAgent());
+		RequestEntity<Object> requestEntity = new RequestEntity<>(headers, HttpMethod.GET, uri);
+		return restTemplate.exchange(requestEntity, MasterEntity.class).getBody();
 	}
 
 	@GetMapping("/suggest-artists")
