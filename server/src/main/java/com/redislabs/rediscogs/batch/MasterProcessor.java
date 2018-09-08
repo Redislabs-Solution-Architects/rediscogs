@@ -3,9 +3,9 @@ package com.redislabs.rediscogs.batch;
 import org.springframework.batch.item.ItemProcessor;
 
 import com.redislabs.rediscogs.RedisMaster;
-import com.redislabs.rediscogs.batch.xml.Artists.Artist;
-import com.redislabs.rediscogs.batch.xml.Images.Image;
-import com.redislabs.rediscogs.batch.xml.Master;
+import com.redislabs.rediscogs.discogs.xml.Master;
+import com.redislabs.rediscogs.discogs.xml.Artists.Artist;
+import com.redislabs.rediscogs.discogs.xml.Images.Image;
 
 public class MasterProcessor implements ItemProcessor<Master, RedisMaster> {
 

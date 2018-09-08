@@ -25,13 +25,17 @@ export class SearchAlbumsComponent implements OnInit {
 
   ngOnInit() {
     this.searchField = new FormControl();
-    this.results = this.searchField.valueChanges.pipe(
-      debounceTime(400),
-      distinctUntilChanged(),
-      tap(_ => (this.loading = true)),
-      switchMap(term => this.searchService.searchAlbums(term)),
-      tap(_ => (this.loading = false))
-    );
+    // this.results = this.searchField.valueChanges.pipe(
+    //   debounceTime(400),
+    //   distinctUntilChanged(),
+    //   tap(_ => (this.loading = true)),
+    //   switchMap(term => this.searchService.searchAlbums(term)),
+    //   tap(_ => (this.loading = false))
+    // );
+  }
+
+  search() {
+      this.results = this.searchService.searchAlbums(this.searchField.value);
   }
 
   doSearch(term: string) {

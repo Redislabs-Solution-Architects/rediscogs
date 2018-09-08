@@ -26,7 +26,7 @@ import org.springframework.util.ResourceUtils;
 
 import com.redislabs.rediscogs.RedisMaster;
 import com.redislabs.rediscogs.RediscogsConfiguration;
-import com.redislabs.rediscogs.batch.xml.Master;
+import com.redislabs.rediscogs.discogs.xml.Master;
 
 @Configuration
 @EnableBatchProcessing

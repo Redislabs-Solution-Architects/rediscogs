@@ -100,9 +100,6 @@ public class RediSearchItemWriter extends ItemStreamSupport implements ItemWrite
 		if (item.getImageWidth() != null) {
 			fields.put("imageWidth", item.getImageWidth());
 		}
-		if (item.getNotes() != null) {
-			fields.put("notes", item.getNotes());
-		}
 		if (item.getStyles() != null) {
 			fields.put("styles", item.getStyles());
 		}

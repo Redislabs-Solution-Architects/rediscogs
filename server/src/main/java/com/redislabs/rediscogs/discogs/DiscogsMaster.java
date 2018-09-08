@@ -1,11 +1,11 @@
-package com.redislabs.rediscogs;
+package com.redislabs.rediscogs.discogs;
 
 import java.util.List;
 
 import lombok.Data;
 
 @Data
-public class MasterEntity {
+public class DiscogsMaster {
 
 	private String id;
 	private List<Image> images;

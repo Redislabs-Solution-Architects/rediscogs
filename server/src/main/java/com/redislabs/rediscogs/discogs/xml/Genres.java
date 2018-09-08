@@ -1,4 +1,4 @@
-package com.redislabs.rediscogs.batch.xml;
+package com.redislabs.rediscogs.discogs.xml;
 
 import java.util.List;
 
@@ -10,9 +10,9 @@ import lombok.Data;
 
 @Data
 @XmlAccessorType(XmlAccessType.FIELD)
-public class Styles {
+public class Genres {
 
-	@XmlElement(name = "style")
-	List<String> styles;
+	@XmlElement(name = "genre")
+	List<String> genres;
 
 }

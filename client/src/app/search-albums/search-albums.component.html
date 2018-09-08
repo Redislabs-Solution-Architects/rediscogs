@@ -1,11 +1,17 @@
-<mat-form-field class="search-form">
-  <input matInput placeholder="Enter search string" [formControl]="searchField">
-</mat-form-field>
+<form #searchForm="ngForm" (ngSubmit)="search()" class="search-form">
+  <mat-form-field class="search-field">
+    <input matInput placeholder="Enter search string" [formControl]="searchField">
+  </mat-form-field>
+  <button mat-raised-button color="primary" type="submit">Submit</button>
+</form>
 <br>
 
-<div class="search-results" fxLayout="row wrap" fxLayout.xs="column" fxLayoutGap="1%" fxLayoutAlign="left" >
-    <mat-card class="album-card" *ngFor="let album of results | async">
-      <img mat-card-image src="{{album.imageUri}}" alt="{{album.title}}">
-      <mat-card-content>{{album.title}}</mat-card-content>
-    </mat-card>
+<div class="search-results" fxLayout="row wrap" fxLayout.xs="column" fxLayoutGap="1%" fxLayoutAlign="left">
+  <mat-card class="album-card" *ngFor="let album of results | async">
+    <img mat-card-image src="http://localhost:8080/album-image/{{album.id}}" alt="{{album.title}}">
+    <mat-card-content class="card-content">
+      <p>{{album.title}}</p>
+      <p>{{album.artist}} ({{album.year}})</p>
+    </mat-card-content>
+  </mat-card>
 </div>
