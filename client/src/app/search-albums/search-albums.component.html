@@ -4,8 +4,8 @@
   </mat-form-field>
   <mat-autocomplete #auto="matAutocomplete" class="search-field-half-width" [displayWith]="displayFn">
     <mat-option *ngFor="let artist of artists" [value]="artist">
-        <span>{{ artist.name }}</span>
-        <small> | ID: {{artist.id}}</small>
+      <span>{{ artist.name }}</span>
+      <small> | ID: {{artist.id}}</small>
     </mat-option>
   </mat-autocomplete>
   <mat-form-field class="search-field-full-width">
