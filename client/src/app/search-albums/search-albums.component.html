@@ -1,6 +1,15 @@
 <form #searchForm="ngForm" (ngSubmit)="search()" class="search-form">
-  <mat-form-field class="search-field">
-    <input matInput placeholder="Enter search string" [formControl]="searchField">
+  <mat-form-field class="search-field-half-width">
+    <input matInput placeholder="Artist" [matAutocomplete]="auto" [formControl]="artistField">
+  </mat-form-field>
+  <mat-autocomplete #auto="matAutocomplete" class="search-field-half-width" [displayWith]="displayFn">
+    <mat-option *ngFor="let artist of artists" [value]="artist">
+        <span>{{ artist.name }}</span>
+        <small> | ID: {{artist.id}}</small>
+    </mat-option>
+  </mat-autocomplete>
+  <mat-form-field class="search-field-full-width">
+    <input matInput placeholder="Query" [formControl]="searchField">
   </mat-form-field>
   <button mat-raised-button color="primary" type="submit">Submit</button>
 </form>
@@ -10,8 +19,8 @@
   <mat-card class="album-card" *ngFor="let album of results | async">
     <img mat-card-image src="http://localhost:8080/album-image/{{album.id}}" alt="{{album.title}}">
     <mat-card-content class="card-content">
-      <p>{{album.title}}</p>
-      <p>{{album.artist}} ({{album.year}})</p>
+      <h5>{{album.title}}</h5>
+      <h6>{{album.genres}} {{album.year}}</h6>
     </mat-card-content>
   </mat-card>
 </div>

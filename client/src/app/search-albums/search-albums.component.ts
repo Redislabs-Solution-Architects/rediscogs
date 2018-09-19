@@ -19,27 +19,26 @@ export class SearchAlbumsComponent implements OnInit {
 
   private loading: boolean = false;
   private results: Observable<any>;
+  private artists: Observable<any>;
   private searchField: FormControl;
+  private artistField: FormControl;
 
   constructor(private searchService: SearchService) { }
 
   ngOnInit() {
     this.searchField = new FormControl();
-    // this.results = this.searchField.valueChanges.pipe(
-    //   debounceTime(400),
-    //   distinctUntilChanged(),
-    //   tap(_ => (this.loading = true)),
-    //   switchMap(term => this.searchService.searchAlbums(term)),
-    //   tap(_ => (this.loading = false))
-    // );
+    this.artistField = new FormControl();
+    this.artistField.valueChanges.pipe(
+      debounceTime(300)
+    ).subscribe(prefix => this.searchService.suggestArtists(this.artistField.value).subscribe( data => {this.artists=data}));
+  }
+
+  displayFn(artist: any) {
+    if (artist) { return artist.name; }
   }
 
   search() {
-      this.results = this.searchService.searchAlbums(this.searchField.value);
-  }
-
-  doSearch(term: string) {
-    this.searchService.searchAlbums(term);
+      this.results = this.searchService.searchAlbums(this.artistField.value.id, this.searchField.value);
   }
 
 }

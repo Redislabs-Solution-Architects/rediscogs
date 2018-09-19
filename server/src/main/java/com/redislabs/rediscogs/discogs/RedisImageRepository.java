@@ -1,4 +1,4 @@
-package com.redislabs.rediscogs;
+package com.redislabs.rediscogs.discogs;
 
 import java.io.BufferedInputStream;
 import java.io.ByteArrayOutputStream;
@@ -20,7 +20,8 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import com.redislabs.rediscogs.discogs.DiscogsMaster;
+import com.redislabs.rediscogs.ImageRepository;
+import com.redislabs.rediscogs.RediscogsConfiguration;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -66,7 +67,8 @@ public class RedisImageRepository implements ImageRepository {
 
 	private synchronized DiscogsMaster getDiscogsMaster(String id) {
 		log.info("RateLimitRemaining: {}", rateLimitRemaining);
-		if (rateLimitRemaining > 1 || (System.currentTimeMillis() - rateLimitLastTime) > 60000) {
+		boolean after1Min = (System.currentTimeMillis() - rateLimitLastTime) > 60000;
+		if (rateLimitRemaining > 1 || after1Min) {
 			Map<String, String> uriParams = new HashMap<String, String>();
 			uriParams.put("id", id);
 			UriComponentsBuilder builder = UriComponentsBuilder.fromUriString(config.getDiscogsApiUrl())
@@ -79,7 +81,7 @@ public class RedisImageRepository implements ImageRepository {
 			HttpHeaders responseHeaders = response.getHeaders();
 			int newRemaining = Integer.parseInt(responseHeaders.get("X-Discogs-Ratelimit-Remaining").get(0));
 			this.rateLimitLastTime = System.currentTimeMillis();
-			if (rateLimitRemaining == 0 || newRemaining < rateLimitRemaining) {
+			if (rateLimitRemaining == 0 || newRemaining < rateLimitRemaining || after1Min) {
 				log.info("RateLimitRemaining -> {}", newRemaining);
 				this.rateLimitRemaining = newRemaining;
 			}

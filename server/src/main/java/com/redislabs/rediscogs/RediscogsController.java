@@ -21,6 +21,9 @@ import io.redisearch.Query;
 import io.redisearch.SearchResult;
 import io.redisearch.Suggestion;
 import io.redisearch.client.SuggestionOptions;
+import io.redisearch.client.SuggestionOptions.With;
+import lombok.Builder;
+import lombok.Data;
 
 @RestController
 class RediscogsController {
@@ -32,7 +35,7 @@ class RediscogsController {
 	private RediSearchClientConfiguration rediSearchConfig;
 
 	@Autowired
-	private MasterRepository repository;
+	private MasterRepository masterRepository;
 
 	@Autowired
 	private ImageRepository imageRepository;
@@ -40,24 +43,39 @@ class RediscogsController {
 	private Optional<RedisMaster> getRedisMaster(Document doc) {
 		String id = doc.getId();
 		if (doc.getId() != null && doc.getId().length() > 0) {
-			return repository.findById(id);
+			return masterRepository.findById(id);
 		}
 		return Optional.empty();
 	}
 
+	@Data
+	@Builder
+	public static class ArtistSuggestion {
+		private String name;
+		private String id;
+	}
+
 	@GetMapping("/suggest-artists")
-	public Stream<String> suggestArtists(@RequestParam("prefix") String prefix) {
-		SuggestionOptions options = SuggestionOptions.builder().fuzzy().build();
+	public Stream<ArtistSuggestion> suggestArtists(
+			@RequestParam(name = "prefix", defaultValue = "", required = false) String prefix) {
+		SuggestionOptions options = SuggestionOptions.builder().with(With.PAYLOAD).max(10).build();
 		List<Suggestion> results = rediSearchConfig.getClient(config.getArtistsSuggestionIdx()).getSuggestion(prefix,
 				options);
-		return results.stream().map(result -> result.getString());
+		return results.stream()
+				.map(result -> ArtistSuggestion.builder().id(result.getPayload()).name(result.getString()).build());
 	}
 
 	@GetMapping("/search-albums")
-	public Stream<RedisMaster> searchAlbums(@RequestParam("query") String queryString) {
-		Query query = new Query(queryString);
-		query.limit(0, config.getSearchResultsLimit());
-		SearchResult results = rediSearchConfig.getClient(config.getMastersIndex()).search(query);
+	public Stream<RedisMaster> searchAlbums(@RequestParam(name = "artistId", required = false) String artistId,
+			@RequestParam(name = "query", required = false, defaultValue = "") String query) {
+		String queryString = query;
+		if (artistId != null) {
+			queryString += " " + "@artistId:" + artistId;
+		}
+		Query q = new Query(queryString);
+		q.limit(0, config.getSearchResultsLimit());
+		q.setSortBy("year", true);
+		SearchResult results = rediSearchConfig.getClient(config.getMastersIndex()).search(q);
 		return results.docs.stream().map(doc -> getRedisMaster(doc)).filter(Optional::isPresent).map(Optional::get);
 	}
 

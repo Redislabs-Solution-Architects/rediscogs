@@ -38,15 +38,15 @@ public class RediSearchItemWriter extends ItemStreamSupport implements ItemWrite
 		this.client = rediSearchConfig.getClient(config.getMastersIndex());
 		this.artistSuggestionClient = rediSearchConfig.getClient(config.getArtistsSuggestionIdx());
 		Schema schema = new Schema();
-		schema.addTextField("artist", 1);
-		schema.addTextField("artistId", 1);
-		schema.addTextField("dataQuality", 1);
-		schema.addTextField("genres", 1);
-		schema.addNumericField("imageWidth");
-		schema.addNumericField("imageHeight");
-		schema.addTextField("notes", 1);
-		schema.addTextField("styles", 1);
-		schema.addTextField("title", 1);
+		schema.addSortableTextField("artist", 1);
+		schema.addSortableTextField("artistId", 1);
+		schema.addSortableTextField("dataQuality", 1);
+		schema.addSortableTextField("genres", 1);
+		schema.addSortableNumericField("imageWidth");
+		schema.addSortableNumericField("imageHeight");
+		schema.addSortableTextField("notes", 1);
+		schema.addSortableTextField("styles", 1);
+		schema.addSortableTextField("title", 1);
 		schema.addSortableNumericField("year");
 		try {
 			client.createIndex(schema, Client.IndexOptions.Default());
@@ -75,7 +75,7 @@ public class RediSearchItemWriter extends ItemStreamSupport implements ItemWrite
 					log.error("Could not add document: {}", e.getMessage());
 				}
 			}
-			Suggestion suggestion = Suggestion.builder().str(item.getArtist()).build();
+			Suggestion suggestion = Suggestion.builder().str(item.getArtist()).payload(item.getArtistId()).build();
 			artistSuggestionClient.addSuggestion(suggestion, true);
 		}
 	}

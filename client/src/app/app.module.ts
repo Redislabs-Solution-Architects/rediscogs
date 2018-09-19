@@ -7,7 +7,7 @@ import { SearchAlbumsComponent } from './search-albums/search-albums.component';
 
 import { ReactiveFormsModule, FormsModule } from "@angular/forms";
 
-import { MatButtonModule, MatIconModule, MatCardModule, MatInputModule, MatListModule, MatGridListModule, MatToolbarModule } from '@angular/material';
+import { MatButtonModule, MatIconModule, MatCardModule, MatInputModule, MatAutocompleteModule, MatListModule, MatGridListModule, MatToolbarModule } from '@angular/material';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 @NgModule({
@@ -26,6 +26,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     MatIconModule,
     MatCardModule,
     MatInputModule,
+    MatAutocompleteModule,
     MatListModule,
     MatGridListModule,
     MatToolbarModule

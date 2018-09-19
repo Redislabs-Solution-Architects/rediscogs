@@ -10,12 +10,21 @@ export class SearchService {
   constructor(private http: HttpClient) { }
 
   suggestArtists(prefix: string): Observable<any> {
-    let params = new HttpParams().set('prefix', prefix);
+    let params = new HttpParams();
+    if (prefix!=null) {
+      params = params.set('prefix', prefix);
+    }
     return this.http.get('//localhost:8080/suggest-artists', {params});
   }
 
-  searchAlbums(query: string): Observable<any> {
-    let params = new HttpParams().set('query', query);
+  searchAlbums(artistId: string, query: string): Observable<any> {
+    let params = new HttpParams();
+    if (artistId!=null) {
+      params = params.set('artistId', artistId);
+    }
+    if (query!=null) {
+      params = params.set('query', query);
+    }
     return this.http.get('//localhost:8080/search-albums', {params});
   }
 }
