@@ -14,12 +14,18 @@ cd rediscogs
 
 ## Running the demo
 
+### RediSearch
+To run a RediSearch instance using docker:
+```bash
+docker run -p 6379:6379 redislabs/redisearch:latest
+```
+
 ### Server
 
 To run the server, cd into `server` and run:
  
 ```bash
-mvn spring-boot:run -Ddiscogs-api-token=<discogs_token> -Dspring.redis.host=<redisearch_host> -Dspring.redis.port=<redisearch_port>
+mvn spring-boot:run -Ddiscogs-api-token=<your_Discogs_token> -Dspring.redis.host=localhost -Dspring.redis.port=6379
 ```
 
 ### Client
