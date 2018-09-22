@@ -1,0 +1,4 @@
+applications:
+- name: rediscogs
+  memory: 1024M
+  path: server/target/server-0.0.1-SNAPSHOT.jar
