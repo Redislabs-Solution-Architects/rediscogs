@@ -1,14 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { SearchService } from '../search.service';
 import { Observable } from 'rxjs';
-import { ReactiveFormsModule, FormControl, FormsModule } from "@angular/forms";
+import { ReactiveFormsModule, FormControl, FormsModule } from '@angular/forms';
 import {
   map,
   debounceTime,
   distinctUntilChanged,
   switchMap,
   tap
-} from "rxjs/operators";
+} from 'rxjs/operators';
 
 @Component({
   selector: 'app-search-albums',
@@ -17,7 +17,6 @@ import {
 })
 export class SearchAlbumsComponent implements OnInit {
 
-  private loading: boolean = false;
   private results: Observable<any>;
   private artists: Observable<any>;
   private searchField: FormControl;
@@ -30,7 +29,7 @@ export class SearchAlbumsComponent implements OnInit {
     this.artistField = new FormControl();
     this.artistField.valueChanges.pipe(
       debounceTime(300)
-    ).subscribe(prefix => this.searchService.suggestArtists(this.artistField.value).subscribe( data => {this.artists=data}));
+    ).subscribe(prefix => this.searchService.suggestArtists(this.artistField.value).subscribe(data => { this.artists = data; }));
   }
 
   displayFn(artist: any) {
@@ -38,7 +37,7 @@ export class SearchAlbumsComponent implements OnInit {
   }
 
   search() {
-      this.results = this.searchService.searchAlbums(this.artistField.value.id, this.searchField.value);
+    this.results = this.searchService.searchAlbums(this.artistField.value.id, this.searchField.value);
   }
 
 }

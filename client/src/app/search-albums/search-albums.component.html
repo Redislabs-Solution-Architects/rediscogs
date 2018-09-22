@@ -17,7 +17,7 @@
 
 <div class="search-results" fxLayout="row wrap" fxLayout.xs="column" fxLayoutGap="1%" fxLayoutAlign="left">
   <mat-card class="album-card" *ngFor="let album of results | async">
-    <img mat-card-image src="http://localhost:8080/album-image/{{album.id}}" alt="{{album.title}}">
+    <img mat-card-image src="/album-image/{{album.id}}" alt="{{album.title}}">
     <mat-card-content class="card-content">
       <h5>{{album.title}}</h5>
       <h6>{{album.genres}} {{album.year}}</h6>

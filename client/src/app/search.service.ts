@@ -11,20 +11,20 @@ export class SearchService {
 
   suggestArtists(prefix: string): Observable<any> {
     let params = new HttpParams();
-    if (prefix!=null) {
+    if (prefix != null) {
       params = params.set('prefix', prefix);
     }
-    return this.http.get('//localhost:8080/suggest-artists', {params});
+    return this.http.get('/suggest-artists', { params });
   }
 
   searchAlbums(artistId: string, query: string): Observable<any> {
     let params = new HttpParams();
-    if (artistId!=null) {
+    if (artistId != null) {
       params = params.set('artistId', artistId);
     }
-    if (query!=null) {
+    if (query != null) {
       params = params.set('query', query);
     }
-    return this.http.get('//localhost:8080/search-albums', {params});
+    return this.http.get('/search-albums', { params });
   }
 }
