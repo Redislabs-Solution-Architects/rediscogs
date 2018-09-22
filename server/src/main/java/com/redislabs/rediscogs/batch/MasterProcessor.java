@@ -3,9 +3,8 @@ package com.redislabs.rediscogs.batch;
 import org.springframework.batch.item.ItemProcessor;
 
 import com.redislabs.rediscogs.RedisMaster;
-import com.redislabs.rediscogs.discogs.xml.Master;
 import com.redislabs.rediscogs.discogs.xml.Artists.Artist;
-import com.redislabs.rediscogs.discogs.xml.Images.Image;
+import com.redislabs.rediscogs.discogs.xml.Master;
 
 public class MasterProcessor implements ItemProcessor<Master, RedisMaster> {
 
@@ -36,12 +35,7 @@ public class MasterProcessor implements ItemProcessor<Master, RedisMaster> {
 		}
 		master.setTitle(xml.getTitle());
 		if (xml.getYear() != null && xml.getYear().length() == 4) {
-			master.setYear(Integer.parseInt(xml.getYear()));
-		}
-		if (xml.getImages()!=null && xml.getImages().getImages().size()>0) {
-			Image image = xml.getImages().getImages().get(0);
-			master.setImageHeight(image.getHeight());
-			master.setImageWidth(image.getWidth());
+			master.setYear(xml.getYear());
 		}
 		return master;
 	}

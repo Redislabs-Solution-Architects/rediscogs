@@ -10,47 +10,43 @@ import org.springframework.batch.item.ItemWriter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.redislabs.rediscogs.RediSearchClientConfiguration;
+import com.redislabs.lettusearch.RediSearchCommands;
+import com.redislabs.lettusearch.RediSearchConnection;
+import com.redislabs.lettusearch.index.Document;
+import com.redislabs.lettusearch.index.NumericField;
+import com.redislabs.lettusearch.index.Schema;
+import com.redislabs.lettusearch.index.Schema.SchemaBuilder;
+import com.redislabs.lettusearch.index.TextField;
 import com.redislabs.rediscogs.RedisMaster;
 import com.redislabs.rediscogs.RediscogsConfiguration;
 
-import io.redisearch.Schema;
-import io.redisearch.Suggestion;
-import io.redisearch.client.Client;
 import lombok.extern.slf4j.Slf4j;
-import redis.clients.jedis.exceptions.JedisDataException;
-import redis.clients.jedis.exceptions.JedisException;
 
 @Component
 @Slf4j
 public class RediSearchItemWriter extends ItemStreamSupport implements ItemWriter<RedisMaster> {
 
 	@Autowired
-	private RediSearchClientConfiguration rediSearchConfig;
+	private RediSearchConnection<String, String> connection;
 	@Autowired
 	private RediscogsConfiguration config;
 
-	private Client client;
-	private Client artistSuggestionClient;
-
 	@Override
 	public void open(ExecutionContext executionContext) {
-		this.client = rediSearchConfig.getClient(config.getMastersIndex());
-		this.artistSuggestionClient = rediSearchConfig.getClient(config.getArtistsSuggestionIdx());
-		Schema schema = new Schema();
-		schema.addSortableTextField("artist", 1);
-		schema.addSortableTextField("artistId", 1);
-		schema.addSortableTextField("dataQuality", 1);
-		schema.addSortableTextField("genres", 1);
-		schema.addSortableNumericField("imageWidth");
-		schema.addSortableNumericField("imageHeight");
-		schema.addSortableTextField("notes", 1);
-		schema.addSortableTextField("styles", 1);
-		schema.addSortableTextField("title", 1);
-		schema.addSortableNumericField("year");
+		SchemaBuilder schema = Schema.builder();
+		schema.field(TextField.builder().name("artist").build());
+		schema.field(TextField.builder().name("artistId").build());
+		schema.field(TextField.builder().name("dataQuality").build());
+		schema.field(TextField.builder().name("genres").build());
+		schema.field(NumericField.builder().name("imageWidth").sortable(true).build());
+		schema.field(NumericField.builder().name("imageHeight").sortable(true).build());
+		schema.field(TextField.builder().name("notes").build());
+		schema.field(TextField.builder().name("styles").build());
+		schema.field(TextField.builder().name("title").build());
+		schema.field(NumericField.builder().name("year").sortable(true).build());
 		try {
-			client.createIndex(schema, Client.IndexOptions.Default());
-		} catch (JedisException e) {
+			connection.sync().create(config.getMastersIndex(), schema.build());
+		} catch (Exception e) {
 			if (log.isDebugEnabled()) {
 				log.debug("Could not create index", e);
 			} else {
@@ -64,24 +60,26 @@ public class RediSearchItemWriter extends ItemStreamSupport implements ItemWrite
 		if (log.isDebugEnabled()) {
 			log.debug("Writing to Redis with " + items.size() + " items.");
 		}
+		RediSearchCommands<String, String> commands = connection.sync();
 		for (RedisMaster item : items) {
 			String key = item.getId();
+			Map<String, String> fields = getFields(item);
 			try {
-				client.addDocument(key, 1, getFields(item), true, false, null);
-			} catch (JedisDataException e) {
+				commands.add(config.getMastersIndex(), Document.builder().id(key).fields(fields).noSave(true).build());
+			} catch (Exception e) {
 				if ("Document already in index".equals(e.getMessage())) {
 					log.debug(e.getMessage());
 				} else {
-					log.error("Could not add document: {}", e.getMessage());
+					log.error("Could not add document", e);
 				}
 			}
-			Suggestion suggestion = Suggestion.builder().str(item.getArtist()).payload(item.getArtistId()).build();
-			artistSuggestionClient.addSuggestion(suggestion, true);
+			commands.suggestionAddIncrPayload(config.getArtistsSuggestionIndex(), item.getArtist(), 1,
+					item.getArtistId());
 		}
 	}
 
-	private Map<String, Object> getFields(RedisMaster item) {
-		Map<String, Object> fields = new LinkedHashMap<String, Object>();
+	private Map<String, String> getFields(RedisMaster item) {
+		Map<String, String> fields = new LinkedHashMap<String, String>();
 		if (item.getArtist() != null) {
 			fields.put("artist", item.getArtist());
 		}
@@ -93,12 +91,6 @@ public class RediSearchItemWriter extends ItemStreamSupport implements ItemWrite
 		}
 		if (item.getGenres() != null) {
 			fields.put("genres", item.getGenres());
-		}
-		if (item.getImageHeight() != null) {
-			fields.put("imageHeight", item.getImageHeight());
-		}
-		if (item.getImageWidth() != null) {
-			fields.put("imageWidth", item.getImageWidth());
 		}
 		if (item.getStyles() != null) {
 			fields.put("styles", item.getStyles());

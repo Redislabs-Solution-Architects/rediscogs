@@ -14,7 +14,7 @@ public class RediscogsConfiguration {
 
 	boolean skipLoad;
 	private String mastersIndex = "mastersIdx";
-	private String artistsSuggestionIdx = "artistsSuggestionIdx";
+	private String artistsSuggestionIndex = "artistsSuggestionIdx";
 	private String mastersFile;
 	private String discogsApiUrl;
 	private String discogsApiToken;

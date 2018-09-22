@@ -13,9 +13,7 @@ public class RedisMaster {
 	private String artistId;
 	private String dataQuality;
 	private String genres;
-	private Integer imageHeight;
-	private Integer imageWidth;
 	private String notes;
 	private String styles;
-	private Integer year;
+	private String year;
 }

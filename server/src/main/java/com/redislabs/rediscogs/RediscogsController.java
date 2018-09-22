@@ -1,7 +1,7 @@
 package com.redislabs.rediscogs;
 
 import java.io.IOException;
-import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Stream;
 
@@ -16,12 +16,16 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import io.redisearch.Document;
-import io.redisearch.Query;
-import io.redisearch.SearchResult;
-import io.redisearch.Suggestion;
-import io.redisearch.client.SuggestionOptions;
-import io.redisearch.client.SuggestionOptions.With;
+import com.redislabs.lettusearch.RediSearchConnection;
+import com.redislabs.lettusearch.index.Limit;
+import com.redislabs.lettusearch.index.SearchOptions;
+import com.redislabs.lettusearch.index.SearchOptions.SearchOptionsBuilder;
+import com.redislabs.lettusearch.index.SearchResult;
+import com.redislabs.lettusearch.index.SearchResultsNoContent;
+import com.redislabs.lettusearch.index.SortBy;
+import com.redislabs.lettusearch.index.SortBy.Direction;
+import com.redislabs.lettusearch.suggest.SuggestionOptions;
+
 import lombok.Builder;
 import lombok.Data;
 
@@ -32,17 +36,17 @@ class RediscogsController {
 	private RediscogsConfiguration config;
 
 	@Autowired
-	private RediSearchClientConfiguration rediSearchConfig;
-
-	@Autowired
 	private MasterRepository masterRepository;
 
 	@Autowired
 	private ImageRepository imageRepository;
 
-	private Optional<RedisMaster> getRedisMaster(Document doc) {
-		String id = doc.getId();
-		if (doc.getId() != null && doc.getId().length() > 0) {
+	@Autowired
+	private RediSearchConnection<String, String> connection;
+
+	private Optional<RedisMaster> getRedisMaster(SearchResult<String, String> doc) {
+		String id = doc.getDocumentId();
+		if (id != null && id.length() > 0) {
 			return masterRepository.findById(id);
 		}
 		return Optional.empty();
@@ -58,11 +62,10 @@ class RediscogsController {
 	@GetMapping("/suggest-artists")
 	public Stream<ArtistSuggestion> suggestArtists(
 			@RequestParam(name = "prefix", defaultValue = "", required = false) String prefix) {
-		SuggestionOptions options = SuggestionOptions.builder().with(With.PAYLOAD).max(10).build();
-		List<Suggestion> results = rediSearchConfig.getClient(config.getArtistsSuggestionIdx()).getSuggestion(prefix,
-				options);
-		return results.stream()
-				.map(result -> ArtistSuggestion.builder().id(result.getPayload()).name(result.getString()).build());
+		Map<String, String> suggestions = connection.sync().suggestionGetWithPayloads(
+				config.getArtistsSuggestionIndex(), prefix, SuggestionOptions.builder().maxResults(10).build());
+		return suggestions.entrySet().stream()
+				.map(result -> ArtistSuggestion.builder().name(result.getKey()).id(result.getValue()).build());
 	}
 
 	@GetMapping("/search-albums")
@@ -72,11 +75,13 @@ class RediscogsController {
 		if (artistId != null) {
 			queryString += " " + "@artistId:" + artistId;
 		}
-		Query q = new Query(queryString);
-		q.limit(0, config.getSearchResultsLimit());
-		q.setSortBy("year", true);
-		SearchResult results = rediSearchConfig.getClient(config.getMastersIndex()).search(q);
-		return results.docs.stream().map(doc -> getRedisMaster(doc)).filter(Optional::isPresent).map(Optional::get);
+		SearchOptionsBuilder builder = SearchOptions.builder();
+		builder.limit(Limit.builder().offset(0).num(config.getSearchResultsLimit()).build());
+		builder.sortBy(SortBy.builder().field("year").direction(Direction.Ascending).build());
+		SearchResultsNoContent<String, String> results = connection.sync().searchNoContent(config.getMastersIndex(),
+				queryString, builder.build());
+		return results.getResults().stream().map(doc -> getRedisMaster(doc)).filter(Optional::isPresent)
+				.map(Optional::get);
 	}
 
 	@ResponseBody

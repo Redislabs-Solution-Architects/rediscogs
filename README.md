@@ -5,12 +5,7 @@ RediSearch demo based on data from [discogs.com](https://data.discogs.com).
 
 This demo requires Java 8, [Redisearch](https://oss.redislabs.com/redisearch/Quick_Start/) and [npm](https://www.npmjs.com)
 
-You will also need to register at Discogs.com and [generate an API token](https://www.discogs.com/settings/developers)
-
-```bash
-git clone https://github.com/Redislabs-Solution-Architects/rediscogs.git
-cd rediscogs
-```
+If you would like to see album covers you will also need to register at Discogs.com and [generate an API token](https://www.discogs.com/settings/developers)
 
 ## Running the demo
 
@@ -21,18 +16,14 @@ docker run -p 6379:6379 redislabs/redisearch:latest
 ```
 
 ### Server
+Clone this git repository:
+```bash
+git clone https://github.com/Redislabs-Solution-Architects/rediscogs.git
+cd rediscogs
+```
 
-To run the server, cd into `server` and run:
+Then run the server:
  
 ```bash
 mvn spring-boot:run -Ddiscogs-api-token=<your_Discogs_token> -Dspring.redis.host=localhost -Dspring.redis.port=6379
-```
-
-### Client
-
-To run the client, cd into the `client` folder and run:
- 
-```bash
-npm install
-ng serve
 ```
