@@ -13,23 +13,6 @@ import io.lettuce.core.RedisURI;
 
 @Configuration
 public class RedisConfiguration {
-//
-//	@Bean
-//	JedisConnectionFactory jedisConnectionFactory() {
-//		return new JedisConnectionFactory();
-//	}
-//
-//	@Bean
-//	public StringRedisTemplate redisTemplate() {
-//		StringRedisTemplate template = new StringRedisTemplate();
-//		template.setConnectionFactory(jedisConnectionFactory());
-//		return template;
-//	}
-
-	@Bean
-	public LettuceConnectionFactory connectionFactory() {
-		return new LettuceConnectionFactory();
-	}
 
 	@Bean(destroyMethod = "shutdown")
 	public RediSearchClient lettuceClient(LettuceConnectionFactory connectionFactory) {
