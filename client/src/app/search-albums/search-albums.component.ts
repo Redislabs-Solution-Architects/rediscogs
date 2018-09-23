@@ -37,7 +37,11 @@ export class SearchAlbumsComponent implements OnInit {
   }
 
   search() {
-    this.results = this.searchService.searchAlbums(this.artistField.value.id, this.searchField.value);
+    let artistId = null;
+    if (this.artistField.value != null) {
+      artistId = this.artistField.value.id;
+    }
+    this.results = this.searchService.searchAlbums(artistId, this.searchField.value);
   }
 
 }

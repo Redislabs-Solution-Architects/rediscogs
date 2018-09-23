@@ -16,11 +16,16 @@
 <br>
 
 <div class="search-results" fxLayout="row wrap" fxLayout.xs="column" fxLayoutGap="1%" fxLayoutAlign="left">
-  <mat-card class="album-card" *ngFor="let album of results | async">
-    <img mat-card-image src="/album-image/{{album.id}}" alt="{{album.title}}">
-    <mat-card-content class="card-content">
-      <h5>{{album.title}}</h5>
-      <h6>{{album.genres}} {{album.year}}</h6>
-    </mat-card-content>
-  </mat-card>
+  <div class="album-card" *ngFor="let album of results | async">
+    <img src="http://localhost:8080/album-image/{{album.id}}" alt="{{album.title}}">
+    <div class="card-content">
+      <div class="row album-title">
+          <h5>{{album.title}}</h5>
+      </div>
+      <div class="row album-details">
+        <div class="album-genres">{{album.genres}}</div>
+        <div class="album-year">{{album.year}}</div>
+      </div>
+    </div>
+  </div>
 </div>

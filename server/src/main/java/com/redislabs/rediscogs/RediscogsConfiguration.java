@@ -19,8 +19,10 @@ public class RediscogsConfiguration {
 	private String discogsApiUrl;
 	private String discogsApiToken;
 	private String userAgent;
-	private int batchSize = 500;
-	private int searchResultsLimit = 100;
+	private int batchSize = 50;
+	private int searchResultsLimit = 20;
 	private String defaultImageUri;
+	private String rediSearchHost;
+	private Integer rediSearchPort;
 
 }
