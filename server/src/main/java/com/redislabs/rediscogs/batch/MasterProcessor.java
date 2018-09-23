@@ -27,9 +27,6 @@ public class MasterProcessor implements ItemProcessor<Master, RedisMaster> {
 		if (xml.getGenres() != null && xml.getGenres().getGenres().size() > 0) {
 			master.setGenres(String.join(DELIMITER, xml.getGenres().getGenres()));
 		}
-		if (xml.getNotes() != null) {
-			master.setNotes(xml.getNotes());
-		}
 		if (xml.getStyles() != null && xml.getStyles().getStyles().size() > 0) {
 			master.setStyles(String.join(DELIMITER, xml.getStyles().getStyles()));
 		}

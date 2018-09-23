@@ -13,7 +13,6 @@ public class RedisMaster {
 	private String artistId;
 	private String dataQuality;
 	private String genres;
-	private String notes;
 	private String styles;
 	private String year;
 }
