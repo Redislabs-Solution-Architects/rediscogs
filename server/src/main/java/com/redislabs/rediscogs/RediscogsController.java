@@ -72,6 +72,7 @@ class RediscogsController {
 		if (artistId != null) {
 			queryString += " " + "@artistId:" + artistId;
 		}
+		queryString += " @image:true";
 		Query q = new Query(queryString);
 		q.limit(0, config.getSearchResultsLimit());
 		q.setSortBy("year", true);

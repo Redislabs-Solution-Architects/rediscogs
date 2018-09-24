@@ -15,4 +15,5 @@ public class RedisMaster {
 	private String genres;
 	private String styles;
 	private String year;
+	private String image;
 }

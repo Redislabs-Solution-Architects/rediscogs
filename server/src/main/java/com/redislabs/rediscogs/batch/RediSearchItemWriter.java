@@ -44,6 +44,7 @@ public class RediSearchItemWriter extends ItemStreamSupport implements ItemWrite
 		schema.addSortableTextField("styles", 1);
 		schema.addSortableTextField("title", 1);
 		schema.addSortableNumericField("year");
+		schema.addSortableTextField("image", 1);
 		try {
 			client.createIndex(schema, Client.IndexOptions.Default());
 		} catch (JedisException e) {
@@ -99,6 +100,7 @@ public class RediSearchItemWriter extends ItemStreamSupport implements ItemWrite
 		if (item.getYear() != null) {
 			fields.put("year", item.getYear());
 		}
+		fields.put("image", item.getImage());
 		return fields;
 	}
 

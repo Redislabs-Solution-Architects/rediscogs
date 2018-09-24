@@ -34,6 +34,11 @@ public class MasterProcessor implements ItemProcessor<Master, RedisMaster> {
 		if (xml.getYear() != null && xml.getYear().length() == 4) {
 			master.setYear(xml.getYear());
 		}
+		if (xml.getImages() != null && xml.getImages().getImages().size() > 0) {
+			master.setImage("true");
+		} else {
+			master.setImage("false");
+		}
 		return master;
 	}
 
