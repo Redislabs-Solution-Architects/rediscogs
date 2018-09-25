@@ -24,5 +24,6 @@ public class RediscogsConfiguration {
 	private String defaultImageUri;
 	private String rediSearchHost;
 	private Integer rediSearchPort;
+	private long imageRepositoryDelay = 100;
 
 }

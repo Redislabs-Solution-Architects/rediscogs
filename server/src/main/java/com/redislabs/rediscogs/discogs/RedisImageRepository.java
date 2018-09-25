@@ -54,6 +54,11 @@ public class RedisImageRepository implements ImageRepository {
 					while ((bytesRead = in.read(dataBuffer, 0, 1024)) != -1) {
 						outputStream.write(dataBuffer, 0, bytesRead);
 					}
+					try {
+						Thread.sleep(config.getImageRepositoryDelay());
+					} catch (InterruptedException e) {
+						// do nothing
+					}
 					return outputStream.toByteArray();
 				} catch (IOException e) {
 					log.error("Could not read stream from URL: {}", url, e);
