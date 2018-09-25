@@ -14,7 +14,7 @@ export class SearchService {
     if (prefix != null) {
       params = params.set('prefix', prefix);
     }
-    return this.http.get('http://localhost:8080/suggest-artists', { params });
+    return this.http.get('/suggest-artists', { params });
   }
 
   searchAlbums(artistId: string, query: string): Observable<any> {
@@ -25,6 +25,6 @@ export class SearchService {
     if (query != null) {
       params = params.set('query', query);
     }
-    return this.http.get('http://localhost:8080/search-albums', { params });
+    return this.http.get('/search-albums', { params });
   }
 }
