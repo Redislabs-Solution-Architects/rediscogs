@@ -68,16 +68,19 @@ class RediscogsController {
 	@GetMapping("/search-albums")
 	public Stream<RedisMaster> searchAlbums(@RequestParam(name = "artistId", required = false) String artistId,
 			@RequestParam(name = "query", required = false, defaultValue = "") String query) {
-		String queryString = query;
-		if (artistId != null) {
-			queryString += " " + "@artistId:" + artistId;
-		}
-		queryString += " @image:true";
+		String queryString = "@image:true" + " " + getArtistFilter(artistId) + " " + query;
 		Query q = new Query(queryString);
 		q.limit(0, config.getSearchResultsLimit());
 		q.setSortBy("year", true);
 		SearchResult results = rediSearchConfig.getClient(config.getMastersIndex()).search(q);
 		return results.docs.stream().map(doc -> getRedisMaster(doc)).filter(Optional::isPresent).map(Optional::get);
+	}
+
+	private String getArtistFilter(String artistId) {
+		if (artistId == null) {
+			return "";
+		}
+		return "@artistId:" + artistId;
 	}
 
 	@ResponseBody
