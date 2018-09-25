@@ -1,63 +1,75 @@
 .search-form {
-  width: 100%;
-  margin-left: 2%;
+	display: flex;
+	height: 50px;
+	margin: 2%;
+	align-items: center;
 }
-.search-field-half-width {
-  width: 30%;
-  margin-left: 2%;
-  margin-right: 1%;
+
+.artist-field {
+	flex: 18%;
+	margin: 1%;
 }
-.search-field-full-width {
-  width: 40%;
-  margin-left: 2%;
-  margin-right: 1%;
+
+.search-field {
+	flex: 60%;
+	margin: 1%;
 }
+
 .search-results {
-  width: 100%;
-  margin-left: 2%
+	width: 100%;
+	margin-left: 2%
 }
+
 .text-align-right {
-  text-align: right;
+	text-align: right;
 }
+
 .album-card {
-  margin-bottom: 10px;
-  margin-right: 5px;
-  width: 18%;
-  align-self: flex-end;
-  box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+	margin-bottom: 10px;
+	margin-right: 5px;
+	width: 18%;
+	align-self: flex-end;
+	box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
 }
+
 .album-card img {
-  width: 100%;
+	width: 100%;
 }
+
 .card-content {
-  margin: 0px;
-  padding: 0px;
+	margin: 0px;
+	padding: 0px;
 }
+
 .row {
-  display: flex;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  margin-top: 0px;
-  margin: 0px;
-  padding: 0px;
+	display: flex;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	margin-top: 0px;
+	margin: 0px;
+	padding: 0px;
 }
+
 .album-title h5 {
-  margin: 5px;
-  margin-bottom: 2px;
-  padding: 0px;
+	margin: 5px;
+	margin-bottom: 2px;
+	padding: 0px;
 }
+
 .album-details {
-  margin: 5px;
-  margin-top: 0px;
+	margin: 5px;
+	margin-top: 0px;
 }
+
 .album-genres {
-  flex: 80%;
-  font-size: small;
+	flex: 80%;
+	font-size: small;
 }
+
 .album-year {
-  flex: 20%;
-  font-size: small;
-  text-align: right;
-  margin-right: 5px;
+	flex: 20%;
+	font-size: small;
+	text-align: right;
+	margin-right: 5px;
 }

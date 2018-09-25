@@ -5,3 +5,13 @@
 .toolbar-spacer {
     flex: 1 1 auto;
 }
+
+.redisearch-logo {
+	height: 50px;
+	padding: 0 14px;
+}
+
+.redislabs-logo {
+	height: 50px;
+	padding: 0 10px;
+}

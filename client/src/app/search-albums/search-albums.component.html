@@ -1,31 +1,31 @@
 <form #searchForm="ngForm" (ngSubmit)="search()" class="search-form">
-  <mat-form-field class="search-field-half-width">
-    <input matInput placeholder="Artist" [matAutocomplete]="auto" [formControl]="artistField">
-  </mat-form-field>
-  <mat-autocomplete #auto="matAutocomplete" class="search-field-half-width" [displayWith]="displayFn">
-    <mat-option *ngFor="let artist of artists" [value]="artist">
-      <span>{{ artist.name }}</span>
-      <small> | ID: {{artist.id}}</small>
-    </mat-option>
-  </mat-autocomplete>
-  <mat-form-field class="search-field-full-width">
-    <input matInput placeholder="Query" [formControl]="searchField">
-  </mat-form-field>
-  <button mat-raised-button color="primary" type="submit">Submit</button>
+		<mat-form-field class="artist-field">
+			<input matInput placeholder="Artist" [matAutocomplete]="auto" [formControl]="artistField">
+		</mat-form-field>
+		<mat-autocomplete class="artist-field" #auto="matAutocomplete" [displayWith]="displayFn">
+			<mat-option *ngFor="let artist of artists" [value]="artist">
+				<span>{{artist.name }}</span> <small> | ID: {{artist.id}}</small>
+			</mat-option>
+		</mat-autocomplete>
+		<mat-form-field class="search-field"> <input matInput placeholder="Query" [formControl]="searchField">
+		</mat-form-field>
+		<button mat-raised-button color="primary" type="submit">Submit</button>
 </form>
 <br>
 
 <div class="search-results" fxLayout="row wrap" fxLayout.xs="column" fxLayoutGap="1%" fxLayoutAlign="left">
-  <div class="album-card" *ngFor="let album of results | async">
-    <img src="/album-image/{{album.id}}" alt="{{album.title}}">
-    <div class="card-content">
-      <div class="row album-title">
-          <h5><a href="https://www.discogs.com/master/{{album.id}}">{{album.title}}</a></h5>
-      </div>
-      <div class="row album-details">
-        <div class="album-genres">{{album.genres}}</div>
-        <div class="album-year">{{album.year}}</div>
-      </div>
-    </div>
-  </div>
+	<div class="album-card" *ngFor="let album of results | async">
+		<img src="/album-image/{{album.id}}" alt="{{album.title}}">
+		<div class="card-content">
+			<div class="row album-title">
+				<h5>
+					<a href="https://www.discogs.com/master/{{album.id}}">{{album.title}}</a>
+				</h5>
+			</div>
+			<div class="row album-details">
+				<div class="album-genres">{{album.genres}}</div>
+				<div class="album-year">{{album.year}}</div>
+			</div>
+		</div>
+	</div>
 </div>
