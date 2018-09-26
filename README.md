@@ -31,3 +31,10 @@ Run the application:
 ```bash
 java -jar server/target/server-0.0.1-SNAPSHOT.jar --discogs-api-token=<your_discogs_token> --spring.redis.host=localhost --spring.redis.port=6379
 ```
+
+### Deploying to Cloud Foundry
+1. Create a Redis Enterprise service instance named `rediscogs_redis` in Apps Manager
+2. Push the application
+```bash
+cf push
+```
