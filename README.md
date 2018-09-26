@@ -22,8 +22,12 @@ git clone https://github.com/Redislabs-Solution-Architects/rediscogs.git
 cd rediscogs
 ```
 
-Then run the server:
- 
+Build the project:
 ```bash
-mvn spring-boot:run -Ddiscogs-api-token=<your_Discogs_token> -Dspring.redis.host=localhost -Dspring.redis.port=6379
+mvn clean install
+```
+
+Run the application:
+```bash
+java -jar server/target/server-0.0.1-SNAPSHOT.jar --discogs-api-token=<your_discogs_token> --spring.redis.host=localhost --spring.redis.port=6379
 ```
