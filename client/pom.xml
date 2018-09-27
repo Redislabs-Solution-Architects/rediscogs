@@ -5,12 +5,12 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<parent>
-		<groupId>com.redislabs.rediscogs</groupId>
-		<artifactId>multi-module-app</artifactId>
+		<groupId>com.redislabs</groupId>
+		<artifactId>rediscogs</artifactId>
 		<version>0.0.1-SNAPSHOT</version>
 	</parent>
 
-	<artifactId>client</artifactId>
+	<artifactId>rediscogs-client</artifactId>
 
 	<build>
 		<resources>

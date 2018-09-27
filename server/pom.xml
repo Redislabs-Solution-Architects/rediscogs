@@ -5,15 +5,16 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<parent>
-		<groupId>com.redislabs.rediscogs</groupId>
-		<artifactId>multi-module-app</artifactId>
+		<groupId>com.redislabs</groupId>
+		<artifactId>rediscogs</artifactId>
 		<version>0.0.1-SNAPSHOT</version>
 	</parent>
 
-	<artifactId>server</artifactId>
+	<artifactId>rediscogs-server</artifactId>
 
 	<properties>
 		<main.basedir>${project.parent.basedir}</main.basedir>
+		<docker.image.prefix>redislabs</docker.image.prefix>
 	</properties>
 
 	<dependencies>
@@ -69,19 +70,19 @@
 			<optional>true</optional>
 		</dependency>
 		<dependency>
-			<groupId>com.redislabs.rediscogs</groupId>
-			<artifactId>client</artifactId>
+			<groupId>com.redislabs</groupId>
+			<artifactId>rediscogs-client</artifactId>
 			<version>${project.parent.version}</version>
 		</dependency>
-<!-- 		<dependency> -->
-<!-- 			<groupId>com.redislabs</groupId> -->
-<!-- 			<artifactId>lettusearch</artifactId> -->
-<!-- 			<version>0.0.1-SNAPSHOT</version> -->
-<!-- 		</dependency> -->
-<!-- 		<dependency> -->
-<!-- 			<groupId>org.apache.commons</groupId> -->
-<!-- 			<artifactId>commons-pool2</artifactId> -->
-<!-- 		</dependency> -->
+		<!-- <dependency> -->
+		<!-- <groupId>com.redislabs</groupId> -->
+		<!-- <artifactId>lettusearch</artifactId> -->
+		<!-- <version>0.0.1-SNAPSHOT</version> -->
+		<!-- </dependency> -->
+		<!-- <dependency> -->
+		<!-- <groupId>org.apache.commons</groupId> -->
+		<!-- <artifactId>commons-pool2</artifactId> -->
+		<!-- </dependency> -->
 	</dependencies>
 
 	<build>
@@ -93,6 +94,17 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
+			</plugin>
+			<plugin>
+				<groupId>com.spotify</groupId>
+				<artifactId>dockerfile-maven-plugin</artifactId>
+				<version>1.4.4</version>
+				<configuration>
+					<repository>${docker.image.prefix}/rediscogs</repository>
+					<buildArgs>
+						<JAR_FILE>target/rediscogs-server-${project.version}.jar</JAR_FILE>
+					</buildArgs>
+				</configuration>
 			</plugin>
 		</plugins>
 	</build>
