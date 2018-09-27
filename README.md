@@ -16,14 +16,17 @@ docker run -p 6379:6379 redislabs/redisearch:latest
 ```
 
 ### Server
-Clone this git repository:
+Clone and build JRediSearch 0.12:
+```bash
+git clone https://github.com/RedisLabs/JRediSearch.git
+cd JRediSearch
+mvn clean install -DskipTests
+```
+
+Clone this git repository and build it:
 ```bash
 git clone https://github.com/Redislabs-Solution-Architects/rediscogs.git
 cd rediscogs
-```
-
-Build the project:
-```bash
 mvn clean install
 ```
 
