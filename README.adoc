@@ -110,7 +110,7 @@ cf push
 
 |`discogs-api-token`
 |Your Discogs API token
-|`wIiSVkiwZqkUwvcIEbAGhVvwNtssoidsqOPQDorz`
+|`wI...qz`
 
 |`discogs-api-delay`
 |Duration in milliseconds to sleep before Discogs API call (useful to demonstrate  caching)
