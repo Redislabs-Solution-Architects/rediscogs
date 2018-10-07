@@ -23,17 +23,17 @@ public class RediSearchClientConfiguration {
 	}
 
 	private int getPort() {
-		if (config.getRediSearchPort() == null) {
+		if (config.getRedisearchPort() == null) {
 			return redisProps.getPort();
 		}
-		return config.getRediSearchPort();
+		return config.getRedisearchPort();
 	}
 
 	private String getHost() {
-		if (config.getRediSearchHost() == null) {
+		if (config.getRedisearchHost() == null) {
 			return redisProps.getHost();
 		}
-		return config.getRediSearchHost();
+		return config.getRedisearchHost();
 	}
 
 	private int getPoolSize() {

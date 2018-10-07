@@ -13,17 +13,16 @@ import lombok.Data;
 public class RediscogsConfiguration {
 
 	boolean skipLoad;
-	private String mastersIndex = "mastersIdx";
-	private String artistsSuggestionIndex = "artistsSuggestionIdx";
+	private int batchSize;
 	private String mastersFile;
+	private String mastersIndex;
+	private String artistsSuggestionIndex;
 	private String discogsApiUrl;
 	private String discogsApiToken;
-	private String userAgent;
-	private int batchSize = 50;
-	private int searchResultsLimit = 20;
-	private String defaultImageUri;
-	private String rediSearchHost;
-	private Integer rediSearchPort;
-	private long imageRepositoryDelay = 100;
+	private long discogsApiDelay;
+	private String discogsApiUserAgent;
+	private String redisearchHost;
+	private Integer redisearchPort;
+	private int searchResultsLimit;
 
 }

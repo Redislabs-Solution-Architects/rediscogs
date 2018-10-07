@@ -68,7 +68,7 @@ public class RedisImageRepository implements ImageRepository {
 	private synchronized DiscogsMaster getDiscogsMaster(String id) {
 		log.info("RateLimitRemaining: {}", rateLimitRemaining);
 		try {
-			Thread.sleep(config.getImageRepositoryDelay());
+			Thread.sleep(config.getDiscogsApiDelay());
 		} catch (InterruptedException e) {
 			// do nothing
 		}
@@ -80,7 +80,7 @@ public class RedisImageRepository implements ImageRepository {
 					.queryParam("token", config.getDiscogsApiToken());
 			URI uri = builder.buildAndExpand(uriParams).toUri();
 			HttpHeaders headers = new HttpHeaders();
-			headers.set("User-Agent", config.getUserAgent());
+			headers.set("User-Agent", config.getDiscogsApiUserAgent());
 			RequestEntity<Object> requestEntity = new RequestEntity<>(headers, HttpMethod.GET, uri);
 			ResponseEntity<DiscogsMaster> response = restTemplate.exchange(requestEntity, DiscogsMaster.class);
 			HttpHeaders responseHeaders = response.getHeaders();
