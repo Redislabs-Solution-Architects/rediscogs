@@ -1,6 +1,7 @@
 package com.redislabs.rediscogs;
 
 import java.io.IOException;
+import java.text.MessageFormat;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Stream;
@@ -40,6 +41,9 @@ class RediscogsController {
 	@Autowired
 	private ImageRepository imageRepository;
 
+	private String artistQueryPattern = "{0} {1} @artistId:{2}";
+	private String queryPattern = "{0} {1}";
+
 	private Optional<RedisMaster> getRedisMaster(Document doc) {
 		String id = doc.getId();
 		if (doc.getId() != null && doc.getId().length() > 0) {
@@ -68,19 +72,19 @@ class RediscogsController {
 	@GetMapping("/search-albums")
 	public Stream<RedisMaster> searchAlbums(@RequestParam(name = "artistId", required = false) String artistId,
 			@RequestParam(name = "query", required = false, defaultValue = "") String query) {
-		String queryString = "@image:true" + getArtistFilter(artistId) + " " + query;
-		Query q = new Query(queryString);
+		String queryPattern = getQueryPattern(artistId);
+		Query q = new Query(MessageFormat.format(queryPattern, config.getImageFilter(), query, artistId));
 		q.limit(0, config.getSearchResultsLimit());
 		q.setSortBy("year", true);
 		SearchResult results = rediSearchConfig.getClient(config.getMastersIndex()).search(q);
 		return results.docs.stream().map(doc -> getRedisMaster(doc)).filter(Optional::isPresent).map(Optional::get);
 	}
 
-	private String getArtistFilter(String artistId) {
-		if (artistId == null) {
-			return "";
+	private String getQueryPattern(String artistId) {
+		if (artistId == null || artistId.length() == 0) {
+			return queryPattern;
 		}
-		return " @artistId:" + artistId;
+		return artistQueryPattern;
 	}
 
 	@ResponseBody

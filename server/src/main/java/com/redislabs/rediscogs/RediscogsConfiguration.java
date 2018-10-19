@@ -12,17 +12,18 @@ import lombok.Data;
 @Data
 public class RediscogsConfiguration {
 
-	boolean skipLoad;
-	private int batchSize;
+	boolean skipLoad = false;
+	private int batchSize = 50;
 	private String mastersFile;
-	private String mastersIndex;
-	private String artistsSuggestionIndex;
+	private String mastersIndex = "mastersIdx";
+	private String artistsSuggestionIndex = "artistsSuggestionIdx";
 	private String discogsApiUrl;
 	private String discogsApiToken;
-	private long discogsApiDelay;
 	private String discogsApiUserAgent;
+	private long discogsApiDelay = 100;
 	private String redisearchHost;
 	private Integer redisearchPort;
-	private int searchResultsLimit;
+	private int searchResultsLimit = 20;
+	private String imageFilter;
 
 }
