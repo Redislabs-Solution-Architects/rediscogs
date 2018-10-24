@@ -17,14 +17,6 @@ docker run -p 6379:6379 redislabs/redisearch:latest
 ----
 
 === Server
-Clone and build JRediSearch 0.12:
-[source,sh]
-----
-git clone https://github.com/RedisLabs/JRediSearch.git
-cd JRediSearch
-mvn clean install -DskipTests
-----
-
 Clone this git repository and build it:
 [source,sh]
 ----
@@ -156,3 +148,4 @@ cf push
 . Hit the `Submit` button
 . Refine the search by adding a numeric filter on release year in `Query` field: `@year:[1980 1990]`
 . Refine the search further by adding a filter on release genre: `@year:[1980 1990] @genres:pop`
+. Refine the search further by adding a negative filter on release genre: `@year:[1980 1990] @genres:pop (-@genres:rock)`
