@@ -2,8 +2,10 @@ package com.redislabs.rediscogs;
 
 import java.io.IOException;
 import java.text.MessageFormat;
+import java.util.HashMap;
 import java.util.List;
-import java.util.Optional;
+import java.util.Map;
+import java.util.Map.Entry;
 import java.util.stream.Stream;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +19,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import io.redisearch.Document;
 import io.redisearch.Query;
 import io.redisearch.SearchResult;
 import io.redisearch.Suggestion;
@@ -36,21 +37,10 @@ class RediscogsController {
 	private RediSearchClientConfiguration rediSearchConfig;
 
 	@Autowired
-	private MasterRepository masterRepository;
-
-	@Autowired
 	private ImageRepository imageRepository;
 
 	private String artistQueryPattern = "{0} {1} @artistId:{2}";
 	private String queryPattern = "{0} {1}";
-
-	private Optional<RedisMaster> getRedisMaster(Document doc) {
-		String id = doc.getId();
-		if (doc.getId() != null && doc.getId().length() > 0) {
-			return masterRepository.findById(id);
-		}
-		return Optional.empty();
-	}
 
 	@Data
 	@Builder
@@ -63,21 +53,29 @@ class RediscogsController {
 	public Stream<ArtistSuggestion> suggestArtists(
 			@RequestParam(name = "prefix", defaultValue = "", required = false) String prefix) {
 		SuggestionOptions options = SuggestionOptions.builder().with(With.PAYLOAD).max(10).build();
-		List<Suggestion> results = rediSearchConfig.getClient(config.getArtistsSuggestionIndex()).getSuggestion(prefix,
-				options);
+		List<Suggestion> results = rediSearchConfig.getClient(config.getSuggestIndexName(EntityType.Artists))
+				.getSuggestion(prefix, options);
 		return results.stream()
 				.map(result -> ArtistSuggestion.builder().id(result.getPayload()).name(result.getString()).build());
 	}
 
 	@GetMapping("/search-albums")
-	public Stream<RedisMaster> searchAlbums(@RequestParam(name = "artistId", required = false) String artistId,
+	public Stream<Map<String, Object>> searchAlbums(@RequestParam(name = "artistId", required = false) String artistId,
 			@RequestParam(name = "query", required = false, defaultValue = "") String query) {
 		String queryPattern = getQueryPattern(artistId);
 		Query q = new Query(MessageFormat.format(queryPattern, config.getImageFilter(), query, artistId));
 		q.limit(0, config.getSearchResultsLimit());
 		q.setSortBy("year", true);
-		SearchResult results = rediSearchConfig.getClient(config.getMastersIndex()).search(q);
-		return results.docs.stream().map(doc -> getRedisMaster(doc)).filter(Optional::isPresent).map(Optional::get);
+		SearchResult results = rediSearchConfig.getClient(config.getIndexName(EntityType.Masters)).search(q);
+		return results.docs.stream().map(doc -> toMap(doc.getProperties()));
+	}
+
+	private Map<String, Object> toMap(Iterable<Entry<String, Object>> properties) {
+		Map<String, Object> map = new HashMap<>();
+		for (Entry<String, Object> entry : properties) {
+			map.put(entry.getKey(), entry.getValue());
+		}
+		return map;
 	}
 
 	private String getQueryPattern(String artistId) {

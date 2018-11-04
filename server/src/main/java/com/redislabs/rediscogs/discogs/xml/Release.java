@@ -11,19 +11,26 @@ import javax.xml.bind.annotation.XmlValue;
 
 import lombok.Data;
 
+
+@Data
 @XmlRootElement(name = "release")
+@XmlAccessorType(XmlAccessType.FIELD)
 public class Release {
 
 	@XmlAttribute(name = "id")
 	String id;
 	@XmlAttribute(name = "status")
 	String status;
+	@XmlElement(name = "images")
+	Images images;	
 	@XmlElement(name = "artists")
 	Artists artists;
 	@XmlElement(name = "title")
 	String title;
 	@XmlElement(name = "labels")
 	Labels labels;
+	@XmlElement(name = "extraartists")
+	Artists extraArtists;
 	@XmlElement(name = "formats")
 	Formats formats;
 	@XmlElement(name = "genres")

@@ -20,6 +20,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import com.redislabs.rediscogs.EntityType;
 import com.redislabs.rediscogs.ImageRepository;
 import com.redislabs.rediscogs.RediscogsConfiguration;
 
@@ -68,19 +69,20 @@ public class RedisImageRepository implements ImageRepository {
 	private synchronized DiscogsMaster getDiscogsMaster(String id) {
 		log.info("RateLimitRemaining: {}", rateLimitRemaining);
 		try {
-			Thread.sleep(config.getDiscogsApiDelay());
+			Thread.sleep(config.getDiscogs().getDelay());
 		} catch (InterruptedException e) {
 			// do nothing
 		}
 		boolean after1Min = (System.currentTimeMillis() - rateLimitLastTime) > 60000;
 		if (rateLimitRemaining > 1 || after1Min) {
 			Map<String, String> uriParams = new HashMap<String, String>();
+			uriParams.put("entity", EntityType.Masters.id());
 			uriParams.put("id", id);
-			UriComponentsBuilder builder = UriComponentsBuilder.fromUriString(config.getDiscogsApiUrl())
-					.queryParam("token", config.getDiscogsApiToken());
+			UriComponentsBuilder builder = UriComponentsBuilder.fromUriString(config.getDiscogs().getUrl())
+					.queryParam("token", config.getDiscogs().getToken());
 			URI uri = builder.buildAndExpand(uriParams).toUri();
 			HttpHeaders headers = new HttpHeaders();
-			headers.set("User-Agent", config.getDiscogsApiUserAgent());
+			headers.set("User-Agent", config.getDiscogs().getUserAgent());
 			RequestEntity<Object> requestEntity = new RequestEntity<>(headers, HttpMethod.GET, uri);
 			ResponseEntity<DiscogsMaster> response = restTemplate.exchange(requestEntity, DiscogsMaster.class);
 			HttpHeaders responseHeaders = response.getHeaders();

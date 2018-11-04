@@ -29,7 +29,7 @@ mvn clean install
 Run the application:
 [source,sh]
 ----
-java -jar server/target/rediscogs-server-0.0.1-SNAPSHOT.jar --discogs-api-token=<your_discogs_token> --spring.redis.host=<host> --spring.redis.port=<port>
+java -jar server/target/rediscogs-server-0.0.1-SNAPSHOT.jar --discogs.token=<your_discogs_token> --spring.redis.host=<host> --spring.redis.port=<port>
 ----
 
 === Running in Docker
@@ -42,7 +42,7 @@ mvn dockerfile:build
 Run the container:
 [source,sh]
 ----
-docker run  -e "spring.redis.host=docker.for.mac.localhost" -e "discogs-api-token=<your_discogs_token>" -p 8080:8080 redislabs/rediscogs
+docker run  -e "spring.redis.host=docker.for.mac.localhost" -e "discogs.token=<your_discogs_token>" -p 8080:8080 redislabs/rediscogs
 ----
 
 === Deploying to Cloud Foundry
@@ -84,31 +84,23 @@ cf push
 |number of elements per batch processing
 |`50`
 
-|`masters-file`
-|Discogs Masters database file location
-|https://discogs-data.s3-us-west-2.amazonaws.com/data/2018/discogs_20180801_masters.xml.gz[discogs_20180801]
+|`discogs.file-url-template`
+|Discogs Masters database URI template
+|https://discogs-data.s3-us-west-2.amazonaws.com/data/2018/discogs_20181001_{entity}.xml.gz
 
-|`masters-index`
-|name of RediSearch index for masters
-|`mastersIdx`
-
-|`artists-suggestion-index`
-|name of RediSearch suggestion index for artists
-|`artistsSuggestionIdx`
-
-|`discogs-api-url`
+|`discogs.url`
 |URL for Discogs API masters endpoint
 |`https://api.discogs.com/masters/{id}`
 
-|`discogs-api-token`
+|`discogs.token`
 |Your Discogs API token
 |`wI...qz`
 
-|`discogs-api-delay`
+|`discogs.delay`
 |Duration in milliseconds to sleep before Discogs API call (useful to demonstrate  caching)
 |`100`
 
-|`discogs-api-user-agent`
+|`discogs.user-agent`
 |User agent to use for Discogs API calls
 |`com.redislabs.rediscogs.useragent`
 

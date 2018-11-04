@@ -1,6 +1,5 @@
 package com.redislabs.rediscogs;
 
-import org.springframework.batch.core.Job;
 import org.springframework.batch.core.JobParameters;
 import org.springframework.batch.core.launch.JobLauncher;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +14,8 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
 
+import com.redislabs.rediscogs.batch.BatchConfiguration;
+
 import lombok.extern.slf4j.Slf4j;
 
 @SpringBootApplication
@@ -25,7 +26,7 @@ public class RediscogsApplication implements ApplicationRunner {
 	@Autowired
 	private JobLauncher jobLauncher;
 	@Autowired
-	private Job masterLoadJob;
+	private BatchConfiguration batch;
 	@Autowired
 	private RediscogsConfiguration config;
 
@@ -36,10 +37,12 @@ public class RediscogsApplication implements ApplicationRunner {
 	@Override
 	public void run(ApplicationArguments args) throws Exception {
 		if (!config.isSkipLoad()) {
-			try {
-				jobLauncher.run(masterLoadJob, new JobParameters());
-			} catch (Exception e) {
-				log.error("Could not load masters data", e);
+			for (EntityType entityType : config.getEntities()) {
+				try {
+					jobLauncher.run(batch.getLoadJob(entityType), new JobParameters());
+				} catch (Exception e) {
+					log.error("Could not load masters data", e);
+				}
 			}
 		}
 	}

@@ -2,31 +2,31 @@ package com.redislabs.rediscogs.batch;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
-import java.util.Arrays;
+import java.net.URI;
+import java.util.Map;
 
 import org.springframework.batch.core.Job;
-import org.springframework.batch.core.Step;
 import org.springframework.batch.core.configuration.annotation.EnableBatchProcessing;
 import org.springframework.batch.core.configuration.annotation.JobBuilderFactory;
 import org.springframework.batch.core.configuration.annotation.StepBuilderFactory;
 import org.springframework.batch.core.launch.support.RunIdIncrementer;
+import org.springframework.batch.core.step.tasklet.TaskletStep;
 import org.springframework.batch.item.ItemProcessor;
 import org.springframework.batch.item.ItemReader;
 import org.springframework.batch.item.ItemWriter;
-import org.springframework.batch.item.support.CompositeItemWriter;
 import org.springframework.batch.item.xml.builder.StaxEventItemReaderBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.oxm.jaxb.Jaxb2Marshaller;
-import org.springframework.util.ResourceUtils;
+import org.springframework.web.util.UriTemplate;
 
-import com.redislabs.rediscogs.RedisMaster;
+import com.redislabs.rediscogs.EntityType;
 import com.redislabs.rediscogs.RediscogsConfiguration;
 import com.redislabs.rediscogs.discogs.xml.Master;
+import com.redislabs.rediscogs.discogs.xml.Release;
 
 @Configuration
 @EnableBatchProcessing
@@ -37,23 +37,51 @@ public class BatchConfiguration {
 	@Autowired
 	public StepBuilderFactory stepBuilderFactory;
 	@Autowired
-	private RedisItemWriter redisWriter;
+	private MasterWriter masterWriter;
 	@Autowired
-	private RediSearchItemWriter rediSearchWriter;
+	private ReleaseWriter releaseWriter;
 	@Autowired
 	private RediscogsConfiguration config;
+	@Autowired
+	private MasterProcessor masterProcessor;
+	@Autowired
+	private ReleaseProcessor releaseProcessor;
 
-	@Bean
-	public ItemReader<Master> reader() throws MalformedURLException {
+	private ItemReader<Object> getReader(EntityType type) throws MalformedURLException {
 		Jaxb2Marshaller marshaller = new Jaxb2Marshaller();
-		marshaller.setClassesToBeBound(Master.class);
-		return new StaxEventItemReaderBuilder<Master>().name("masterItemReader").addFragmentRootElements("master")
-				.resource(resource()).unmarshaller(marshaller).build();
+		marshaller.setClassesToBeBound(getRootClass(type));
+		return new StaxEventItemReaderBuilder<Object>().name(type.id() + "-reader")
+				.addFragmentRootElements(getRootElementName(type)).resource(resource(type)).unmarshaller(marshaller)
+				.build();
 	}
 
-	private Resource resource() throws MalformedURLException {
-		Resource resource = getResource(config.getMastersFile());
-		if (config.getMastersFile().endsWith(".gz")) {
+	private Class<?> getRootClass(EntityType type) {
+		switch (type) {
+		case Masters:
+			return Master.class;
+		default:
+			return Release.class;
+		}
+	}
+
+	private String getRootElementName(EntityType type) {
+		switch (type) {
+		case Masters:
+			return "master";
+		case Artists:
+			return "artist";
+		case Labels:
+			return "label";
+		default:
+			return "release";
+		}
+	}
+
+	private Resource resource(EntityType type) throws MalformedURLException {
+		UriTemplate template = new UriTemplate(config.getDiscogs().getFileUrlTemplate());
+		URI uri = template.expand(type.id());
+		Resource resource = getResource(uri);
+		if (uri.getPath().endsWith(".gz")) {
 			try {
 				return new GZIPResource(resource);
 			} catch (IOException e) {
@@ -63,38 +91,40 @@ public class BatchConfiguration {
 		return resource;
 	}
 
-	private Resource getResource(String path) throws MalformedURLException {
-		if (ResourceUtils.isUrl(path)) {
-			return new UrlResource(path);
+	private Resource getResource(URI uri) throws MalformedURLException {
+		if (uri.isAbsolute()) {
+			return new UrlResource(uri);
 		}
-		return new FileSystemResource(path);
+		return new FileSystemResource(uri.toString());
 	}
 
-	@Bean
-	public Job masterLoadJob(Step releaseLoadStep) {
-		return jobBuilderFactory.get("masterLoadJob").incrementer(new RunIdIncrementer()).flow(releaseLoadStep).end()
-				.build();
+	public Job getLoadJob(EntityType type) throws MalformedURLException {
+		TaskletStep loadStep = stepBuilderFactory.get(type.id() + "-load-step")
+				.<Object, Map<String, Object>>chunk(config.getBatchSize()).reader(getReader(type))
+				.processor(getProcessor(type)).writer(getWriter(type)).build();
+		return jobBuilderFactory.get("masterLoadJob").incrementer(new RunIdIncrementer()).flow(loadStep).end().build();
 	}
 
-	@Bean
-	public ItemProcessor<Master, RedisMaster> processor() {
-		return new MasterProcessor();
+	private ItemWriter<? super Map<String, Object>> getWriter(EntityType type) {
+		switch (type) {
+		case Masters:
+			return masterWriter;
+		case Releases:
+			return releaseWriter;
+		default:
+			return null;
+		}
 	}
 
-	@Bean
-	public Step releaseLoadStep(ItemReader<Master> reader) throws MalformedURLException {
-		return stepBuilderFactory.get("masterLoadStep").<Master, RedisMaster>chunk(config.getBatchSize())
-				.reader(reader()).processor(processor()).writer(writer()).listener(listener()).build();
-
+	private ItemProcessor<Object, Map<String, Object>> getProcessor(EntityType type) {
+		switch (type) {
+		case Masters:
+			return masterProcessor;
+		case Releases:
+			return releaseProcessor;
+		default:
+			return null;
+		}
 	}
 
-	private ItemWriter<? super RedisMaster> writer() {
-		CompositeItemWriter<RedisMaster> compositeWriter = new CompositeItemWriter<>();
-		compositeWriter.setDelegates(Arrays.asList(redisWriter, rediSearchWriter));
-		return compositeWriter;
-	}
-
-	private WriterListener listener() {
-		return new WriterListener();
-	}
 }

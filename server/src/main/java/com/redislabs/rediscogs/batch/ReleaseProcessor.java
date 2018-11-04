@@ -9,17 +9,17 @@ import org.springframework.stereotype.Component;
 
 import com.redislabs.rediscogs.RediscogsConfiguration;
 import com.redislabs.rediscogs.discogs.xml.Artists.Artist;
-import com.redislabs.rediscogs.discogs.xml.Master;
+import com.redislabs.rediscogs.discogs.xml.Release;
 
 @Component
-public class MasterProcessor implements ItemProcessor<Object, Map<String, Object>> {
+public class ReleaseProcessor implements ItemProcessor<Object, Map<String, Object>> {
 
 	@Autowired
 	private RediscogsConfiguration config;
 
 	@Override
 	public Map<String, Object> process(Object object) throws Exception {
-		Master xml = (Master) object;
+		Release xml = (Release) object;
 		Map<String, Object> doc = new HashMap<>();
 		doc.put("id", xml.getId());
 		if (xml.getArtists() != null) {
@@ -39,11 +39,17 @@ public class MasterProcessor implements ItemProcessor<Object, Map<String, Object
 			doc.put("styles", String.join(config.getHashArrayDelimiter(), xml.getStyles().getStyles()));
 		}
 		doc.put("title", xml.getTitle());
-		if (xml.getYear() != null && xml.getYear().length() == 4) {
-			doc.put("year", xml.getYear());
+		if (xml.getReleased() != null && xml.getReleased().length() == 4) {
+			doc.put("released", xml.getReleased());
 		}
-		boolean image = xml.getImages() != null && xml.getImages().getImages().size() > 0;
-		doc.put("image", image);
+		if (xml.getImages() != null) {
+			doc.put("image", xml.getImages().getImages().size() > 0);
+		}
+		if (xml.getTrackList() != null) {
+			if (xml.getTrackList().getTracks() != null) {
+				doc.put("tracks", xml.getTrackList().getTracks().size());
+			}
+		}
 		return doc;
 	}
 
