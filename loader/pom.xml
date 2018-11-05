@@ -10,11 +10,10 @@
 		<version>0.0.1-SNAPSHOT</version>
 	</parent>
 
-	<artifactId>rediscogs-server</artifactId>
+	<artifactId>rediscogs-loader</artifactId>
 
 	<properties>
 		<main.basedir>${project.parent.basedir}</main.basedir>
-		<docker.image.prefix>redislabs</docker.image.prefix>
 	</properties>
 
 	<dependencies>
@@ -31,14 +30,6 @@
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-data-redis-reactive</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-web</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-cache</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
@@ -70,18 +61,12 @@
 			<optional>true</optional>
 		</dependency>
 		<dependency>
-			<groupId>com.redislabs</groupId>
-			<artifactId>rediscogs-common</artifactId>
-			<version>${project.parent.version}</version>
-		</dependency>		
-		<dependency>
-			<groupId>com.redislabs</groupId>
-			<artifactId>rediscogs-loader</artifactId>
-			<version>${project.parent.version}</version>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-web</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>com.redislabs</groupId>
-			<artifactId>rediscogs-client</artifactId>
+			<artifactId>rediscogs-common</artifactId>
 			<version>${project.parent.version}</version>
 		</dependency>
 	</dependencies>
@@ -95,17 +80,6 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
-			</plugin>
-			<plugin>
-				<groupId>com.spotify</groupId>
-				<artifactId>dockerfile-maven-plugin</artifactId>
-				<version>1.4.4</version>
-				<configuration>
-					<repository>${docker.image.prefix}/rediscogs</repository>
-					<buildArgs>
-						<JAR_FILE>target/rediscogs-server-${project.version}.jar</JAR_FILE>
-					</buildArgs>
-				</configuration>
 			</plugin>
 		</plugins>
 	</build>

@@ -18,6 +18,8 @@
 
 	<modules>
 		<module>client</module>
+		<module>common</module>		
+		<module>loader</module>		
 		<module>server</module>
 	</modules>
 
