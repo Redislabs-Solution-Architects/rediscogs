@@ -21,7 +21,6 @@ import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.oxm.jaxb.Jaxb2Marshaller;
-import org.springframework.web.util.UriTemplate;
 
 import com.redislabs.rediscogs.EntityType;
 import com.redislabs.rediscogs.loader.discogs.Master;
@@ -77,8 +76,7 @@ public class BatchConfiguration {
 	}
 
 	private Resource resource(EntityType type) throws MalformedURLException {
-		UriTemplate template = new UriTemplate(config.getFileUrlTemplate());
-		URI uri = template.expand(type.id());
+		URI uri = URI.create(config.getFileUrlTemplate().replace("{entity}", type.id()));
 		Resource resource = getResource(uri);
 		if (uri.getPath().endsWith(".gz")) {
 			try {

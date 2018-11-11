@@ -73,7 +73,7 @@ public class RediSearchClientConfiguration {
 		if (redisProps.getTimeout() == null) {
 			return DEFAULT_TIMEOUT;
 		}
-		return (int) redisProps.getTimeout().getSeconds();
+		return (int) redisProps.getTimeout().toMillis();
 	}
 
 	public Client getSearchClient(EntityType type) {

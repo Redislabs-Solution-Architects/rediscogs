@@ -1,5 +1,6 @@
 package com.redislabs.rediscogs.loader;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -12,6 +13,7 @@ import org.springframework.stereotype.Component;
 import com.redislabs.rediscogs.EntityType;
 import com.redislabs.rediscogs.RediSearchClientConfiguration;
 
+import io.redisearch.Document;
 import io.redisearch.Schema;
 import io.redisearch.client.Client;
 import lombok.extern.slf4j.Slf4j;
@@ -55,16 +57,18 @@ public class ReleaseWriter extends ItemStreamSupport implements ItemWriter<Map<S
 		if (log.isDebugEnabled()) {
 			log.debug("Writing to Redis with " + items.size() + " items.");
 		}
+		List<Document> docs = new ArrayList<>();
 		for (Map<String, Object> item : items) {
 			String docId = EntityType.Releases.id() + ":" + (String) item.get("id");
-			try {
-				client.addDocument(docId, 1.0, item, false, true, null);
-			} catch (JedisDataException e) {
-				if ("Document already in index".equals(e.getMessage())) {
-					log.debug(e.getMessage());
-				} else {
-					log.error("Could not add document: {}", e.getMessage());
-				}
+			docs.add(new Document(docId, item));
+		}
+		try {
+			client.addDocuments(docs.toArray(new Document[docs.size()]));
+		} catch (JedisDataException e) {
+			if ("Document already in index".equals(e.getMessage())) {
+				log.debug(e.getMessage());
+			} else {
+				log.error("Could not add document: {}", e.getMessage());
 			}
 		}
 
