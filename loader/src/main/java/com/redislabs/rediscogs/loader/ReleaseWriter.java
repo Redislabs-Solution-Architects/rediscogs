@@ -17,6 +17,7 @@ import io.redisearch.Document;
 import io.redisearch.Schema;
 import io.redisearch.client.Client;
 import lombok.extern.slf4j.Slf4j;
+import redis.clients.jedis.exceptions.JedisConnectionException;
 import redis.clients.jedis.exceptions.JedisDataException;
 import redis.clients.jedis.exceptions.JedisException;
 
@@ -62,13 +63,24 @@ public class ReleaseWriter extends ItemStreamSupport implements ItemWriter<Map<S
 			String docId = EntityType.Releases.id() + ":" + (String) item.get("id");
 			docs.add(new Document(docId, item));
 		}
-		try {
-			client.addDocuments(docs.toArray(new Document[docs.size()]));
-		} catch (JedisDataException e) {
-			if ("Document already in index".equals(e.getMessage())) {
-				log.debug(e.getMessage());
-			} else {
-				log.error("Could not add document: {}", e.getMessage());
+		Document[] docArray = docs.toArray(new Document[docs.size()]);
+		boolean success = false;
+		int retries = 0;
+		while (!success && retries < 10) {
+			try {
+				client.addDocuments(docArray);
+				success = true;
+			} catch (JedisDataException e) {
+				if ("Document already in index".equals(e.getMessage())) {
+					log.debug(e.getMessage());
+				} else {
+					log.error("Could not add documents", e);
+				}
+			} catch (JedisConnectionException e) {
+				log.error("Could not add documents", e);
+				retries++;
+				log.info("Sleeping before retry #{}", retries);
+				Thread.sleep(5000);
 			}
 		}
 
