@@ -6,8 +6,8 @@
 
 	<parent>
 		<groupId>com.redislabs</groupId>
-		<artifactId>rediscogs</artifactId>
-		<version>0.0.1-SNAPSHOT</version>
+		<artifactId>rediscogs-parent</artifactId>
+		<version>0.0.3-SNAPSHOT</version>
 	</parent>
 
 	<artifactId>rediscogs-client</artifactId>

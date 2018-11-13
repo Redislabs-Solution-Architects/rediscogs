@@ -6,16 +6,11 @@
 
 	<parent>
 		<groupId>com.redislabs</groupId>
-		<artifactId>rediscogs</artifactId>
-		<version>0.0.1-SNAPSHOT</version>
+		<artifactId>rediscogs-parent</artifactId>
+		<version>0.0.3-SNAPSHOT</version>
 	</parent>
 
 	<artifactId>rediscogs-server</artifactId>
-
-	<properties>
-		<main.basedir>${project.parent.basedir}</main.basedir>
-		<docker.image.prefix>redislabs</docker.image.prefix>
-	</properties>
 
 	<dependencies>
 		<dependency>
@@ -66,13 +61,13 @@
 		</dependency>
 		<dependency>
 			<groupId>com.redislabs</groupId>
-			<artifactId>rediscogs-loader</artifactId>
+			<artifactId>rediscogs-client</artifactId>
 			<version>${project.parent.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>com.redislabs</groupId>
-			<artifactId>rediscogs-client</artifactId>
-			<version>${project.parent.version}</version>
+			<artifactId>jredisearch</artifactId>
+			<version>0.16.0</version>
 		</dependency>
 	</dependencies>
 
@@ -83,17 +78,13 @@
 				<artifactId>spring-boot-maven-plugin</artifactId>
 			</plugin>
 			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-compiler-plugin</artifactId>
-			</plugin>
-			<plugin>
 				<groupId>com.spotify</groupId>
 				<artifactId>dockerfile-maven-plugin</artifactId>
-				<version>1.4.4</version>
+				<version>1.4.8</version>
 				<configuration>
-					<repository>${docker.image.prefix}/rediscogs</repository>
+					<repository>redislabs/rediscogs</repository>
 					<buildArgs>
-						<JAR_FILE>target/rediscogs-server-${project.version}.jar</JAR_FILE>
+						<JAR_FILE>target/server-${project.version}.jar</JAR_FILE>
 					</buildArgs>
 				</configuration>
 			</plugin>

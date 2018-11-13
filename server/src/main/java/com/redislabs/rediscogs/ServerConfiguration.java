@@ -1,4 +1,4 @@
-package com.redislabs.rediscogs.server;
+package com.redislabs.rediscogs;
 
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.context.properties.ConfigurationProperties;

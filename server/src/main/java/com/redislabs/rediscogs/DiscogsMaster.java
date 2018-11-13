@@ -1,4 +1,4 @@
-package com.redislabs.rediscogs.server;
+package com.redislabs.rediscogs;
 
 import java.util.List;
 
