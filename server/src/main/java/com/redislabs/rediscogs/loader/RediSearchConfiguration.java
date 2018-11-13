@@ -23,6 +23,7 @@ public class RediSearchConfiguration {
 	@Autowired
 	private RedisProperties redisProps;
 	private String host;
+	private String password;
 	private Integer port;
 
 	public String getIndexName(String id) {
@@ -34,7 +35,14 @@ public class RediSearchConfiguration {
 	}
 
 	public Client getClient(String index) {
-		return new Client(index, getHost(), getPort(), getTimeout(), getPoolSize());
+		return new Client(index, getHost(), getPort(), getTimeout(), getPoolSize(), getPassword());
+	}
+
+	private String getPassword() {
+		if (password == null) {
+			return redisProps.getPassword();
+		}
+		return password;
 	}
 
 	private int getPort() {
