@@ -4,8 +4,6 @@ import java.util.List;
 
 import org.springframework.batch.core.ItemWriteListener;
 
-import com.redislabs.rediscogs.EntityType;
-
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j

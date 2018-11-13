@@ -20,7 +20,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import com.redislabs.rediscogs.EntityType;
+import com.redislabs.rediscogs.loader.EntityType;
 
 import lombok.extern.slf4j.Slf4j;
 

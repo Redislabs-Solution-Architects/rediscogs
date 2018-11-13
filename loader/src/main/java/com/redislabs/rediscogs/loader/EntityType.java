@@ -1,4 +1,4 @@
-package com.redislabs.rediscogs;
+package com.redislabs.rediscogs.loader;
 
 public enum EntityType {
 	Artists, Labels, Masters, Releases;

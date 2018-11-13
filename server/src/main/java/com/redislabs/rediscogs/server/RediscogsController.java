@@ -19,8 +19,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.redislabs.rediscogs.EntityType;
-import com.redislabs.rediscogs.RediSearchClientConfiguration;
+import com.redislabs.rediscogs.loader.EntityType;
+import com.redislabs.rediscogs.loader.RediSearchConfiguration;
 
 import io.redisearch.Query;
 import io.redisearch.SearchResult;
@@ -37,7 +37,7 @@ class RediscogsController {
 	private ServerConfiguration config;
 
 	@Autowired
-	private RediSearchClientConfiguration rediSearchConfig;
+	private RediSearchConfiguration rediSearchConfig;
 
 	@Autowired
 	private ImageRepository imageRepository;
@@ -56,7 +56,7 @@ class RediscogsController {
 	public Stream<ArtistSuggestion> suggestArtists(
 			@RequestParam(name = "prefix", defaultValue = "", required = false) String prefix) {
 		SuggestionOptions options = SuggestionOptions.builder().with(With.PAYLOAD).max(10).build();
-		List<Suggestion> results = rediSearchConfig.getSuggestClient(EntityType.Artists).getSuggestion(prefix, options);
+		List<Suggestion> results = rediSearchConfig.getSuggestClient(EntityType.Artists.id()).getSuggestion(prefix, options);
 		return results.stream()
 				.map(result -> ArtistSuggestion.builder().id(result.getPayload()).name(result.getString()).build());
 	}
@@ -68,7 +68,7 @@ class RediscogsController {
 		Query q = new Query(MessageFormat.format(queryPattern, config.getImageFilter(), query, artistId));
 		q.limit(0, config.getSearchResultsLimit());
 		q.setSortBy("year", true);
-		SearchResult results = rediSearchConfig.getSearchClient(EntityType.Masters).search(q);
+		SearchResult results = rediSearchConfig.getSearchClient(EntityType.Masters.id()).search(q);
 		return results.docs.stream().map(doc -> toMap(doc.getProperties()));
 	}
 

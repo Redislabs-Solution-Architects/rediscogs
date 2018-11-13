@@ -22,7 +22,6 @@ import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.oxm.jaxb.Jaxb2Marshaller;
 
-import com.redislabs.rediscogs.EntityType;
 import com.redislabs.rediscogs.loader.discogs.Master;
 import com.redislabs.rediscogs.loader.discogs.Release;
 

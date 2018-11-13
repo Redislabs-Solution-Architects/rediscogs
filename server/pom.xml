@@ -66,11 +66,6 @@
 		</dependency>
 		<dependency>
 			<groupId>com.redislabs</groupId>
-			<artifactId>rediscogs-common</artifactId>
-			<version>${project.parent.version}</version>
-		</dependency>		
-		<dependency>
-			<groupId>com.redislabs</groupId>
 			<artifactId>rediscogs-loader</artifactId>
 			<version>${project.parent.version}</version>
 		</dependency>

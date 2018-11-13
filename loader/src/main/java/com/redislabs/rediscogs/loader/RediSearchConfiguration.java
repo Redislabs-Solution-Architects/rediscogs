@@ -1,13 +1,10 @@
-package com.redislabs.rediscogs;
+package com.redislabs.rediscogs.loader;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.data.redis.RedisProperties;
 import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.data.redis.connection.lettuce.LettuceConnectionFactory;
-import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Component;
 
 import io.redisearch.client.Client;
@@ -15,51 +12,43 @@ import lombok.Data;
 
 @Configuration
 @Component
-@ConfigurationProperties(prefix = "")
+@ConfigurationProperties(prefix = "redisearch")
 @EnableAutoConfiguration
 @Data
-public class RediSearchClientConfiguration {
+public class RediSearchConfiguration {
 
 	private static final int DEFAULT_TIMEOUT = 1000;
 	private static final int DEFAULT_POOLSIZE = 1;
 
-	private String redisearchHost;
-	private Integer redisearchPort;
-
-	public String getIndexName(EntityType type) {
-		return type.id() + "Idx";
-	}
-
-	public String getSuggestIndexName(EntityType type) {
-		return type.id() + "SuggestIdx";
-	}
-
-	@Bean
-	public StringRedisTemplate redisTemplate(LettuceConnectionFactory connectionFactory) {
-		StringRedisTemplate template = new StringRedisTemplate();
-		template.setConnectionFactory(connectionFactory);
-		return template;
-	}
-
 	@Autowired
 	private RedisProperties redisProps;
+	private String host;
+	private Integer port;
+
+	public String getIndexName(String id) {
+		return id + "Idx";
+	}
+
+	public String getSuggestIndexName(String id) {
+		return id + "SuggestIdx";
+	}
 
 	public Client getClient(String index) {
 		return new Client(index, getHost(), getPort(), getTimeout(), getPoolSize());
 	}
 
 	private int getPort() {
-		if (redisearchPort == null) {
+		if (port == null) {
 			return redisProps.getPort();
 		}
-		return redisearchPort;
+		return port;
 	}
 
 	private String getHost() {
-		if (redisearchHost == null) {
+		if (host == null) {
 			return redisProps.getHost();
 		}
-		return redisearchHost;
+		return host;
 	}
 
 	private int getPoolSize() {
@@ -76,11 +65,11 @@ public class RediSearchClientConfiguration {
 		return (int) redisProps.getTimeout().toMillis();
 	}
 
-	public Client getSearchClient(EntityType type) {
-		return getClient(getIndexName(type));
+	public Client getSearchClient(String id) {
+		return getClient(getIndexName(id));
 	}
 
-	public Client getSuggestClient(EntityType type) {
-		return getClient(getSuggestIndexName(type));
+	public Client getSuggestClient(String id) {
+		return getClient(getSuggestIndexName(id));
 	}
 }

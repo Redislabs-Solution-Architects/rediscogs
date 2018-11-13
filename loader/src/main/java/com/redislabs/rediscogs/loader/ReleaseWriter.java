@@ -10,9 +10,6 @@ import org.springframework.batch.item.ItemWriter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.redislabs.rediscogs.EntityType;
-import com.redislabs.rediscogs.RediSearchClientConfiguration;
-
 import io.redisearch.Document;
 import io.redisearch.Schema;
 import io.redisearch.client.Client;
@@ -26,12 +23,12 @@ import redis.clients.jedis.exceptions.JedisException;
 public class ReleaseWriter extends ItemStreamSupport implements ItemWriter<Map<String, Object>> {
 
 	@Autowired
-	private RediSearchClientConfiguration rediSearchConfig;
+	private RediSearchConfiguration rediSearchConfig;
 	private Client client;
 
 	@Override
 	public void open(ExecutionContext executionContext) {
-		this.client = rediSearchConfig.getSearchClient(EntityType.Releases);
+		this.client = rediSearchConfig.getSearchClient(EntityType.Releases.id());
 		Schema schema = new Schema();
 		schema.addSortableTextField("artist", 1);
 		schema.addSortableTextField("artistId", 1);

@@ -9,9 +9,6 @@ import org.springframework.batch.item.ItemWriter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.redislabs.rediscogs.EntityType;
-import com.redislabs.rediscogs.RediSearchClientConfiguration;
-
 import io.redisearch.Schema;
 import io.redisearch.Suggestion;
 import io.redisearch.client.Client;
@@ -24,14 +21,14 @@ import redis.clients.jedis.exceptions.JedisException;
 public class MasterWriter extends ItemStreamSupport implements ItemWriter<Map<String, Object>> {
 
 	@Autowired
-	private RediSearchClientConfiguration rediSearchConfig;
+	private RediSearchConfiguration rediSearchConfig;
 	private Client client;
 	private Client artistSuggestionClient;
 
 	@Override
 	public void open(ExecutionContext executionContext) {
-		this.client = rediSearchConfig.getSearchClient(EntityType.Masters);
-		this.artistSuggestionClient = rediSearchConfig.getSuggestClient(EntityType.Artists);
+		this.client = rediSearchConfig.getSearchClient(EntityType.Masters.id());
+		this.artistSuggestionClient = rediSearchConfig.getSuggestClient(EntityType.Artists.id());
 		Schema schema = new Schema();
 		schema.addSortableTextField("artist", 1);
 		schema.addSortableTextField("artistId", 1);

@@ -8,12 +8,9 @@ import org.springframework.boot.ApplicationRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-import com.redislabs.rediscogs.EntityType;
-import com.redislabs.rediscogs.RediSearchClientConfiguration;
-
 import lombok.extern.slf4j.Slf4j;
 
-@SpringBootApplication(scanBasePackageClasses = { RediSearchClientConfiguration.class })
+@SpringBootApplication
 @Slf4j
 public class LoaderApplication implements ApplicationRunner {
 

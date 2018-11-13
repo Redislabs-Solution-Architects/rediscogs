@@ -57,8 +57,8 @@
 		</dependency>
 		<dependency>
 			<groupId>com.redislabs</groupId>
-			<artifactId>rediscogs-common</artifactId>
-			<version>${project.parent.version}</version>
+			<artifactId>jredisearch</artifactId>
+			<version>0.16.0</version>
 		</dependency>
 	</dependencies>
 

@@ -9,9 +9,9 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
 
-import com.redislabs.rediscogs.RediSearchClientConfiguration;
+import com.redislabs.rediscogs.loader.RediSearchConfiguration;
 
-@SpringBootApplication(scanBasePackageClasses = { RediSearchClientConfiguration.class })
+@SpringBootApplication(scanBasePackageClasses = { RediSearchConfiguration.class, ServerConfiguration.class })
 @EnableCaching
 public class ServerApplication {
 
