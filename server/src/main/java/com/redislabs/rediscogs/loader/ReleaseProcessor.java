@@ -50,7 +50,7 @@ public class ReleaseProcessor implements ItemProcessor<Object, Map<String, Objec
 		if (xml.getTrackList() != null) {
 			if (xml.getTrackList().getTracks() != null) {
 				List<Track> tracks = xml.getTrackList().getTracks().stream()
-						.filter(track -> track.getType() == null || track.getType().equals("track"))
+						.filter(track -> track.getPosition() != null && track.getPosition().length() > 0)
 						.collect(Collectors.toList());
 				doc.put("tracks", tracks.size());
 				tracks.forEach(track -> doc.put("track" + (tracks.indexOf(track) + 1), track.getTitle()));

@@ -1,0 +1,1203 @@
+<release id="4210378" status="Accepted">
+	<images>
+		<image height="598" type="primary" uri="" uri150="" width="600" />
+		<image height="521" type="secondary" uri="" uri150=""
+			width="600" />
+		<image height="600" type="secondary" uri="" uri150=""
+			width="597" />
+	</images>
+	<artists>
+		<artist>
+			<id>38863</id>
+			<name>Aretha Franklin</name>
+			<anv></anv>
+			<join></join>
+			<role></role>
+			<tracks></tracks>
+		</artist>
+	</artists>
+	<title>Love All The Hurt Away</title>
+	<labels>
+		<label catno="CDBBR 0189" id="194002" name="Big Break Records" />
+	</labels>
+	<extraartists>
+		<artist>
+			<id>200783</id>
+			<name>Eddie Daniels</name>
+			<anv></anv>
+			<join></join>
+			<role>Alto Saxophone</role>
+			<tracks>1</tracks>
+		</artist>
+		<artist>
+			<id>1875143</id>
+			<name>Ria Lewerke-Shapiro</name>
+			<anv></anv>
+			<join></join>
+			<role>Art Direction, Design</role>
+			<tracks></tracks>
+		</artist>
+		<artist>
+			<id>162614</id>
+			<name>Arnold McCuller</name>
+			<anv></anv>
+			<join></join>
+			<role>Backing Vocals</role>
+			<tracks>4, 5</tracks>
+		</artist>
+		<artist>
+			<id>175255</id>
+			<name>Cissy Houston</name>
+			<anv></anv>
+			<join></join>
+			<role>Backing Vocals</role>
+			<tracks>2, 4, 6, 7</tracks>
+		</artist>
+		<artist>
+			<id>257233</id>
+			<name>Darlene Love</name>
+			<anv></anv>
+			<join></join>
+			<role>Backing Vocals</role>
+			<tracks>2, 4, 6, 7</tracks>
+		</artist>
+		<artist>
+			<id>274690</id>
+			<name>David Lasley</name>
+			<anv></anv>
+			<join></join>
+			<role>Backing Vocals</role>
+			<tracks>4, 5</tracks>
+		</artist>
+		<artist>
+			<id>2097498</id>
+			<name>Estelle Brown</name>
+			<anv></anv>
+			<join></join>
+			<role>Backing Vocals</role>
+			<tracks>2, 4, 6, 7</tracks>
+		</artist>
+		<artist>
+			<id>456833</id>
+			<name>Jo Ann Harris</name>
+			<anv></anv>
+			<join></join>
+			<role>Backing Vocals</role>
+			<tracks>5, 7, 8</tracks>
+		</artist>
+		<artist>
+			<id>909745</id>
+			<name>Linda Lawrence</name>
+			<anv></anv>
+			<join></join>
+			<role>Backing Vocals</role>
+			<tracks>7, 8</tracks>
+		</artist>
+		<artist>
+			<id>2423284</id>
+			<name>Marci Levy</name>
+			<anv></anv>
+			<join></join>
+			<role>Backing Vocals</role>
+			<tracks>1, 3 to 5, 7, 8</tracks>
+		</artist>
+		<artist>
+			<id>340057</id>
+			<name>Margaret Branch</name>
+			<anv></anv>
+			<join></join>
+			<role>Backing Vocals</role>
+			<tracks>2, 4 to 6</tracks>
+		</artist>
+		<artist>
+			<id>45720</id>
+			<name>Mark Stevens</name>
+			<anv></anv>
+			<join></join>
+			<role>Backing Vocals</role>
+			<tracks>1, 3 to 5</tracks>
+		</artist>
+		<artist>
+			<id>360015</id>
+			<name>Myrna Smith</name>
+			<anv></anv>
+			<join></join>
+			<role>Backing Vocals</role>
+			<tracks>6, 7</tracks>
+		</artist>
+		<artist>
+			<id>280077</id>
+			<name>Abraham Laboriel</name>
+			<anv>Abe Laboriel</anv>
+			<join></join>
+			<role>Bass</role>
+			<tracks>6</tracks>
+		</artist>
+		<artist>
+			<id>321966</id>
+			<name>Louis Johnson</name>
+			<anv></anv>
+			<join></join>
+			<role>Bass</role>
+			<tracks>1, 3</tracks>
+		</artist>
+		<artist>
+			<id>79989</id>
+			<name>Marcus Miller</name>
+			<anv></anv>
+			<join></join>
+			<role>Bass</role>
+			<tracks>2, 4, 5, 7 to 10</tracks>
+		</artist>
+		<artist>
+			<id>260888</id>
+			<name>Gene Orloff</name>
+			<anv></anv>
+			<join></join>
+			<role>Concertmaster</role>
+			<tracks></tracks>
+		</artist>
+		<artist>
+			<id>336325</id>
+			<name>Harry Bluestone</name>
+			<anv></anv>
+			<join></join>
+			<role>Concertmaster</role>
+			<tracks></tracks>
+		</artist>
+		<artist>
+			<id>804909</id>
+			<name>Chrissy Allerdings</name>
+			<anv></anv>
+			<join></join>
+			<role>Coordinator [Production Assistant]</role>
+			<tracks></tracks>
+		</artist>
+		<artist>
+			<id>757792</id>
+			<name>Frank DeCaro</name>
+			<anv></anv>
+			<join></join>
+			<role>Coordinator [Production]</role>
+			<tracks></tracks>
+		</artist>
+		<artist>
+			<id>38863</id>
+			<name>Aretha Franklin</name>
+			<anv></anv>
+			<join></join>
+			<role>Design Concept [Cover]</role>
+			<tracks></tracks>
+		</artist>
+		<artist>
+			<id>1042815</id>
+			<name>Paul Bevoir</name>
+			<anv></anv>
+			<join></join>
+			<role>Design [CD Booklet]</role>
+			<tracks></tracks>
+		</artist>
+		<artist>
+			<id>332625</id>
+			<name>Jeff Porcaro</name>
+			<anv></anv>
+			<join></join>
+			<role>Drums</role>
+			<tracks>1 to 10</tracks>
+		</artist>
+		<artist>
+			<id>193582</id>
+			<name>David Paich</name>
+			<anv></anv>
+			<join></join>
+			<role>Electric Piano</role>
+			<tracks>5, 7 to 9</tracks>
+		</artist>
+		<artist>
+			<id>3109027</id>
+			<name>Jim Simon</name>
+			<anv></anv>
+			<join></join>
+			<role>Engineer [Assistant]</role>
+			<tracks></tracks>
+		</artist>
+		<artist>
+			<id>165496</id>
+			<name>Michael O'Reilly</name>
+			<anv></anv>
+			<join></join>
+			<role>Engineer [Assistant]</role>
+			<tracks></tracks>
+		</artist>
+		<artist>
+			<id>435629</id>
+			<name>Steve McManus</name>
+			<anv>Steven McManus</anv>
+			<join></join>
+			<role>Engineer [Assistant]</role>
+			<tracks></tracks>
+		</artist>
+		<artist>
+			<id>221559</id>
+			<name>Terry Christian</name>
+			<anv></anv>
+			<join></join>
+			<role>Engineer [Assistant]</role>
+			<tracks></tracks>
+		</artist>
+		<artist>
+			<id>382308</id>
+			<name>Jeremy Smith (2)</name>
+			<anv></anv>
+			<join></join>
+			<role>Engineer [Recording]</role>
+			<tracks></tracks>
+		</artist>
+		<artist>
+			<id>320003</id>
+			<name>Buzzy Feiten</name>
+			<anv>Buzz Feiten</anv>
+			<join></join>
+			<role>Guitar</role>
+			<tracks>1, 7</tracks>
+		</artist>
+		<artist>
+			<id>457690</id>
+			<name>David Williams (4)</name>
+			<anv></anv>
+			<join></join>
+			<role>Guitar</role>
+			<tracks>2 to 9, 10</tracks>
+		</artist>
+		<artist>
+			<id>272796</id>
+			<name>Steve Lukather</name>
+			<anv></anv>
+			<join></join>
+			<role>Guitar</role>
+			<tracks>5 to 9</tracks>
+		</artist>
+		<artist>
+			<id>79751</id>
+			<name>David Foster</name>
+			<anv></anv>
+			<join></join>
+			<role>Keyboards</role>
+			<tracks>1, 3</tracks>
+		</artist>
+		<artist>
+			<id>108475</id>
+			<name>Greg Phillinganes</name>
+			<anv></anv>
+			<join></join>
+			<role>Keyboards</role>
+			<tracks>2 to 7, 10</tracks>
+		</artist>
+		<artist>
+			<id>114977</id>
+			<name>Robbie Buchanan</name>
+			<anv></anv>
+			<join></join>
+			<role>Keyboards</role>
+			<tracks>2, 4</tracks>
+		</artist>
+		<artist>
+			<id>2266</id>
+			<name>George Benson</name>
+			<anv></anv>
+			<join></join>
+			<role>Lead Vocals</role>
+			<tracks>1</tracks>
+		</artist>
+		<artist>
+			<id>38863</id>
+			<name>Aretha Franklin</name>
+			<anv></anv>
+			<join></join>
+			<role>Lead Vocals, Backing Vocals, Piano</role>
+			<tracks></tracks>
+		</artist>
+		<artist>
+			<id>1839055</id>
+			<name>Christian John Wikane</name>
+			<anv></anv>
+			<join></join>
+			<role>Liner Notes, Research, Interviewer</role>
+			<tracks></tracks>
+		</artist>
+		<artist>
+			<id>15446</id>
+			<name>Arif Mardin</name>
+			<anv></anv>
+			<join></join>
+			<role>Mixed By</role>
+			<tracks>2, 5</tracks>
+		</artist>
+		<artist>
+			<id>150321</id>
+			<name>Lew Hahn</name>
+			<anv></anv>
+			<join></join>
+			<role>Mixed By</role>
+			<tracks>2, 5</tracks>
+		</artist>
+		<artist>
+			<id>165496</id>
+			<name>Michael O'Reilly</name>
+			<anv></anv>
+			<join></join>
+			<role>Mixed By</role>
+			<tracks>2, 5</tracks>
+		</artist>
+		<artist>
+			<id>46163</id>
+			<name>Paulinho Da Costa</name>
+			<anv></anv>
+			<join></join>
+			<role>Percussion</role>
+			<tracks>1, 3, 5</tracks>
+		</artist>
+		<artist>
+			<id>241521</id>
+			<name>Steve Ferrone</name>
+			<anv></anv>
+			<join></join>
+			<role>Percussion</role>
+			<tracks>7</tracks>
+		</artist>
+		<artist>
+			<id>2234693</id>
+			<name>George Hurrell</name>
+			<anv></anv>
+			<join></join>
+			<role>Photography By</role>
+			<tracks></tracks>
+		</artist>
+		<artist>
+			<id>38863</id>
+			<name>Aretha Franklin</name>
+			<anv></anv>
+			<join></join>
+			<role>Producer</role>
+			<tracks>7, 9, 10</tracks>
+		</artist>
+		<artist>
+			<id>15446</id>
+			<name>Arif Mardin</name>
+			<anv></anv>
+			<join></join>
+			<role>Producer</role>
+			<tracks></tracks>
+		</artist>
+		<artist>
+			<id>150321</id>
+			<name>Lew Hahn</name>
+			<anv></anv>
+			<join></join>
+			<role>Recorded By [Additional], Remix</role>
+			<tracks></tracks>
+		</artist>
+		<artist>
+			<id>1671692</id>
+			<name>Wayne A. Dickson</name>
+			<anv></anv>
+			<join></join>
+			<role>Reissue Producer</role>
+			<tracks></tracks>
+		</artist>
+		<artist>
+			<id>1839055</id>
+			<name>Christian John Wikane</name>
+			<anv></anv>
+			<join></join>
+			<role>Reissue Producer [Associate]</role>
+			<tracks></tracks>
+		</artist>
+		<artist>
+			<id>2219733</id>
+			<name>Leon Fort</name>
+			<anv></anv>
+			<join></join>
+			<role>Reissue Producer [Associate]</role>
+			<tracks></tracks>
+		</artist>
+		<artist>
+			<id>344904</id>
+			<name>Joe Gastwirt</name>
+			<anv></anv>
+			<join></join>
+			<role>Remastered By</role>
+			<tracks></tracks>
+		</artist>
+		<artist>
+			<id>261168</id>
+			<name>Nick Robbins</name>
+			<anv>Nick Robins</anv>
+			<join></join>
+			<role>Remastered By</role>
+			<tracks></tracks>
+		</artist>
+		<artist>
+			<id>1671692</id>
+			<name>Wayne A. Dickson</name>
+			<anv></anv>
+			<join></join>
+			<role>Remastered By [Additional]</role>
+			<tracks></tracks>
+		</artist>
+		<artist>
+			<id>1923232</id>
+			<name>Michal L. Bednarek</name>
+			<anv>Michal Bednarek</anv>
+			<join></join>
+			<role>Research [Audio]</role>
+			<tracks></tracks>
+		</artist>
+		<artist>
+			<id>2203345</id>
+			<name>Marcus Spehr</name>
+			<anv></anv>
+			<join></join>
+			<role>Research [Repertoire]</role>
+			<tracks></tracks>
+		</artist>
+		<artist>
+			<id>260572</id>
+			<name>Gary Herbig</name>
+			<anv></anv>
+			<join></join>
+			<role>Saxophone</role>
+			<tracks></tracks>
+		</artist>
+		<artist>
+			<id>255404</id>
+			<name>Jim Horn</name>
+			<anv></anv>
+			<join></join>
+			<role>Saxophone</role>
+			<tracks></tracks>
+		</artist>
+		<artist>
+			<id>229176</id>
+			<name>Larry Williams</name>
+			<anv></anv>
+			<join></join>
+			<role>Saxophone</role>
+			<tracks></tracks>
+		</artist>
+		<artist>
+			<id>254959</id>
+			<name>Ronnie Cuber</name>
+			<anv></anv>
+			<join></join>
+			<role>Saxophone</role>
+			<tracks></tracks>
+		</artist>
+		<artist>
+			<id>264565</id>
+			<name>Seldon Powell</name>
+			<anv></anv>
+			<join></join>
+			<role>Saxophone</role>
+			<tracks></tracks>
+		</artist>
+		<artist>
+			<id>401400</id>
+			<name>William Slapin</name>
+			<anv></anv>
+			<join></join>
+			<role>Saxophone</role>
+			<tracks></tracks>
+		</artist>
+		<artist>
+			<id>447673</id>
+			<name>Bill Reichenbach (2)</name>
+			<anv></anv>
+			<join></join>
+			<role>Trombone</role>
+			<tracks></tracks>
+		</artist>
+		<artist>
+			<id>260723</id>
+			<name>Urbie Green</name>
+			<anv></anv>
+			<join></join>
+			<role>Trombone</role>
+			<tracks></tracks>
+		</artist>
+		<artist>
+			<id>271409</id>
+			<name>Gary Grant</name>
+			<anv></anv>
+			<join></join>
+			<role>Trumpet</role>
+			<tracks></tracks>
+		</artist>
+		<artist>
+			<id>255142</id>
+			<name>Jerry Hey</name>
+			<anv></anv>
+			<join></join>
+			<role>Trumpet</role>
+			<tracks></tracks>
+		</artist>
+		<artist>
+			<id>255796</id>
+			<name>Joe Shepley</name>
+			<anv></anv>
+			<join></join>
+			<role>Trumpet</role>
+			<tracks></tracks>
+		</artist>
+		<artist>
+			<id>156019</id>
+			<name>Jon Faddis</name>
+			<anv></anv>
+			<join></join>
+			<role>Trumpet</role>
+			<tracks></tracks>
+		</artist>
+		<artist>
+			<id>2219733</id>
+			<name>Leon Fort</name>
+			<anv></anv>
+			<join></join>
+			<role>Typography [Original Credits Transcribed By]</role>
+			<tracks></tracks>
+		</artist>
+	</extraartists>
+	<formats>
+		<format name="CD" qty="1" text="">
+			<descriptions>
+				<description>Album</description>
+				<description>Reissue</description>
+				<description>Remastered</description>
+			</descriptions>
+		</format>
+	</formats>
+	<genres>
+		<genre>Funk / Soul</genre>
+	</genres>
+	<styles>
+		<style>Rhythm &amp; Blues</style>
+		<style>Soul</style>
+	</styles>
+	<country>UK</country>
+	<released>2012-09-24</released>
+	<notes>Originally released on Arista, 1981.&#13;
+		&#13;
+		Recorded at Cherokee Studios in Los Angeles, California.&#13;
+		Additional recording at Atlantic Studios, New York, Wally Heider Studios and
+		Sunset Sound, Los Angeles, California.&#13;
+		&#13;
+		Made in EC.
+	</notes>
+	<data_quality>Needs Vote</data_quality>
+	<master_id is_main_release="false">123023</master_id>
+	<tracklist>
+		<track>
+			<position>1</position>
+			<title>Love All The Hurt Away</title>
+			<duration>4:12</duration>
+			<extraartists>
+				<artist>
+					<id>15446</id>
+					<name>Arif Mardin</name>
+					<anv></anv>
+					<join></join>
+					<role>Arranged By</role>
+					<tracks></tracks>
+				</artist>
+				<artist>
+					<id>288128</id>
+					<name>Sam Dees</name>
+					<anv>S. Dees</anv>
+					<join></join>
+					<role>Written-By</role>
+					<tracks></tracks>
+				</artist>
+			</extraartists>
+		</track>
+		<track>
+			<position>2</position>
+			<title>Hold On I'm Comin'</title>
+			<duration>5:16</duration>
+			<extraartists>
+				<artist>
+					<id>38863</id>
+					<name>Aretha Franklin</name>
+					<anv></anv>
+					<join></join>
+					<role>Arranged By [Backing Vocals]</role>
+					<tracks></tracks>
+				</artist>
+				<artist>
+					<id>255142</id>
+					<name>Jerry Hey</name>
+					<anv></anv>
+					<join></join>
+					<role>Arranged By [Horns]</role>
+					<tracks></tracks>
+				</artist>
+				<artist>
+					<id>229176</id>
+					<name>Larry Williams</name>
+					<anv></anv>
+					<join></join>
+					<role>Arranged By [Horns]</role>
+					<tracks></tracks>
+				</artist>
+				<artist>
+					<id>15446</id>
+					<name>Arif Mardin</name>
+					<anv></anv>
+					<join></join>
+					<role>Arranged By [Rhythm]</role>
+					<tracks></tracks>
+				</artist>
+				<artist>
+					<id>136177</id>
+					<name>David Porter</name>
+					<anv>D. Porter</anv>
+					<join></join>
+					<role>Written-By</role>
+					<tracks></tracks>
+				</artist>
+				<artist>
+					<id>48432</id>
+					<name>Isaac Hayes</name>
+					<anv>I. Hayes</anv>
+					<join></join>
+					<role>Written-By</role>
+					<tracks></tracks>
+				</artist>
+			</extraartists>
+		</track>
+		<track>
+			<position>3</position>
+			<title>Living In The Streets</title>
+			<duration>3:55</duration>
+			<extraartists>
+				<artist>
+					<id>255142</id>
+					<name>Jerry Hey</name>
+					<anv></anv>
+					<join></join>
+					<role>Arranged By [Horns &amp; Strings]</role>
+					<tracks></tracks>
+				</artist>
+				<artist>
+					<id>148175</id>
+					<name>Rod Temperton</name>
+					<anv></anv>
+					<join></join>
+					<role>Arranged By [Horns &amp; Strings]</role>
+					<tracks></tracks>
+				</artist>
+				<artist>
+					<id>148175</id>
+					<name>Rod Temperton</name>
+					<anv></anv>
+					<join></join>
+					<role>Arranged By [Rhythm &amp; Backing Vocals]</role>
+					<tracks></tracks>
+				</artist>
+				<artist>
+					<id>148175</id>
+					<name>Rod Temperton</name>
+					<anv>R. Temperton</anv>
+					<join></join>
+					<role>Written-By</role>
+					<tracks></tracks>
+				</artist>
+			</extraartists>
+		</track>
+		<track>
+			<position>4</position>
+			<title>There's A Star For Everyone</title>
+			<duration>4:28</duration>
+			<extraartists>
+				<artist>
+					<id>15446</id>
+					<name>Arif Mardin</name>
+					<anv></anv>
+					<join></join>
+					<role>Arranged By</role>
+					<tracks></tracks>
+				</artist>
+				<artist>
+					<id>38863</id>
+					<name>Aretha Franklin</name>
+					<anv></anv>
+					<join></join>
+					<role>Arranged By [Backing Vocals]</role>
+					<tracks></tracks>
+				</artist>
+				<artist>
+					<id>325222</id>
+					<name>Allee Willis</name>
+					<anv>A. Willis</anv>
+					<join></join>
+					<role>Written-By</role>
+					<tracks></tracks>
+				</artist>
+				<artist>
+					<id>728468</id>
+					<name>Dave Yowell</name>
+					<anv>D. Yowell</anv>
+					<join></join>
+					<role>Written-By</role>
+					<tracks></tracks>
+				</artist>
+				<artist>
+					<id>274690</id>
+					<name>David Lasley</name>
+					<anv>D. Lasley</anv>
+					<join></join>
+					<role>Written-By</role>
+					<tracks></tracks>
+				</artist>
+			</extraartists>
+		</track>
+		<track>
+			<position>5</position>
+			<title>You Can't Always Get What You Want</title>
+			<duration>5:19</duration>
+			<extraartists>
+				<artist>
+					<id>166570</id>
+					<name>Keith Richards</name>
+					<anv>K. Richards</anv>
+					<join></join>
+					<role>Written-By</role>
+					<tracks></tracks>
+				</artist>
+				<artist>
+					<id>90541</id>
+					<name>Mick Jagger</name>
+					<anv>M. Jagger</anv>
+					<join></join>
+					<role>Written-By</role>
+					<tracks></tracks>
+				</artist>
+			</extraartists>
+		</track>
+		<track>
+			<position>6</position>
+			<title>It's My Turn</title>
+			<duration>5:30</duration>
+			<extraartists>
+				<artist>
+					<id>38863</id>
+					<name>Aretha Franklin</name>
+					<anv></anv>
+					<join></join>
+					<role>Arranged By [Backing Vocals]</role>
+					<tracks></tracks>
+				</artist>
+				<artist>
+					<id>15446</id>
+					<name>Arif Mardin</name>
+					<anv></anv>
+					<join></join>
+					<role>Arranged By [Strings]</role>
+					<tracks></tracks>
+				</artist>
+				<artist>
+					<id>255142</id>
+					<name>Jerry Hey</name>
+					<anv></anv>
+					<join></join>
+					<role>Arranged By [Strings]</role>
+					<tracks></tracks>
+				</artist>
+				<artist>
+					<id>169899</id>
+					<name>Carole Bayer Sager</name>
+					<anv>C. B. Sager</anv>
+					<join></join>
+					<role>Written-By</role>
+					<tracks></tracks>
+				</artist>
+				<artist>
+					<id>41107</id>
+					<name>Michael Masser</name>
+					<anv>M. Masser</anv>
+					<join></join>
+					<role>Written-By</role>
+					<tracks></tracks>
+				</artist>
+			</extraartists>
+		</track>
+		<track>
+			<position>7</position>
+			<title>Truth And Honesty</title>
+			<duration>4:18</duration>
+			<extraartists>
+				<artist>
+					<id>38863</id>
+					<name>Aretha Franklin</name>
+					<anv></anv>
+					<join></join>
+					<role>Arranged By [Backing Vocals]</role>
+					<tracks></tracks>
+				</artist>
+				<artist>
+					<id>38863</id>
+					<name>Aretha Franklin</name>
+					<anv></anv>
+					<join></join>
+					<role>Arranged By [Rhythm]</role>
+					<tracks></tracks>
+				</artist>
+				<artist>
+					<id>15446</id>
+					<name>Arif Mardin</name>
+					<anv></anv>
+					<join></join>
+					<role>Arranged By [Rhythm]</role>
+					<tracks></tracks>
+				</artist>
+				<artist>
+					<id>58359</id>
+					<name>Burt Bacharach</name>
+					<anv>B. Bacharach</anv>
+					<join></join>
+					<role>Written-By</role>
+					<tracks></tracks>
+				</artist>
+				<artist>
+					<id>169899</id>
+					<name>Carole Bayer Sager</name>
+					<anv>C. B. Sager</anv>
+					<join></join>
+					<role>Written-By</role>
+					<tracks></tracks>
+				</artist>
+				<artist>
+					<id>349306</id>
+					<name>Peter Allen</name>
+					<anv>P. Allen</anv>
+					<join></join>
+					<role>Written-By</role>
+					<tracks></tracks>
+				</artist>
+			</extraartists>
+		</track>
+		<track>
+			<position>8</position>
+			<title>Search On</title>
+			<duration>4:51</duration>
+			<extraartists>
+				<artist>
+					<id>15446</id>
+					<name>Arif Mardin</name>
+					<anv></anv>
+					<join></join>
+					<role>Arranged By [Horns]</role>
+					<tracks></tracks>
+				</artist>
+				<artist>
+					<id>229176</id>
+					<name>Larry Williams</name>
+					<anv></anv>
+					<join></join>
+					<role>Arranged By [Horns]</role>
+					<tracks></tracks>
+				</artist>
+				<artist>
+					<id>38863</id>
+					<name>Aretha Franklin</name>
+					<anv></anv>
+					<join></join>
+					<role>Arranged By [Rhythm]</role>
+					<tracks></tracks>
+				</artist>
+				<artist>
+					<id>15446</id>
+					<name>Arif Mardin</name>
+					<anv></anv>
+					<join></join>
+					<role>Arranged By [Rhythm]</role>
+					<tracks></tracks>
+				</artist>
+				<artist>
+					<id>229176</id>
+					<name>Larry Williams</name>
+					<anv></anv>
+					<join></join>
+					<role>Arranged By [Strings]</role>
+					<tracks></tracks>
+				</artist>
+				<artist>
+					<id>1419846</id>
+					<name>Chuck Jackson (2)</name>
+					<anv>C. Jackson</anv>
+					<join></join>
+					<role>Written-By</role>
+					<tracks></tracks>
+				</artist>
+			</extraartists>
+		</track>
+		<track>
+			<position>9</position>
+			<title>Whole Lot Of Me</title>
+			<duration>3:26</duration>
+			<extraartists>
+				<artist>
+					<id>15446</id>
+					<name>Arif Mardin</name>
+					<anv></anv>
+					<join></join>
+					<role>Arranged By [Horns]</role>
+					<tracks></tracks>
+				</artist>
+				<artist>
+					<id>229176</id>
+					<name>Larry Williams</name>
+					<anv></anv>
+					<join></join>
+					<role>Arranged By [Horns]</role>
+					<tracks></tracks>
+				</artist>
+				<artist>
+					<id>38863</id>
+					<name>Aretha Franklin</name>
+					<anv></anv>
+					<join></join>
+					<role>Arranged By [Rhythm]</role>
+					<tracks></tracks>
+				</artist>
+				<artist>
+					<id>15446</id>
+					<name>Arif Mardin</name>
+					<anv></anv>
+					<join></join>
+					<role>Arranged By [Rhythm]</role>
+					<tracks></tracks>
+				</artist>
+				<artist>
+					<id>229176</id>
+					<name>Larry Williams</name>
+					<anv></anv>
+					<join></join>
+					<role>Arranged By [Strings]</role>
+					<tracks></tracks>
+				</artist>
+				<artist>
+					<id>38863</id>
+					<name>Aretha Franklin</name>
+					<anv>A. Franklin</anv>
+					<join></join>
+					<role>Written-By</role>
+					<tracks></tracks>
+				</artist>
+			</extraartists>
+		</track>
+		<track>
+			<position>10</position>
+			<title>Kind Of Man</title>
+			<duration>4:23</duration>
+			<extraartists>
+				<artist>
+					<id>15446</id>
+					<name>Arif Mardin</name>
+					<anv></anv>
+					<join></join>
+					<role>Arranged By [Horns &amp; Strings]</role>
+					<tracks></tracks>
+				</artist>
+				<artist>
+					<id>38863</id>
+					<name>Aretha Franklin</name>
+					<anv>A. Franklin</anv>
+					<join></join>
+					<role>Written-By</role>
+					<tracks></tracks>
+				</artist>
+			</extraartists>
+		</track>
+		<track>
+			<position></position>
+			<title>Bonus Tracks</title>
+			<duration></duration>
+		</track>
+		<track>
+			<position>11</position>
+			<title>Hold On I'm Comin' (12" Extended Version)</title>
+			<duration>6:44</duration>
+			<extraartists>
+				<artist>
+					<id>136177</id>
+					<name>David Porter</name>
+					<anv>D. Porter</anv>
+					<join></join>
+					<role>Written-By</role>
+					<tracks></tracks>
+				</artist>
+				<artist>
+					<id>48432</id>
+					<name>Isaac Hayes</name>
+					<anv>I. Hayes</anv>
+					<join></join>
+					<role>Written-By</role>
+					<tracks></tracks>
+				</artist>
+			</extraartists>
+		</track>
+		<track>
+			<position>12</position>
+			<title>Livin' In The Streets (12" Extended Remix)</title>
+			<duration>6:17</duration>
+			<extraartists>
+				<artist>
+					<id>148175</id>
+					<name>Rod Temperton</name>
+					<anv>R. Temperton</anv>
+					<join></join>
+					<role>Written-By</role>
+					<tracks></tracks>
+				</artist>
+			</extraartists>
+		</track>
+		<track>
+			<position>13</position>
+			<title>It's My Turn (Single Version)</title>
+			<duration>4:13</duration>
+			<extraartists>
+				<artist>
+					<id>169899</id>
+					<name>Carole Bayer Sager</name>
+					<anv>C. B. Sager</anv>
+					<join></join>
+					<role>Written-By</role>
+					<tracks></tracks>
+				</artist>
+				<artist>
+					<id>41107</id>
+					<name>Michael Masser</name>
+					<anv>M. Masser</anv>
+					<join></join>
+					<role>Written-By</role>
+					<tracks></tracks>
+				</artist>
+			</extraartists>
+		</track>
+	</tracklist>
+	<identifiers>
+		<identifier type="Barcode" value="5 013929 048935" />
+		<identifier type="Matrix / Runout"
+			value="www.keyproduction.co.uk CDBBR0189 01" />
+		<identifier type="Rights Society" value="MCPS" />
+		<identifier description="Mastering SID Code" type="Other"
+			value="IFPI LY33" />
+		<identifier description="Mould SID Code" type="Other"
+			value="IFPI AEW22" />
+	</identifiers>
+	<companies>
+		<company>
+			<id>194002</id>
+			<name>Big Break Records</name>
+			<catno></catno>
+			<entity_type>13</entity_type>
+			<entity_type_name>Phonographic Copyright (p)</entity_type_name>
+			<resource_url>https://api.discogs.com/labels/194002</resource_url>
+		</company>
+		<company>
+			<id>29073</id>
+			<name>Sony Music Entertainment</name>
+			<catno></catno>
+			<entity_type>13</entity_type>
+			<entity_type_name>Phonographic Copyright (p)</entity_type_name>
+			<resource_url>https://api.discogs.com/labels/29073</resource_url>
+		</company>
+		<company>
+			<id>194002</id>
+			<name>Big Break Records</name>
+			<catno></catno>
+			<entity_type>14</entity_type>
+			<entity_type_name>Copyright (c)</entity_type_name>
+			<resource_url>https://api.discogs.com/labels/194002</resource_url>
+		</company>
+		<company>
+			<id>33768</id>
+			<name>Sony Music Entertainment (UK) Ltd.</name>
+			<catno></catno>
+			<entity_type>6</entity_type>
+			<entity_type_name>Licensed From</entity_type_name>
+			<resource_url>https://api.discogs.com/labels/33768</resource_url>
+		</company>
+		<company>
+			<id>269699</id>
+			<name>Cherry Red Records Ltd.</name>
+			<catno></catno>
+			<entity_type>8</entity_type>
+			<entity_type_name>Marketed By</entity_type_name>
+			<resource_url>https://api.discogs.com/labels/269699</resource_url>
+		</company>
+		<company>
+			<id>269699</id>
+			<name>Cherry Red Records Ltd.</name>
+			<catno></catno>
+			<entity_type>9</entity_type>
+			<entity_type_name>Distributed By</entity_type_name>
+			<resource_url>https://api.discogs.com/labels/269699</resource_url>
+		</company>
+		<company>
+			<id>264584</id>
+			<name>Atlantic Studios</name>
+			<catno></catno>
+			<entity_type>23</entity_type>
+			<entity_type_name>Recorded At</entity_type_name>
+			<resource_url>https://api.discogs.com/labels/264584</resource_url>
+		</company>
+		<company>
+			<id>267581</id>
+			<name>Cherokee Studios</name>
+			<catno></catno>
+			<entity_type>23</entity_type>
+			<entity_type_name>Recorded At</entity_type_name>
+			<resource_url>https://api.discogs.com/labels/267581</resource_url>
+		</company>
+		<company>
+			<id>269580</id>
+			<name>Sunset Sound</name>
+			<catno></catno>
+			<entity_type>23</entity_type>
+			<entity_type_name>Recorded At</entity_type_name>
+			<resource_url>https://api.discogs.com/labels/269580</resource_url>
+		</company>
+		<company>
+			<id>1098261</id>
+			<name>Wally Heider Recording Studio, Los Angeles</name>
+			<catno></catno>
+			<entity_type>23</entity_type>
+			<entity_type_name>Recorded At</entity_type_name>
+			<resource_url>https://api.discogs.com/labels/1098261</resource_url>
+		</company>
+		<company>
+			<id>270862</id>
+			<name>Sound Mastering</name>
+			<catno></catno>
+			<entity_type>35</entity_type>
+			<entity_type_name>Remastered At</entity_type_name>
+			<resource_url>https://api.discogs.com/labels/270862</resource_url>
+		</company>
+		<company>
+			<id>301762</id>
+			<name>BBR Mastering</name>
+			<catno></catno>
+			<entity_type>35</entity_type>
+			<entity_type_name>Remastered At</entity_type_name>
+			<resource_url>https://api.discogs.com/labels/301762</resource_url>
+		</company>
+		<company>
+			<id>282375</id>
+			<name>Key Production</name>
+			<catno></catno>
+			<entity_type>17</entity_type>
+			<entity_type_name>Pressed By</entity_type_name>
+			<resource_url>https://api.discogs.com/labels/282375</resource_url>
+		</company>
+	</companies>
+</release>

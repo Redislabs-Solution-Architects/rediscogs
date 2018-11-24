@@ -17,46 +17,50 @@ import lombok.Data;
 public class Release {
 
 	@XmlAttribute(name = "id")
-	String id;
+	private String id;
 	@XmlAttribute(name = "status")
-	String status;
+	private String status;
 	@XmlElement(name = "images")
-	Images images;
+	private Images images;
 	@XmlElement(name = "artists")
-	Artists artists;
+	private Artists artists;
 	@XmlElement(name = "title")
-	String title;
+	private String title;
 	@XmlElement(name = "labels")
-	Labels labels;
+	private Labels labels;
 	@XmlElement(name = "extraartists")
-	Artists extraArtists;
+	private Artists extraArtists;
 	@XmlElement(name = "formats")
-	Formats formats;
+	private Formats formats;
 	@XmlElement(name = "genres")
-	Genres genres;
+	private Genres genres;
 	@XmlElement(name = "styles")
-	Styles styles;
+	private Styles styles;
 	@XmlElement(name = "country")
-	String country;
+	private String country;
 	@XmlElement(name = "released")
-	String released;
+	private String released;
 	@XmlElement(name = "notes")
-	String notes;
+	private String notes;
 	@XmlElement(name = "data_quality")
-	String dataQuality;
+	private String dataQuality;
 	@XmlElement(name = "master_id")
-	MasterId masterId;
+	private MasterId masterId;
 	@XmlElement(name = "tracklist")
-	TrackList trackList;
+	private TrackList trackList;
+	@XmlElement(name = "identifiers")
+	private Identifiers identifiers;
+	@XmlElement(name = "companies")
+	private Companies companies;
 
 	@Data
 	@XmlAccessorType(XmlAccessType.FIELD)
 	public static class MasterId {
 
 		@XmlValue
-		String masterId;
+		private String masterId;
 		@XmlAttribute(name = "is_main_release")
-		Boolean mainRelease;
+		private Boolean mainRelease;
 
 	}
 
@@ -65,7 +69,7 @@ public class Release {
 	public static class Formats {
 
 		@XmlElement(name = "format")
-		List<Format> formats;
+		private List<Format> formats;
 
 		@Data
 		@XmlRootElement(name = "format")
@@ -73,9 +77,13 @@ public class Release {
 		public static class Format {
 
 			@XmlAttribute(name = "name")
-			String name;
+			private String name;
 			@XmlAttribute(name = "qty")
-			Integer qty;
+			private Integer qty;
+			@XmlAttribute(name = "text")
+			private String text;
+			@XmlElement(name = "descriptions")
+			private Descriptions descriptions;
 
 		}
 
@@ -83,10 +91,17 @@ public class Release {
 
 	@Data
 	@XmlAccessorType(XmlAccessType.FIELD)
+	public static class Descriptions {
+		@XmlElement(name = "description")
+		private List<String> descriptions;
+	}
+
+	@Data
+	@XmlAccessorType(XmlAccessType.FIELD)
 	public static class Labels {
 
 		@XmlElement(name = "label")
-		List<Label> labels;
+		private List<Label> labels;
 
 		@Data
 		@XmlRootElement(name = "label")
@@ -94,11 +109,11 @@ public class Release {
 		public static class Label {
 
 			@XmlAttribute(name = "id")
-			String id;
+			private String id;
 			@XmlAttribute(name = "catno")
-			String catno;
+			private String catno;
 			@XmlAttribute(name = "name")
-			String name;
+			private String name;
 
 		}
 	}
@@ -108,7 +123,7 @@ public class Release {
 	public static class TrackList {
 
 		@XmlElement(name = "track")
-		List<Track> tracks;
+		private List<Track> tracks;
 
 		@Data
 		@XmlRootElement(name = "track")
@@ -116,15 +131,67 @@ public class Release {
 		public static class Track {
 
 			@XmlElement(name = "position")
-			String position;
+			private String position;
 			@XmlElement(name = "title")
-			String title;
+			private String title;
 			@XmlElement(name = "duration")
-			String duration;
-			@XmlElement(name = "type_")
-			String type;
+			private String duration;
+			@XmlElement(name = "extraartists")
+			private Artists extraartists;
 
 		}
+	}
+
+	@Data
+	@XmlAccessorType(XmlAccessType.FIELD)
+	public static class Identifiers {
+
+		@XmlElement(name = "identifier")
+		private List<Identifier> identifiers;
+
+		@Data
+		@XmlRootElement(name = "identifier")
+		@XmlAccessorType(XmlAccessType.FIELD)
+		public static class Identifier {
+
+			@XmlAttribute(name = "description")
+			private String description;
+			@XmlAttribute(name = "type")
+			private String type;
+			@XmlAttribute(name = "value")
+			private String value;
+
+		}
+
+	}
+
+	@Data
+	@XmlAccessorType(XmlAccessType.FIELD)
+	public static class Companies {
+
+		@XmlElement(name = "company")
+		private List<Company> companies;
+
+		@Data
+		@XmlRootElement(name = "company")
+		@XmlAccessorType(XmlAccessType.FIELD)
+		public static class Company {
+
+			@XmlElement(name = "id")
+			private String id;
+			@XmlElement(name = "name")
+			private String name;
+			@XmlElement(name = "catno")
+			private String catno;
+			@XmlElement(name = "entity_type")
+			private String entityType;
+			@XmlElement(name = "entity_type_name")
+			private String entityTypeName;
+			@XmlElement(name = "resource_url")
+			private String resourceUrl;
+
+		}
+
 	}
 
 }

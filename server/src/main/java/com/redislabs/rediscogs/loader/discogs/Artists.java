@@ -23,16 +23,16 @@ public class Artists {
 
 		@XmlElement(name = "id")
 		String id;
+		@XmlElement(name = "name")
+		String name;
 		@XmlElement(name = "anv")
 		String anv;
 		@XmlElement(name = "join")
 		String join;
-		@XmlElement(name = "role")
-		String role;
-		@XmlElement(name = "name")
-		String name;
 		@XmlElement(name = "resource_url")
 		String resource_url;
+		@XmlElement(name = "role")
+		String role;
 		@XmlElement(name = "tracks")
 		String tracks;
 

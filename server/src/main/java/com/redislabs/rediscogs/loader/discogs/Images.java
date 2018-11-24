@@ -22,16 +22,16 @@ public class Images {
 	@XmlAccessorType(XmlAccessType.FIELD)
 	public static class Image {
 
-		@XmlAttribute(name = "uri")
-		private String uri;
 		@XmlAttribute(name = "height")
 		private int height;
-		@XmlAttribute(name = "width")
-		private int width;
 		@XmlAttribute(name = "type")
 		private String type;
+		@XmlAttribute(name = "uri")
+		private String uri;
 		@XmlAttribute(name = "uri150")
 		private String uri150;
+		@XmlAttribute(name = "width")
+		private int width;
 
 	}
 }
