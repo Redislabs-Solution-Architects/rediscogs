@@ -56,7 +56,8 @@ class RediscogsController {
 	public Stream<ArtistSuggestion> suggestArtists(
 			@RequestParam(name = "prefix", defaultValue = "", required = false) String prefix) {
 		SuggestionOptions options = SuggestionOptions.builder().with(With.PAYLOAD).max(10).build();
-		List<Suggestion> results = rediSearchConfig.getSuggestClient(EntityType.Artists.id()).getSuggestion(prefix, options);
+		List<Suggestion> results = rediSearchConfig.getSuggestClient(EntityType.Artists.id()).getSuggestion(prefix,
+				options);
 		return results.stream()
 				.map(result -> ArtistSuggestion.builder().id(result.getPayload()).name(result.getString()).build());
 	}
@@ -89,7 +90,7 @@ class RediscogsController {
 
 	@ResponseBody
 	@GetMapping(value = "/album-image/{id}")
-	public ResponseEntity<byte[]> getImageAsResource(@PathVariable("id") String masterId) throws IOException {
+	public ResponseEntity<byte[]> getImageAsResource(@PathVariable("id") long masterId) throws IOException {
 		final HttpHeaders headers = new HttpHeaders();
 		headers.setCacheControl(CacheControl.noCache().getHeaderValue());
 		return new ResponseEntity<>(imageRepository.getImage(masterId), headers, HttpStatus.OK);

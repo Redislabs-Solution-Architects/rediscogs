@@ -14,14 +14,6 @@ public class ServerConfiguration {
 
 	private int searchResultsLimit = 20;
 	private String imageFilter;
-	private Discogs discogs;
-
-	@Data
-	public static class Discogs {
-		private String url;
-		private String token;
-		private String userAgent;
-		private long delay = 100;
-	}
+	private long discogsApiDelay = 100;
 
 }

@@ -3,13 +3,14 @@ package com.redislabs.rediscogs.loader;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import org.springframework.batch.item.ItemProcessor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.redislabs.rediscogs.loader.discogs.Release;
 import com.redislabs.rediscogs.loader.discogs.Artists.Artist;
+import com.redislabs.rediscogs.loader.discogs.Release;
 import com.redislabs.rediscogs.loader.discogs.Release.TrackList.Track;
 
 @Component
@@ -48,13 +49,11 @@ public class ReleaseProcessor implements ItemProcessor<Object, Map<String, Objec
 		}
 		if (xml.getTrackList() != null) {
 			if (xml.getTrackList().getTracks() != null) {
-				List<Track> tracks = xml.getTrackList().getTracks();
+				List<Track> tracks = xml.getTrackList().getTracks().stream()
+						.filter(track -> track.getType() == null || track.getType().equals("track"))
+						.collect(Collectors.toList());
 				doc.put("tracks", tracks.size());
-				for (int index = 0; index < tracks.size(); index++) {
-					Track track = tracks.get(index);
-					int trackNumber = index + 1;
-					doc.put("track" + trackNumber, track.getTitle());
-				}
+				tracks.forEach(track -> doc.put("track" + (tracks.indexOf(track) + 1), track.getTitle()));
 			}
 		}
 		return doc;

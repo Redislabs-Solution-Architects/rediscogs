@@ -1,5 +1,6 @@
 package com.redislabs.rediscogs;
 
+import org.ruaux.jdiscogs.JDiscogsConfiguration;
 import org.springframework.batch.core.JobParameters;
 import org.springframework.batch.core.launch.JobLauncher;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +21,7 @@ import com.redislabs.rediscogs.loader.LoaderConfiguration;
 
 import lombok.extern.slf4j.Slf4j;
 
-@SpringBootApplication
+@SpringBootApplication(scanBasePackageClasses = { ServerConfiguration.class, JDiscogsConfiguration.class })
 @EnableCaching
 @Slf4j
 public class ServerApplication implements ApplicationRunner {

@@ -121,6 +121,8 @@ public class Release {
 			String title;
 			@XmlElement(name = "duration")
 			String duration;
+			@XmlElement(name = "type_")
+			String type;
 
 		}
 	}

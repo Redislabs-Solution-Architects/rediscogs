@@ -57,15 +57,14 @@ public class ReleaseWriter extends ItemStreamSupport implements ItemWriter<Map<S
 		}
 		List<Document> docs = new ArrayList<>();
 		for (Map<String, Object> item : items) {
-			String docId = EntityType.Releases.id() + ":" + (String) item.get("id");
+			String docId = (String) item.get("id");
 			docs.add(new Document(docId, item));
 		}
-		Document[] docArray = docs.toArray(new Document[docs.size()]);
 		boolean success = false;
 		int retries = 0;
 		while (!success && retries < 10) {
 			try {
-				client.addDocuments(docArray);
+				client.addDocuments(docs.toArray(new Document[docs.size()]));
 				success = true;
 			} catch (JedisDataException e) {
 				if ("Document already in index".equals(e.getMessage())) {
