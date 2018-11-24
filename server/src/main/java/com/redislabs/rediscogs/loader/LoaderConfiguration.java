@@ -18,7 +18,7 @@ public class LoaderConfiguration {
 	private boolean skipLoad = false;
 	private int batchSize = 50;
 	private EntityType[] entities = { EntityType.Masters };
-	private String hashArrayDelimiter = " ";
+	private String hashArrayDelimiter = ",";
 	private String fileUrlTemplate = "https://discogs-data.s3-us-west-2.amazonaws.com/data/2018/discogs_20181001_{entity}.xml.gz";
 
 	@Bean
