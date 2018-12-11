@@ -1,6 +1,7 @@
-package com.redislabs.rediscogs;
+package com.redislabs.rediscogs.server;
 
 import org.ruaux.jdiscogs.JDiscogsConfiguration;
+import org.ruaux.jdiscogs.data.BatchConfiguration;
 import org.springframework.batch.core.JobParameters;
 import org.springframework.batch.core.launch.JobLauncher;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,18 +12,19 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.Bean;
+import org.springframework.data.redis.repository.configuration.EnableRedisRepositories;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
 
-import com.redislabs.rediscogs.loader.BatchConfiguration;
-import com.redislabs.rediscogs.loader.EntityType;
-import com.redislabs.rediscogs.loader.LoaderConfiguration;
+import com.redislabs.springredisearch.RediSearchConfiguration;
 
 import lombok.extern.slf4j.Slf4j;
 
-@SpringBootApplication(scanBasePackageClasses = { ServerConfiguration.class, JDiscogsConfiguration.class })
+@SpringBootApplication(scanBasePackageClasses = { ServerConfiguration.class, RediSearchConfiguration.class,
+		JDiscogsConfiguration.class })
 @EnableCaching
+@EnableRedisRepositories
 @Slf4j
 public class ServerApplication implements ApplicationRunner {
 
@@ -30,8 +32,6 @@ public class ServerApplication implements ApplicationRunner {
 	private JobLauncher jobLauncher;
 	@Autowired
 	private BatchConfiguration batch;
-	@Autowired
-	private LoaderConfiguration config;
 
 	public static void main(String[] args) {
 		SpringApplication.run(ServerApplication.class, args);
@@ -48,14 +48,10 @@ public class ServerApplication implements ApplicationRunner {
 
 	@Override
 	public void run(ApplicationArguments args) {
-		if (!config.isSkipLoad()) {
-			for (EntityType entityType : config.getEntities()) {
-				try {
-					jobLauncher.run(batch.getLoadJob(entityType), new JobParameters());
-				} catch (Exception e) {
-					log.error("Could not load masters data", e);
-				}
-			}
+		try {
+			jobLauncher.run(batch.getMasterIndexJob(), new JobParameters());
+		} catch (Exception e) {
+			log.error("Could not index masters data", e);
 		}
 	}
 

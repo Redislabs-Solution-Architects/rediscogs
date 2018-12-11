@@ -1,4 +1,4 @@
-package com.redislabs.rediscogs;
+package com.redislabs.rediscogs.server;
 
 import java.io.IOException;
 import java.text.MessageFormat;
@@ -19,9 +19,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.redislabs.rediscogs.loader.EntityType;
-import com.redislabs.rediscogs.loader.RediSearchConfiguration;
+import com.redislabs.springredisearch.RediSearchConfiguration;
 
+import io.redisearch.Document;
 import io.redisearch.Query;
 import io.redisearch.SearchResult;
 import io.redisearch.Suggestion;
@@ -56,8 +56,7 @@ class RediscogsController {
 	public Stream<ArtistSuggestion> suggestArtists(
 			@RequestParam(name = "prefix", defaultValue = "", required = false) String prefix) {
 		SuggestionOptions options = SuggestionOptions.builder().with(With.PAYLOAD).max(10).build();
-		List<Suggestion> results = rediSearchConfig.getSuggestClient(EntityType.Artists.id()).getSuggestion(prefix,
-				options);
+		List<Suggestion> results = rediSearchConfig.getSuggestClient("artist").getSuggestion(prefix, options);
 		return results.stream()
 				.map(result -> ArtistSuggestion.builder().id(result.getPayload()).name(result.getString()).build());
 	}
@@ -69,15 +68,16 @@ class RediscogsController {
 		Query q = new Query(MessageFormat.format(queryPattern, config.getImageFilter(), query, artistId));
 		q.limit(0, config.getSearchResultsLimit());
 		q.setSortBy("year", true);
-		SearchResult results = rediSearchConfig.getSearchClient(EntityType.Masters.id()).search(q);
-		return results.docs.stream().map(doc -> toMap(doc.getProperties()));
+		SearchResult results = rediSearchConfig.getSearchClient("master").search(q);
+		return results.docs.stream().map(doc -> toMap(doc));
 	}
 
-	private Map<String, Object> toMap(Iterable<Entry<String, Object>> properties) {
+	private Map<String, Object> toMap(Document doc) {
 		Map<String, Object> map = new HashMap<>();
-		for (Entry<String, Object> entry : properties) {
+		for (Entry<String, Object> entry : doc.getProperties()) {
 			map.put(entry.getKey(), entry.getValue());
 		}
+		map.put("id", doc.getId());
 		return map;
 	}
 
@@ -90,7 +90,7 @@ class RediscogsController {
 
 	@ResponseBody
 	@GetMapping(value = "/album-image/{id}")
-	public ResponseEntity<byte[]> getImageAsResource(@PathVariable("id") long masterId) throws IOException {
+	public ResponseEntity<byte[]> getImageAsResource(@PathVariable("id") String masterId) throws IOException {
 		final HttpHeaders headers = new HttpHeaders();
 		headers.setCacheControl(CacheControl.noCache().getHeaderValue());
 		return new ResponseEntity<>(imageRepository.getImage(masterId), headers, HttpStatus.OK);

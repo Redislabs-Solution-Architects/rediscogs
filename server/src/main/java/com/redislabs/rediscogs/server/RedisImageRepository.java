@@ -1,4 +1,4 @@
-package com.redislabs.rediscogs;
+package com.redislabs.rediscogs.server;
 
 import java.io.BufferedInputStream;
 import java.io.ByteArrayOutputStream;
@@ -6,8 +6,8 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 
-import org.ruaux.jdiscogs.DiscogsClient;
-import org.ruaux.jdiscogs.model.Master;
+import org.ruaux.jdiscogs.api.DiscogsClient;
+import org.ruaux.jdiscogs.api.Master;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Component;
@@ -25,7 +25,7 @@ public class RedisImageRepository implements ImageRepository {
 
 	@Override
 	@Cacheable(value = "images", unless = "#result == null")
-	public byte[] getImage(long masterId) {
+	public byte[] getImage(String masterId) {
 		if (config.getDiscogsApiDelay() > 0) {
 			try {
 				Thread.sleep(config.getDiscogsApiDelay());
