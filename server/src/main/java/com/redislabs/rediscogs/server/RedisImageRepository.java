@@ -26,11 +26,12 @@ public class RedisImageRepository implements ImageRepository {
 	@Override
 	@Cacheable(value = "images", unless = "#result == null")
 	public byte[] getImage(String masterId) {
-		if (config.getDiscogsApiDelay() > 0) {
+		if (config.getImageDelay() > 0) {
 			try {
-				Thread.sleep(config.getDiscogsApiDelay());
+				Thread.sleep(config.getImageDelay());
 			} catch (InterruptedException e) {
 				log.warn("Sleep interrupted", e);
+				return null;
 			}
 		}
 		Master response = discogs.getMaster(masterId);

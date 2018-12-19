@@ -1,9 +1,13 @@
 package com.redislabs.rediscogs.server;
 
+import java.net.MalformedURLException;
+
 import org.ruaux.jdiscogs.JDiscogsConfiguration;
 import org.ruaux.jdiscogs.data.BatchConfiguration;
-import org.springframework.batch.core.JobParameters;
-import org.springframework.batch.core.launch.JobLauncher;
+import org.springframework.batch.core.JobParametersInvalidException;
+import org.springframework.batch.core.repository.JobExecutionAlreadyRunningException;
+import org.springframework.batch.core.repository.JobInstanceAlreadyCompleteException;
+import org.springframework.batch.core.repository.JobRestartException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
@@ -19,17 +23,12 @@ import org.springframework.web.filter.CorsFilter;
 
 import com.redislabs.springredisearch.RediSearchConfiguration;
 
-import lombok.extern.slf4j.Slf4j;
-
 @SpringBootApplication(scanBasePackageClasses = { ServerConfiguration.class, RediSearchConfiguration.class,
 		JDiscogsConfiguration.class })
 @EnableCaching
 @EnableRedisRepositories
-@Slf4j
 public class ServerApplication implements ApplicationRunner {
 
-	@Autowired
-	private JobLauncher jobLauncher;
 	@Autowired
 	private BatchConfiguration batch;
 
@@ -47,12 +46,9 @@ public class ServerApplication implements ApplicationRunner {
 	}
 
 	@Override
-	public void run(ApplicationArguments args) {
-		try {
-			jobLauncher.run(batch.getMasterIndexJob(), new JobParameters());
-		} catch (Exception e) {
-			log.error("Could not index masters data", e);
-		}
+	public void run(ApplicationArguments args) throws JobExecutionAlreadyRunningException, JobRestartException,
+			JobInstanceAlreadyCompleteException, JobParametersInvalidException, MalformedURLException {
+		batch.runJobs();
 	}
 
 }

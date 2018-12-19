@@ -1,13 +1,15 @@
 package com.redislabs.rediscogs.server;
 
 import java.io.IOException;
-import java.text.MessageFormat;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.stream.Stream;
 
+import javax.annotation.PostConstruct;
+
+import org.ruaux.jdiscogs.JDiscogsConfiguration;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.CacheControl;
 import org.springframework.http.HttpHeaders;
@@ -25,6 +27,7 @@ import io.redisearch.Document;
 import io.redisearch.Query;
 import io.redisearch.SearchResult;
 import io.redisearch.Suggestion;
+import io.redisearch.client.Client;
 import io.redisearch.client.SuggestionOptions;
 import io.redisearch.client.SuggestionOptions.With;
 import lombok.Builder;
@@ -35,15 +38,15 @@ class RediscogsController {
 
 	@Autowired
 	private ServerConfiguration config;
-
+	@Autowired
+	private JDiscogsConfiguration discogs;
 	@Autowired
 	private RediSearchConfiguration rediSearchConfig;
-
 	@Autowired
 	private ImageRepository imageRepository;
 
-	private String artistQueryPattern = "{0} {1} @artistId:{2}";
-	private String queryPattern = "{0} {1}";
+	private Client artistSuggestClient;
+	private Client masterClient;
 
 	@Data
 	@Builder
@@ -52,11 +55,17 @@ class RediscogsController {
 		private String id;
 	}
 
+	@PostConstruct
+	public void init() {
+		masterClient = rediSearchConfig.getClient(discogs.getData().getMasterIndex());
+		artistSuggestClient = rediSearchConfig.getClient(discogs.getData().getArtistSuggestionIndex());
+	}
+
 	@GetMapping("/suggest-artists")
 	public Stream<ArtistSuggestion> suggestArtists(
 			@RequestParam(name = "prefix", defaultValue = "", required = false) String prefix) {
 		SuggestionOptions options = SuggestionOptions.builder().with(With.PAYLOAD).max(10).build();
-		List<Suggestion> results = rediSearchConfig.getSuggestClient("artist").getSuggestion(prefix, options);
+		List<Suggestion> results = artistSuggestClient.getSuggestion(prefix, options);
 		return results.stream()
 				.map(result -> ArtistSuggestion.builder().id(result.getPayload()).name(result.getString()).build());
 	}
@@ -64,11 +73,10 @@ class RediscogsController {
 	@GetMapping("/search-albums")
 	public Stream<Map<String, Object>> searchAlbums(@RequestParam(name = "artistId", required = false) String artistId,
 			@RequestParam(name = "query", required = false, defaultValue = "") String query) {
-		String queryPattern = getQueryPattern(artistId);
-		Query q = new Query(MessageFormat.format(queryPattern, config.getImageFilter(), query, artistId));
+		Query q = new Query(getQuery(query, artistId));
 		q.limit(0, config.getSearchResultsLimit());
 		q.setSortBy("year", true);
-		SearchResult results = rediSearchConfig.getSearchClient("master").search(q);
+		SearchResult results = masterClient.search(q);
 		return results.docs.stream().map(doc -> toMap(doc));
 	}
 
@@ -81,11 +89,13 @@ class RediscogsController {
 		return map;
 	}
 
-	private String getQueryPattern(String artistId) {
-		if (artistId == null || artistId.length() == 0) {
-			return queryPattern;
+	private String getQuery(String queryString, String artistId) {
+		String query = config.getImageFilter() + " " + queryString;
+		if (artistId != null && artistId.length() > 0) {
+			String artistFilter = config.getArtistIdFilter().replace("{artistId}", artistId);
+			return query + " " + artistFilter;
 		}
-		return artistQueryPattern;
+		return query;
 	}
 
 	@ResponseBody

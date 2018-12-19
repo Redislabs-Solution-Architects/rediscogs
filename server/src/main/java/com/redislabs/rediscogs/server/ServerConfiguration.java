@@ -12,8 +12,9 @@ import lombok.Data;
 @Data
 public class ServerConfiguration {
 
-	private int searchResultsLimit = 20;
 	private String imageFilter;
-	private long discogsApiDelay = 100;
+	private String artistIdFilter;
+	private int searchResultsLimit = 20;
+	private long imageDelay = 100;
 
 }

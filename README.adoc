@@ -29,7 +29,7 @@ mvn clean install
 Run the application:
 [source,sh]
 ----
-java -jar server/target/rediscogs-server-0.0.1-SNAPSHOT.jar --discogs.token=<your_discogs_token> --spring.redis.host=<host> --spring.redis.port=<port>
+java -jar server/target/rediscogs-server-1.0.2.jar --discogs.api.token=<your_discogs_token> --spring.redis.host=<host> --spring.redis.port=<port>
 ----
 
 === Running in Docker
@@ -42,7 +42,7 @@ mvn dockerfile:build
 Run the container:
 [source,sh]
 ----
-docker run  -e "spring.redis.host=docker.for.mac.localhost" -e "discogs.token=<your_discogs_token>" -p 8080:8080 redislabs/rediscogs
+docker run  -e "spring.redis.host=docker.for.mac.localhost" -e "discogs.api.token=<your_discogs_token>" -p 8080:8080 redislabs/rediscogs
 ----
 
 === Deploying to Cloud Foundry
@@ -61,12 +61,20 @@ cf push
 |Property |Description |Default
 
 |`spring.redis.host`
-|Redis database host name
+|Redis database hostname
 |`localhost`
 
 |`spring.redis.port`
 |Redis database port
 |`6379`
+
+|`image-delay`
+|Duration in milliseconds to sleep before getting an image from Discogs API (useful to demonstrate  caching)
+|`100`
+
+|`search-results-limit`
+|Maximum number of results for searches (`LIMIT` argument in `FT.SEARCH`)
+|`20`
 
 |`spring.cache.cache-names`
 |Caches to be created on startup
@@ -76,34 +84,6 @@ cf push
 |duration in milliseconds
 |`600000`
 
-|`skip-load`
-|skip loading of Discogs masters file
-|`false`
-
-|`batch-size`
-|number of elements per batch processing
-|`50`
-
-|`file-url-template`
-|Discogs Masters database URI template
-|https://discogs-data.s3-us-west-2.amazonaws.com/data/2018/discogs_20181001_{entity}.xml.gz
-
-|`discogs.url`
-|URL for Discogs API masters endpoint
-|`https://api.discogs.com/masters/{id}`
-
-|`discogs.token`
-|Your Discogs API token
-|`wI...qz`
-
-|`discogs.delay`
-|Duration in milliseconds to sleep before Discogs API call (useful to demonstrate  caching)
-|`100`
-
-|`discogs.user-agent`
-|User agent to use for Discogs API calls
-|`com.redislabs.rediscogs.useragent`
-
 |`redisearch-host`
 |RediSearch database hostname
 |`localhost`
@@ -112,19 +92,56 @@ cf push
 |RediSearch database port
 |`6379`
 
-|`search-results-limit`
-|Maximum number of results for searches (`LIMIT` argument in `FT.SEARCH`)
-|`20`
+|`discogs.data.master-index`
+|Name of the master index
+|`masterIdx`
+
+|`discogs.data.artist-suggestion-index`
+|Name of the artist suggestion index
+|`artistSuggestIdx`
+
+|`discogs.data.url`
+|Discogs Masters database URI template
+|https://discogs-data.s3-us-west-2.amazonaws.com/data/2018/discogs_20181001_{entity}.xml.gz
+
+|`discogs.data.batch-size`
+|number of elements per batch processing
+|`50`
+
+|`discogs.data.skip`
+|skip loading of Discogs data file
+|`false`
+
+|`discogs.data.no-op`
+|Disables all writes to Redis (only read the data file). Useful for performance testing
+|`false`
+
+|`discogs.api.url`
+|URL for Discogs API masters endpoint
+|`https://api.discogs.com/masters/{id}`
+
+|`discogs.api.token`
+|Your Discogs API token
+|`wI...qz`
+
+|`discogs.api.user-agent`
+|User agent to use for Discogs API calls
+|`com.redislabs.rediscogs.useragent`
+
+|`spring.task.execution.pool.core-size`
+|Number of threads to use for data loading jobs
+|`1`
+
+|`spring.redis.jedis.pool.max-active`
+|Maximum number of connections that can be allocated by the Jedis pool
+|`1`
 |===
 
 == Demo Steps
 === Redis CLI
 . Show number of keys in Redis: `info`
-. Run simple keyword search: `FT.SEARCH mastersIdx spring`
-. Show Hash for one of the previous matches: `HGETALL "master:834798"`
-. Highlight the `_class` field that Spring Data Redis uses to keep track of the original class (for object deserialization purposes)
-. Run prefix search: `FT.SEARCH mastersIdx spring*`
-. Show Hash for one of the previous matches: `HGETALL "master:151353"`
+. Run simple keyword search: `FT.SEARCH masterIdx spring`
+. Run prefix search: `FT.SEARCH masterIdx spring*`
 
 === Web UI
 . Open http://localhost:8080
