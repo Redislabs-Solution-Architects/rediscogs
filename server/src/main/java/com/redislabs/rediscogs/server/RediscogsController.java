@@ -94,10 +94,13 @@ class RediscogsController {
 	}
 
 	private String getQuery(String queryString, String artistId) {
-		String query = config.getImageFilter() + " " + queryString;
+		String query = config.getImageFilter();
 		if (artistId != null && artistId.length() > 0) {
 			String artistFilter = config.getArtistIdFilter().replace("{artistId}", artistId);
-			return query + " " + artistFilter;
+			query += " " + artistFilter;
+		}
+		if (queryString != null && queryString.length() > 0) {
+			query += " " + queryString;
 		}
 		return query;
 	}
