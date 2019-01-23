@@ -51,7 +51,7 @@ public class RedisImageRepository implements ImageRepository {
 					log.error("Could not read stream from URL: {}", url, e);
 				}
 			} catch (MalformedURLException e) {
-				log.error("Invalid URL: {}", uriString, e);
+				log.error("Invalid URL: {}", uriString);
 			}
 		}
 		return null;
