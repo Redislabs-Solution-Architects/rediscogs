@@ -6,9 +6,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Stream;
 
-import javax.annotation.PostConstruct;
-import javax.annotation.PreDestroy;
-
 import org.ruaux.jdiscogs.JDiscogsConfiguration;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.CacheControl;
@@ -21,7 +18,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.redislabs.lettusearch.RediSearchClient;
 import com.redislabs.lettusearch.StatefulRediSearchConnection;
 import com.redislabs.lettusearch.search.Limit;
 import com.redislabs.lettusearch.search.SearchOptions;
@@ -45,20 +41,7 @@ class RediscogsController {
 	@Autowired
 	private ImageRepository imageRepository;
 	@Autowired
-	private RediSearchClient client;
 	private StatefulRediSearchConnection<String, String> connection;
-
-	@PostConstruct
-	public void init() {
-		connection = client.connect();
-	}
-
-	@PreDestroy
-	public void tearDown() {
-		if (connection != null) {
-			connection.close();
-		}
-	}
 
 	@Data
 	@Builder

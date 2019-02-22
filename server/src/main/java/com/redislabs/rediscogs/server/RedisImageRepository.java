@@ -7,7 +7,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 
 import org.ruaux.jdiscogs.api.DiscogsClient;
-import org.ruaux.jdiscogs.api.Master;
+import org.ruaux.jdiscogs.api.model.Master;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Component;
