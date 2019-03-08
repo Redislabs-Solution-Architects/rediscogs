@@ -60,10 +60,9 @@ class RediscogsController {
 	}
 
 	@GetMapping("/search-albums")
-	public Stream<Map<String, String>> searchAlbums(@RequestParam(name = "artistId", required = false) String artistId,
+	public Stream<Map<String, String>> searchAlbums(
 			@RequestParam(name = "query", required = false, defaultValue = "") String query) {
-		SearchResults<String, String> results = connection.sync().search(discogs.getData().getMasterIndex(),
-				getQuery(query, artistId),
+		SearchResults<String, String> results = connection.sync().search(discogs.getData().getMasterIndex(), query,
 				SearchOptions.builder().limit(Limit.builder().num(config.getSearchResultsLimit()).build())
 						.sortBy(SortBy.builder().field("year").direction(Direction.Ascending).build()).build());
 		return results.getResults().stream().map(result -> toMap(result));
@@ -74,18 +73,6 @@ class RediscogsController {
 		map.put("id", result.getDocumentId());
 		map.putAll(result.getFields());
 		return map;
-	}
-
-	private String getQuery(String queryString, String artistId) {
-		String query = config.getImageFilter();
-		if (artistId != null && artistId.length() > 0) {
-			String artistFilter = config.getArtistIdFilter().replace("{artistId}", artistId);
-			query += " " + artistFilter;
-		}
-		if (queryString != null && queryString.length() > 0) {
-			query += " " + queryString;
-		}
-		return query;
 	}
 
 	@ResponseBody

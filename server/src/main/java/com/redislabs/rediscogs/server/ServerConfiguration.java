@@ -12,8 +12,6 @@ import lombok.Data;
 @Data
 public class ServerConfiguration {
 
-	private String imageFilter;
-	private String artistIdFilter;
 	private int searchResultsLimit = 20;
 	private long imageDelay = 100;
 

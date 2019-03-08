@@ -2,7 +2,7 @@
 		<mat-form-field class="artist-field">
 			<input matInput placeholder="Artist" [matAutocomplete]="auto" [formControl]="artistField">
 		</mat-form-field>
-		<mat-autocomplete class="artist-field" #auto="matAutocomplete" [displayWith]="displayFn">
+		<mat-autocomplete class="artist-field" #auto="matAutocomplete" [displayWith]="displayFn" (optionSelected)='artistSelected($event.option.value)'>
 			<mat-option *ngFor="let artist of artists" [value]="artist">
 				<span>{{artist.name }}</span> <small> | ID: {{artist.id}}</small>
 			</mat-option>

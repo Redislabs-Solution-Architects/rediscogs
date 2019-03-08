@@ -32,6 +32,10 @@ export class SearchAlbumsComponent implements OnInit {
     ).subscribe(prefix => this.searchService.suggestArtists(this.artistField.value).subscribe(data => { this.artists = data; }));
   }
 
+  artistSelected(artist: any) {
+    this.searchField.setValue('(@artistId:' + artist.id + ') ');
+  }
+
   displayFn(artist: any) {
     if (artist) { return artist.name; }
   }
