@@ -33,7 +33,7 @@ export class SearchAlbumsComponent implements OnInit {
   }
 
   artistSelected(artist: any) {
-    this.searchField.setValue('(@artistId:' + artist.id + ') ');
+    this.searchField.setValue('@artistId:"' + artist.id + '" ');
   }
 
   displayFn(artist: any) {
