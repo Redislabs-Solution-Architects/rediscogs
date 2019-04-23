@@ -1,4 +1,6 @@
 = Rediscogs
+:source-highlighter: pygments
+
 RediSearch demo based on data from https://data.discogs.com[discogs.com].
 
 == Setup
@@ -11,14 +13,16 @@ If you would like to see album covers you will also need to register at Discogs.
 
 === RediSearch
 To run a RediSearch instance using docker:
-[source,sh]
+
+[source,shell]
 ----
 docker run -p 6379:6379 redislabs/redisearch:latest
 ----
 
 === Server
 Clone this git repository and build it:
-[source,sh]
+
+[source,shell]
 ----
 git clone https://github.com/Redislabs-Solution-Architects/rediscogs.git
 cd rediscogs
@@ -27,20 +31,24 @@ mvn clean install
 
 === Running locally
 Run the application:
-[source,sh]
+
+[source,shell]
 ----
-java -jar server/target/rediscogs-server-1.0.2.jar --discogs.api.token=<your_discogs_token> --spring.redis.host=<host> --spring.redis.port=<port>
+java -jar server/target/rediscogs-server-1.2.0.jar --discogs.api.token=<your_discogs_token> --spring.redis.host=<host> --spring.redis.port=<port>
 ----
 
 === Running in Docker
 Build the Docker image:
-[source,sh]
+
+[source,shell]
 ----
 cd server
 mvn dockerfile:build
 ----
+
 Run the container:
-[source,sh]
+
+[source,shell]
 ----
 docker run  -e "spring.redis.host=docker.for.mac.localhost" -e "discogs.api.token=<your_discogs_token>" -p 8080:8080 redislabs/rediscogs
 ----
@@ -48,8 +56,8 @@ docker run  -e "spring.redis.host=docker.for.mac.localhost" -e "discogs.api.toke
 === Deploying to Cloud Foundry
 . Create a Redis service instance named `rediscogs_redis` with Apps Manager or `cf create-service`
 . Push the application
-+
-[source,sh]
+
+[source,shell]
 ----
 cf push
 ----
