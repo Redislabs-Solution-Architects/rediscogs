@@ -1,5 +1,5 @@
 = Rediscogs
-:source-highlighter: pygments
+:source-highlighter: coderay
 
 RediSearch demo based on data from https://data.discogs.com[discogs.com].
 
