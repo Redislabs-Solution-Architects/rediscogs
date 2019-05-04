@@ -1,12 +1,14 @@
-<mat-toolbar color="primary">
+<mat-toolbar class="toolbar" color="primary">
     <mat-toolbar-row>
-        <span>Welcome to RediSearch</span>
-        <img class="redisearch-logo" alt="RediSearch" src="https://oss.redislabs.com/redisearch/logo.png">
+        <span>ReDiscogs</span>
+        <img alt="RediSearch" src="https://oss.redislabs.com/redisearch/logo.png">        
         <span class="toolbar-spacer"></span>
-        <a class="redislabs-logo" href="https://redislabs.com">
-          <img height="50" alt="Redis Labs" src="assets/redislabs.png">
-        </a>
-      </mat-toolbar-row>
+        <form #userForm="ngForm" class="user-form">
+            <mat-form-field class="user-field">
+                <input matInput placeholder="User" [formControl]="userField">
+            </mat-form-field>
+        </form>
+    </mat-toolbar-row>
 </mat-toolbar>
 
 <app-search-albums></app-search-albums>

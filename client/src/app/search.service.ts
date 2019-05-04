@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpParams } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { HttpClient, HttpParams, HttpHeaders, HttpErrorResponse } from '@angular/common/http';
+import { Observable, throwError } from 'rxjs';
+import { catchError, retry } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -26,5 +27,21 @@ export class SearchService {
       params = params.set('query', query);
     }
     return this.http.get('/search-albums', { params });
+  }
+
+  favoriteAlbum(album: any) {
+    const options = {
+      headers: new HttpHeaders({
+        'Content-Type':  'application/json'
+      })
+    };
+    this.http.post('/favorite-album', album, options).subscribe(
+      (val) => {
+      },
+      response => {
+          console.log('POST call in error', response);
+      },
+      () => {
+      });
   }
 }

@@ -1,17 +1,14 @@
-.toolbar-icon {
-    padding: 0 14px;
+.user-form {
+	display: flex;
+	height: 50px;
+	margin: 0;
 }
-  
+
 .toolbar-spacer {
-    flex: 1 1 auto;
+	flex: 1 1 auto;
 }
 
-.redisearch-logo {
-	height: 50px;
-	padding: 0 14px;
-}
-
-.redislabs-logo {
-	height: 50px;
-	padding: 0 10px;
+.toolbar img {
+	height: 60%;
+	padding-left: 10px;
 }

@@ -1,49 +1,46 @@
 = Rediscogs
 :source-highlighter: coderay
+:icons: font
+
 
 RediSearch demo based on data from https://data.discogs.com[discogs.com].
 
 == Setup
 
-This demo requires Java 8, https://oss.redislabs.com/redisearch/Quick_Start/[Redisearch] and https://www.npmjs.com[npm]
+=== Requirements
+This demo requires Java 8 or higher, https://oss.redislabs.com/redisearch/Quick_Start/[Redisearch] and https://www.npmjs.com[npm]
 
 If you would like to see album covers you will also need to register at Discogs.com and https://www.discogs.com/settings/developers[generate an API token]
 
-== Running the demo
-
 === RediSearch
-To run a RediSearch instance using docker:
-
+You will need a RediSearch database to run the demo. To run a RediSearch using Docker:
 [source,shell]
 ----
-docker run -p 6379:6379 redislabs/redisearch:latest
+$ docker run -p 6379:6379 redislabs/redisearch:latest
 ----
 
-=== Server
+== Running the demo
 Clone this git repository and build it:
-
 [source,shell]
 ----
-git clone https://github.com/Redislabs-Solution-Architects/rediscogs.git
-cd rediscogs
-mvn clean install
+$ git clone https://github.com/Redislabs-Solution-Architects/rediscogs.git
+$ cd rediscogs
+$ ./mvnw clean install
 ----
 
 === Running locally
 Run the application:
-
 [source,shell]
 ----
-java -jar server/target/rediscogs-server-1.2.0.jar --discogs.api.token=<your_discogs_token> --spring.redis.host=<host> --spring.redis.port=<port>
+$ java -jar server/target/rediscogs-server-1.2.0.jar --discogs.api.token=<your_discogs_token> --spring.redis.host=<host> --spring.redis.port=<port>
 ----
 
 === Running in Docker
 Build the Docker image:
-
 [source,shell]
 ----
-cd server
-mvn dockerfile:build
+$ cd server
+$ mvn dockerfile:build
 ----
 
 Run the container:
@@ -127,31 +124,26 @@ cf push
 |===
 
 == Data Model
+
 === Master
 Each master release (i.e. album) is stored as a RediSearch document under the `masters` index with the following fields:
 |===
 |Field Name|Type
 
 |artist
-|`text`
+|Text
 
 |artistId
-|`text`
-
-|dataQuality
-|`text`
+|Tag
 
 |genres
-|`text`
-
-|styles
-|`text`
+|Tag
 
 |title
-|`text`
+|Text + Phonetic
 
 |year
-|`numeric`
+|Numeric
 |===
 
 == Demo Steps

@@ -10,9 +10,12 @@ import lombok.Data;
 @ConfigurationProperties(prefix = "")
 @EnableAutoConfiguration
 @Data
-public class ServerConfiguration {
+public class RediscogsConfiguration {
 
 	private int searchResultsLimit = 20;
-	private long imageDelay = 100;
+	private long imageDelay = 3000;
+	private String usernameAttribute = "username";
+	private String favoritesAttribute = "favorites";
+	private String favoritesStream = "favorites:stream";
 
 }

@@ -1,12 +1,16 @@
 package com.redislabs.rediscogs.server;
 
 import java.io.IOException;
-import java.util.LinkedHashMap;
+import java.util.Arrays;
+import java.util.LinkedHashSet;
 import java.util.List;
-import java.util.Map;
+import java.util.Set;
 import java.util.stream.Stream;
 
+import javax.servlet.http.HttpSession;
+
 import org.ruaux.jdiscogs.JDiscogsConfiguration;
+import org.ruaux.jdiscogs.data.MasterIndexWriter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.CacheControl;
 import org.springframework.http.HttpHeaders;
@@ -14,6 +18,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -30,12 +36,14 @@ import com.redislabs.lettusearch.suggest.SuggestResult;
 
 import lombok.Builder;
 import lombok.Data;
+import lombok.extern.slf4j.Slf4j;
 
 @RestController
+@Slf4j
 class RediscogsController {
 
 	@Autowired
-	private ServerConfiguration config;
+	private RediscogsConfiguration config;
 	@Autowired
 	private JDiscogsConfiguration discogs;
 	@Autowired
@@ -59,20 +67,50 @@ class RediscogsController {
 				.map(result -> ArtistSuggestion.builder().id(result.getPayload()).name(result.getString()).build());
 	}
 
+	@PostMapping("/favorite-album")
+	public ResponseEntity<Void> favoriteAlbum(@RequestBody Album album, HttpSession session) {
+		String username = (String) session.getAttribute(config.getUsernameAttribute());
+		log.info("Received favorite id {} from user {}", album.getId(), username);
+		connection.sync().xadd(config.getFavoritesStream(), "user", username, "id", album.getId());
+		Set<String> favorites = (Set<String>) session.getAttribute(config.getFavoritesAttribute());
+		if (favorites == null) {
+			favorites = new LinkedHashSet<>();
+		}
+		favorites.add(album.getId());
+		session.setAttribute(config.getFavoritesAttribute(), favorites);
+		return new ResponseEntity<>(HttpStatus.OK);
+	}
+
+	@PostMapping("/username")
+	public ResponseEntity<Void> username(@RequestBody String username, HttpSession session) {
+		log.info("Setting username '{}'", username);
+		session.setAttribute(config.getUsernameAttribute(), username);
+		return new ResponseEntity<>(HttpStatus.OK);
+	}
+
 	@GetMapping("/search-albums")
-	public Stream<Map<String, String>> searchAlbums(
+	public Stream<Album> searchAlbums(HttpSession session,
 			@RequestParam(name = "query", required = false, defaultValue = "") String query) {
 		SearchResults<String, String> results = connection.sync().search(discogs.getData().getMasterIndex(), query,
 				SearchOptions.builder().limit(Limit.builder().num(config.getSearchResultsLimit()).build())
 						.sortBy(SortBy.builder().field("year").direction(Direction.Ascending).build()).build());
-		return results.getResults().stream().map(result -> toMap(result));
+		return results.getResults().stream().map(result -> createAlbum(session, result));
 	}
 
-	private Map<String, String> toMap(SearchResult<String, String> result) {
-		Map<String, String> map = new LinkedHashMap<>();
-		map.put("id", result.getDocumentId());
-		map.putAll(result.getFields());
-		return map;
+	private Album createAlbum(HttpSession session, SearchResult<String, String> result) {
+		Album album = new Album();
+		album.setId(result.getDocumentId());
+		album.setArtist(result.getFields().get(MasterIndexWriter.FIELD_ARTIST));
+		album.setArtistId(result.getFields().get(MasterIndexWriter.FIELD_ARTISTID));
+		album.setTitle(result.getFields().get(MasterIndexWriter.FIELD_TITLE));
+		album.setYear(result.getFields().get(MasterIndexWriter.FIELD_YEAR));
+		album.setGenres(Arrays.asList(result.getFields().getOrDefault(MasterIndexWriter.FIELD_GENRES, "")
+				.split(discogs.getHashArrayDelimiter())));
+		Set<String> favorites = (Set<String>) session.getAttribute(config.getFavoritesAttribute());
+		if (favorites != null) {
+			album.setFavorite(favorites.contains(album.getId()));
+		}
+		return album;
 	}
 
 	@ResponseBody

@@ -1,31 +1,30 @@
 <form #searchForm="ngForm" (ngSubmit)="search()" class="search-form">
-		<mat-form-field class="artist-field">
-			<input matInput placeholder="Artist" [matAutocomplete]="auto" [formControl]="artistField">
-		</mat-form-field>
-		<mat-autocomplete class="artist-field" #auto="matAutocomplete" [displayWith]="displayFn" (optionSelected)='artistSelected($event.option.value)'>
-			<mat-option *ngFor="let artist of artists" [value]="artist">
-				<span>{{artist.name }}</span> <small> | ID: {{artist.id}}</small>
-			</mat-option>
-		</mat-autocomplete>
-		<mat-form-field class="search-field"> <input matInput placeholder="Query" [formControl]="searchField">
-		</mat-form-field>
-		<button mat-raised-button color="primary" type="submit">Submit</button>
+	<mat-form-field class="artist-field"> <input matInput
+		placeholder="Artist" [matAutocomplete]="auto"
+		[formControl]="artistField"> </mat-form-field>
+	<mat-autocomplete class="artist-field" #auto="matAutocomplete"
+		[displayWith]="displayFn"
+		(optionSelected)='artistSelected($event.option.value)'>
+	<mat-option *ngFor="let artist of artists" [value]="artist">
+	<span>{{artist.name }}</span> <small> | ID: {{artist.id}}</small> </mat-option> </mat-autocomplete>
+	<mat-form-field class="search-field"> <input matInput
+		placeholder="Query" [formControl]="searchField"> </mat-form-field>
+	<button mat-raised-button color="primary" type="submit">Submit</button>
 </form>
 <br>
 
-<div class="search-results" fxLayout="row wrap" fxLayout.xs="column" fxLayoutGap="1%" fxLayoutAlign="left">
+<div class="search-results" fxLayout="row wrap" fxLayout.xs="column"
+	fxLayoutGap="1%" fxLayoutAlign="left">
 	<div class="album-card" *ngFor="let album of results | async">
-		<img src="/album-image/{{album.id}}" alt="{{album.title}}">
+		<img src="album-image/{{album.id}}" alt="{{album.title}}">
+		<button mat-mini-fab color="primary" class="like-button-overlay mat-fab mat-primary" [disabled]="album.favorite" (click)="favorite(album)">
+       		<mat-icon aria-label="Favorite">thumb_up_alt</mat-icon>
+       	</button>
 		<div class="card-content">
-			<div class="row album-title">
-				<h5>
-					<a href="https://www.discogs.com/master/{{album.id}}">{{album.title}}</a>
-				</h5>
+			<div class="row">
+				<h5><a href="https://www.discogs.com/master/{{album.id}}">{{album.title}}</a> ({{album.year}})</h5>
 			</div>
-			<div class="row album-details">
-				<div class="album-genres">{{album.genres}}</div>
-				<div class="album-year">{{album.year}}</div>
-			</div>
+			<div class="row album-details">{{album.genres}}</div>
 		</div>
 	</div>
 </div>

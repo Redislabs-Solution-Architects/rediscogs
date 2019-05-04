@@ -19,7 +19,7 @@ import lombok.extern.slf4j.Slf4j;
 public class RedisImageRepository implements ImageRepository {
 
 	@Autowired
-	private ServerConfiguration config;
+	private RediscogsConfiguration config;
 	@Autowired
 	private DiscogsClient discogs;
 
