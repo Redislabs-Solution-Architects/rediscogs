@@ -71,7 +71,7 @@ class RediscogsController {
 	public ResponseEntity<Void> favoriteAlbum(@RequestBody Album album, HttpSession session) {
 		String username = (String) session.getAttribute(config.getUsernameAttribute());
 		log.info("Received favorite id {} from user {}", album.getId(), username);
-		connection.sync().xadd(config.getFavoritesStream(), "user", username, "id", album.getId());
+		connection.sync().xadd(config.getFavoritesStream(), "username", username, "albumId", album.getId());
 		Set<String> favorites = (Set<String>) session.getAttribute(config.getFavoritesAttribute());
 		if (favorites == null) {
 			favorites = new LinkedHashSet<>();

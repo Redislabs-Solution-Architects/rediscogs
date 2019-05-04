@@ -44,10 +44,9 @@ $ mvn dockerfile:build
 ----
 
 Run the container:
-
 [source,shell]
 ----
-docker run  -e "spring.redis.host=docker.for.mac.localhost" -e "discogs.api.token=<your_discogs_token>" -p 8080:8080 redislabs/rediscogs
+$ docker run  -e "spring.redis.host=docker.for.mac.localhost" -e "discogs.api.token=<your_discogs_token>" -p 8080:8080 redislabs/rediscogs
 ----
 
 === Deploying to Cloud Foundry
@@ -56,7 +55,7 @@ docker run  -e "spring.redis.host=docker.for.mac.localhost" -e "discogs.api.toke
 
 [source,shell]
 ----
-cf push
+$ cf push
 ----
 
 == Configuration
@@ -105,7 +104,7 @@ cf push
 |skip loading of Discogs data file
 
 |`discogs.data.no-op`
-|Disables all writes to Redis (only read the data file). Useful for performance testing
+|Disables all writes to Redis (only reads the data file). Useful for performance testing
 
 |`discogs.api.url`
 |URL for Discogs API masters endpoint
@@ -147,23 +146,50 @@ Each master release (i.e. album) is stored as a RediSearch document under the `m
 |===
 
 == Demo Steps
-=== Redis CLI
-. Show number of keys in Redis: `info`
-. Run simple keyword search: `FT.SEARCH masters spring`
+
+=== Searching with redis-cli
+. Launch redis-cli
+. Show number of documents in RediSearch index: `FT.INFO masters`
+. Run simple keyword search: `FT.SEARCH masters java`
++
+NOTE: `title` is a phonetic text field so you will notice documents with different spellings in that field
 . Run prefix search: `FT.SEARCH masters spring*`
 
-=== Web UI
+=== Searching with Web UI
 . Open http://localhost:8080
 . Enter some characters in the Artist field to retrieve suggestions from RediSearch (e.g. `Dusty`)
-. Select an artist from the autocompleted options and click on the `Submit` button
+. Select an artist from the auto-complete options and click on the `Submit` button
+. Refine the search by adding a numeric filter on release year in `Query` field: `@year:[1960 1970]`
+. Refine the search further by adding a filter on release genres: `@year:[1960 1970] @genres:{pop | rock}`
+
+=== Caching
+. Select a different artist and hit `Submit`
 . Notice how long it takes to load images from the https://api.discogs.com[Discogs API]
 . After all images have been loaded, click on the `Submit` button again
 . Notice how fast the images are loading this time around
 . In `redis-cli` show cached images: `KEYS "images::*"`
 . Show type of a cached image: `TYPE "images::319832"`
 . Display image bytes stored in String data structure: `GET "images::319832"`
-. Go back to Web UI and select a different artist (e.g. `Bruce Springsteen`)
-. Hit the `Submit` button
-. Refine the search by adding a numeric filter on release year in `Query` field: `@year:[1980 1990]`
-. Refine the search further by adding a filter on release genre: `@year:[1980 1990] @genres:pop`
-. Refine the search further by adding a negative filter on release genre: `@year:[1980 1990] @genres:pop (-@genres:rock)`
+
+=== Session
+. Enter your name in the top right section of the page 
+. Choose an artist and hit `Submit`
+. Click `like` on some of the returned albums
+. Hit `Submit` again to refresh the list of albums
+. Notice how your favorite albums are kept in the current session
+. In `redis-cli` show session-related keys: `KEYS "spring:session:*"`
+. Choose a session entry and show its content: `HGETALL "spring:session:sessions:d1e08957-6cee-49b6-81af-b21720d3c372"`
+
+=== Streams
+. In a terminal window listen for messages on the favorites stream: `while true; do redis-cli XREAD BLOCK 0 STREAMS favorites:stream $; done`
+. Open a browser window side-by-side with the terminal window
+. Click `like` on any album and notice the messages in the stream:
+```
+1) 1) "favorites:stream"
+   2) 1) 1) "1557009211512-0"
+         2) 1) "username"
+            2) "Julien"
+            3) "albumId"
+            4) "163817"
+``` 
+
