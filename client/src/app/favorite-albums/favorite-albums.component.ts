@@ -19,7 +19,7 @@ export class FavoriteAlbumsComponent implements OnInit {
   ngOnInit() {
     this.http.get(this.API_URL + 'likes').subscribe((history: any) => this.history = history);
     const stompConfig: StompConfig = {
-      url: 'ws://localhost:8080/api/websocket',
+      url: 'ws://localhost:8080/websocket',
       headers: {
         login: '',
         passcode: ''

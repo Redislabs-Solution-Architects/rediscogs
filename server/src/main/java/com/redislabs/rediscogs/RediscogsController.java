@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -38,16 +39,16 @@ import com.redislabs.lettusearch.suggest.SuggestGetOptions;
 import com.redislabs.lettusearch.suggest.SuggestResult;
 import com.redislabs.rediscogs.model.Album;
 import com.redislabs.rediscogs.model.AlbumLike;
+import com.redislabs.rediscogs.model.ArtistSuggestion;
 import com.redislabs.rediscogs.model.LikeHistory;
 import com.redislabs.rediscogs.model.User;
 
 import io.lettuce.core.Range;
 import io.lettuce.core.StreamMessage;
-import lombok.Builder;
-import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 
 @RestController
+@RequestMapping(path = "/api")
 @Slf4j
 @SuppressWarnings("unchecked")
 class RediscogsController {
@@ -63,20 +64,19 @@ class RediscogsController {
 	@Autowired
 	private AlbumMarshaller marshaller;
 
-	@Data
-	@Builder
-	public static class ArtistSuggestion {
-		private String name;
-		private String id;
-	}
-
 	@GetMapping("/suggest-artists")
 	public Stream<ArtistSuggestion> suggestArtists(
 			@RequestParam(name = "prefix", defaultValue = "", required = false) String prefix) {
 		List<SuggestResult<String>> results = connection.sync().sugget(discogs.getData().getArtistSuggestionIndex(),
 				prefix, SuggestGetOptions.builder().withPayloads(true).max(20l).build());
-		return results.stream()
-				.map(result -> ArtistSuggestion.builder().id(result.getPayload()).name(result.getString()).build());
+		return results.stream().map(result -> artistSuggestion(result));
+	}
+
+	private ArtistSuggestion artistSuggestion(SuggestResult<String> result) {
+		ArtistSuggestion suggestion = new ArtistSuggestion();
+		suggestion.setId(result.getPayload());
+		suggestion.setName(result.getString());
+		return suggestion;
 	}
 
 	@PostMapping("/like-album")
