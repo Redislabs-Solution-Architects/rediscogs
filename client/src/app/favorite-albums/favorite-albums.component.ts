@@ -22,7 +22,7 @@ export class FavoriteAlbumsComponent implements OnInit {
   }
 
   connectStompService(config: any) {
-    const stompUrl = 'ws://' + config.host + ':' + config.port + config.endpoint;
+    const stompUrl = config.protocol + '://' + config.host + ':' + config.port + config.endpoint;
     const stompConfig: StompConfig = {
       url: stompUrl,
       headers: {

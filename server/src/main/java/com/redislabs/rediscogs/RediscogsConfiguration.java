@@ -25,6 +25,7 @@ public class RediscogsConfiguration {
 	@Data
 	public static class StompConfig implements Serializable {
 		private static final long serialVersionUID = 706007058202655483L;
+		private String protocol = "ws";
 		private String host = "localhost";
 		private int port = 8080;
 		private String endpoint = "/websocket";
