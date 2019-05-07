@@ -21,7 +21,7 @@ export class FavoriteAlbumsComponent implements OnInit {
     this.http.get(this.API_URL + 'likes').subscribe((history: any) => this.history = history);
     this.http.get(this.API_URL + 'stomp-config').subscribe((stomp: any) => this.stomp = stomp);
     const stompConfig: StompConfig = {
-      url: 'ws://'+this.stomp.host+':'+this.stomp.port+this.stomp.endpoint,
+      url: 'ws://' + this.stomp.host + ':' + this.stomp.port + this.stomp.endpoint,
       headers: {
         login: '',
         passcode: ''
