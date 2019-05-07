@@ -2,6 +2,7 @@ package com.redislabs.rediscogs;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -89,7 +90,7 @@ class RediscogsController {
 	}
 
 	@PostMapping("/like-album")
-	public ResponseEntity<Void> likeAlbum(@RequestBody Album album, HttpSession session) {
+	public ResponseEntity<Void> like(@RequestBody Album album, HttpSession session) {
 		User user = (User) session.getAttribute(config.getUserAttribute());
 		Map<String, String> fields = new HashMap<>();
 		if (user != null) {
@@ -101,6 +102,7 @@ class RediscogsController {
 		fields.put(MasterIndexWriter.FIELD_GENRES, String.join(discogs.getHashArrayDelimiter(), album.getGenres()));
 		fields.put(MasterIndexWriter.FIELD_TITLE, album.getTitle());
 		fields.put(MasterIndexWriter.FIELD_YEAR, album.getYear());
+		fields.put(AlbumLike.FIELD_TIME, Instant.now().toString());
 		connection.sync().xadd(config.getLikesStream(), fields);
 		Set<String> likes = (Set<String>) session.getAttribute(config.getLikesAttribute());
 		if (likes == null) {
@@ -129,7 +131,7 @@ class RediscogsController {
 		List<StreamMessage<String, String>> messages = connection.sync().xrevrange(config.getLikesStream(),
 				Range.unbounded(), io.lettuce.core.Limit.create(0, config.getMaxLikes()));
 		for (StreamMessage<String, String> message : messages) {
-			likes.add(marshaller.albumLike(message));
+			likes.add(marshaller.toLike(message));
 		}
 		LikeHistory history = new LikeHistory();
 		history.setLikes(likes);
