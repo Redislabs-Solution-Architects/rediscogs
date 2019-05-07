@@ -91,8 +91,8 @@ class RediscogsController {
 
 	@PostMapping("/like-album")
 	public ResponseEntity<Void> like(@RequestBody Album album, HttpSession session) {
-		User user = (User) session.getAttribute(config.getUserAttribute());
 		Map<String, String> fields = new HashMap<>();
+		User user = (User) session.getAttribute(config.getUserAttribute());
 		if (user != null) {
 			fields.put(config.getUserAttribute(), user.getName());
 		}

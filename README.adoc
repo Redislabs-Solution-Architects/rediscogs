@@ -52,7 +52,6 @@ $ docker run  -e "spring.redis.host=docker.for.mac.localhost" -e "discogs.api.to
 === Deploying to Cloud Foundry
 . Create a Redis service instance named `rediscogs_redis` with Apps Manager or `cf create-service`
 . Push the application
-
 [source,shell]
 ----
 $ cf push

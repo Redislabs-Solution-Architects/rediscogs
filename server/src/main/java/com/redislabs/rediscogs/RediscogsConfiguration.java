@@ -22,6 +22,7 @@ public class RediscogsConfiguration {
 	private int maxLikes = 10;
 	private StompConfig stomp = new StompConfig();
 	private boolean fuzzySuggest = true;
+	private String anonymousUsername = "Anonymous Coward";
 
 	@Data
 	public static class StompConfig implements Serializable {

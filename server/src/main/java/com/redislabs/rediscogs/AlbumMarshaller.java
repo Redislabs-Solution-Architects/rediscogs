@@ -24,7 +24,7 @@ public class AlbumMarshaller {
 	public AlbumLike toLike(StreamMessage<String, String> msg) {
 		Map<String, String> fields = msg.getBody();
 		AlbumLike like = new AlbumLike();
-		like.setUser(fields.get(config.getUserAttribute()));
+		like.setUser(fields.getOrDefault(config.getUserAttribute(), config.getAnonymousUsername()));
 		like.setTime(fields.get(AlbumLike.FIELD_TIME));
 		Album album = new Album();
 		album.setId(fields.get(MasterIndexWriter.FIELD_ID));
