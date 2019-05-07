@@ -3,7 +3,6 @@ package com.redislabs.rediscogs;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -65,7 +64,7 @@ class RediscogsController {
 	private StatefulRediSearchConnection<String, String> connection;
 	@Autowired
 	private AlbumMarshaller marshaller;
-	
+
 	@GetMapping("/stomp-config")
 	public StompConfig stompConfig() {
 		return config.getStomp();
