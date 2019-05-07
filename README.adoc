@@ -161,7 +161,7 @@ NOTE: `title` is a phonetic text field so you will notice documents with differe
 +
 `FT.SEARCH masters spring*`
 
-=== Searching with Web UI
+=== Search
 . Open http://localhost:8080
 . Enter some characters in the Artist field to retrieve suggestions from RediSearch (e.g. `Dusty`)
 . Select an artist from the auto-complete options and click on the `Submit` button
@@ -172,7 +172,7 @@ NOTE: `title` is a phonetic text field so you will notice documents with differe
 +
 `@year:[1960 1970] @genres:{pop | rock}`
 
-=== Caching
+=== Cache
 . Select a different artist and hit `Submit`
 . Notice how long it takes to load images from the https://api.discogs.com[Discogs API]
 . After all images have been loaded, click on the `Submit` button again
@@ -187,12 +187,12 @@ NOTE: `title` is a phonetic text field so you will notice documents with differe
 +
 `GET "images::319832"`
 
-=== Session
+=== Session Store
 . Enter your name in the top right section of the page 
 . Choose an artist and hit `Submit`
 . Click `like` on some of the returned albums
 . Hit `Submit` again to refresh the list of albums
-. Notice how your favorite albums are kept in the current session
+. Notice how your likes are kept in the current session
 . In `redis-cli` show session-related keys:
 +
 `KEYS "spring:session:*"`
@@ -201,18 +201,26 @@ NOTE: `title` is a phonetic text field so you will notice documents with differe
 `HGETALL "spring:session:sessions:d1e08957-6cee-49b6-81af-b21720d3c372"`
 
 === Streams
-. In a terminal window listen for messages on the favorites stream:
+. Open http://localhost:8080/#/likes in another browser window, side-by-side with the previous one 
+. In the search page click `like` on any album. Notice the likes showing up in real-time in the other browser window
+. In a terminal window listen for messages on the stream:
 [source,shell]
 ----
-$ while true; do redis-cli XREAD BLOCK 0 STREAMS favorites:stream $; done
-----
-. Open a browser window side-by-side with the terminal window
-. Click `like` on any album and notice the corresponding stream messages:
-----
-1) 1) "favorites:stream"
-   2) 1) 1) "1557009211512-0"
-         2) 1) "username"
-            2) "Julien"
-            3) "albumId"
-            4) "163817"
+$ while true; do redis-cli XREAD BLOCK 0 STREAMS likes:stream $; done
+...
+1) 1) "1557201909758-0"
+   2)  1) "artist"
+       2) "Herbie Hancock"
+       3) "year"
+       4) "1962"
+       5) "genres"
+       6) "Jazz,Bop"
+       7) "artistId"
+       8) "3865"
+       9) "id"
+      10) "163780"
+      11) "title"
+      12) "Takin' Off"
+      13) "username"
+      14) "Julien"
 ----

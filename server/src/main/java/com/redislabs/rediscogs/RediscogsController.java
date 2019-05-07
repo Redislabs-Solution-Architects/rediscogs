@@ -116,14 +116,14 @@ class RediscogsController {
 	}
 
 	@GetMapping("/user")
-	public User getUser(HttpSession session) {
+	public User user(HttpSession session) {
 		return (User) session.getAttribute(config.getUserAttribute());
 	}
 
 	@GetMapping("/likes")
-	public LikeHistory getLikes() {
+	public LikeHistory likes() {
 		List<AlbumLike> likes = new ArrayList<>();
-		List<StreamMessage<String, String>> messages = connection.sync().xrange(config.getLikesStream(),
+		List<StreamMessage<String, String>> messages = connection.sync().xrevrange(config.getLikesStream(),
 				Range.unbounded(), io.lettuce.core.Limit.create(0, config.getMaxLikes()));
 		for (StreamMessage<String, String> message : messages) {
 			likes.add(marshaller.albumLike(message));
