@@ -59,90 +59,27 @@ $ cf push
 
 == Configuration
 
-.Available configuration properties
-|===
-|Property |Description
+Here are the most common configuration properties:
 
-|`spring.redis.host`
-|Redis database hostname
-
-|`spring.redis.port`
-|Redis database port
-
-|`image-delay`
-|Duration in milliseconds to sleep before getting an image from Discogs API (useful to demonstrate  caching)
-
-|`search-results-limit`
-|Maximum number of results for searches (`LIMIT` argument in `FT.SEARCH`)
-
-|`spring.cache.cache-names`
-|Caches to be created on startup
-
-|`spring.cache.redis.time-to-live`
-|duration in milliseconds
-
-|`spring.redisearch.host`
-|RediSearch database hostname
-
-|`spring.redisearch.port`
-|RediSearch database port
-
-|`discogs.data.master-index`
-|Name of the master index
-
-|`discogs.data.artist-suggestion-index`
-|Name of the artist suggestion index
-
-|`discogs.data.url`
-|Discogs Masters database URI template
-
-|`discogs.data.batch-size`
-|number of elements per batch processing
-
-|`discogs.data.skip`
-|skip loading of Discogs data file
-
-|`discogs.data.no-op`
-|Disables all writes to Redis (only reads the data file). Useful for performance testing
-
-|`discogs.api.url`
-|URL for Discogs API masters endpoint
-
-|`discogs.api.token`
-|Your Discogs API token
-
-|`discogs.api.user-agent`
-|User agent to use for Discogs API calls
-
-|`spring.task.execution.pool.core-size`
-|Number of threads to use for data loading jobs
-
-|`spring.redis.jedis.pool.max-active`
-|Maximum number of connections that can be allocated by the Jedis pool
-|===
+- `spring.redis.host`: Redis database hostname
+- `spring.redis.port`: Redis database port
+- `discogs.api.token`: Your Discogs API token
+- `image-delay`: Duration in milliseconds to sleep before getting an image from Discogs API (useful to demonstrate  caching)
+- `search-results-limit`: Maximum number of results for searches (`LIMIT` argument in `FT.SEARCH`)
+- `spring.cache.cache-names`: Caches to be created on startup
+- `spring.cache.redis.time-to-live`: TTL for cache entries (images) in milliseconds
+- `discogs.data.skip`: skip loading of Discogs data file
 
 == Data Model
 
 === Master
 Each master release (i.e. album) is stored as a RediSearch document under the `masters` index with the following fields:
-|===
-|Field Name|Type
 
-|artist
-|Text
-
-|artistId
-|Tag
-
-|genres
-|Tag
-
-|title
-|Text + Phonetic
-
-|year
-|Numeric
-|===
+- `artist`: Text field
+- `artistId`: Tag field
+- `genres`: Tag field
+- `title`: Phonetic Text field
+- `year`: Numeric field
 
 == Demo Steps
 
@@ -155,7 +92,7 @@ Each master release (i.e. album) is stored as a RediSearch document under the `m
 +
 `FT.SEARCH masters java`
 +
-NOTE: `title` is a phonetic text field so you will notice documents with different spellings in that field
+NOTE: `title` is a phonetic text field so you will notice results containing words that sound similar 
 . Run prefix search:
 +
 `FT.SEARCH masters spring*`
