@@ -8,7 +8,7 @@
 
 <div class="like-list">
 	<mat-list>
-		<mat-list-item *ngFor="let like of history.likes">
+		<mat-list-item *ngFor="let like of likes">
 	        <img mat-list-avatar src="/api/album-image/{{like.album.id}}" alt="{{like.album.title}}">
 	        <p mat-line>
 	          <span>{{like.album.artist}} -- </span>

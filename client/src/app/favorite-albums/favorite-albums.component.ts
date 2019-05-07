@@ -11,17 +11,20 @@ export class FavoriteAlbumsComponent implements OnInit {
 
   API_URL = '/api/';
 
-  private stomp: any;
   private stompService: StompService;
-  private history: any;
+  private likes = [];
 
   constructor(private http: HttpClient) { }
 
   ngOnInit() {
-    this.http.get(this.API_URL + 'likes').subscribe((history: any) => this.history = history);
-    this.http.get(this.API_URL + 'stomp-config').subscribe((stomp: any) => this.stomp = stomp);
+    this.http.get(this.API_URL + 'likes').subscribe((history: any) => this.likes = history.likes);
+    this.http.get(this.API_URL + 'stomp-config').subscribe((stomp: any) => this.connectStompService(stomp));
+  }
+
+  connectStompService(config: any) {
+    const stompUrl = 'ws://' + config.host + ':' + config.port + config.endpoint;
     const stompConfig: StompConfig = {
-      url: 'ws://' + this.stomp.host + ':' + this.stomp.port + this.stomp.endpoint,
+      url: stompUrl,
       headers: {
         login: '',
         passcode: ''
@@ -32,7 +35,7 @@ export class FavoriteAlbumsComponent implements OnInit {
       debug: true
     };
     this.stompService = new StompService(stompConfig);
-    this.stompService.subscribe(this.stomp.likesTopic).subscribe(like => this.history.likes.unshift(JSON.parse(like.body)));
+    this.stompService.subscribe(config.likesTopic).subscribe(like => this.likes.unshift(JSON.parse(like.body)));
   }
 
 }
