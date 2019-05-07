@@ -7,6 +7,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 
 import org.ruaux.jdiscogs.api.DiscogsClient;
+import org.ruaux.jdiscogs.api.model.Image;
 import org.ruaux.jdiscogs.api.model.Master;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
@@ -36,7 +37,11 @@ public class RedisImageRepository implements ImageRepository {
 		}
 		Master response = discogs.getMaster(masterId);
 		if (response != null && response.getImages() != null && response.getImages().size() > 0) {
-			String uriString = response.getImages().get(0).getUri();
+			Image image = response.getPrimaryImage();
+			if (image == null) {
+				image = response.getImages().get(0);
+			}
+			String uriString = image.getUri();
 			try {
 				URL url = new URL(uriString);
 				try (BufferedInputStream in = new BufferedInputStream(url.openStream());

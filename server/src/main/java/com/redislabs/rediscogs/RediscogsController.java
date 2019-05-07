@@ -169,7 +169,10 @@ class RediscogsController {
 		final HttpHeaders headers = new HttpHeaders();
 		headers.setCacheControl(CacheControl.noCache().getHeaderValue());
 		response.setContentType(MediaType.IMAGE_JPEG_VALUE);
-		IOUtils.copy(new ByteArrayInputStream(imageRepository.getImage(masterId)), response.getOutputStream());
+		byte[] buffer = imageRepository.getImage(masterId);
+		if (buffer != null) {
+			IOUtils.copy(new ByteArrayInputStream(buffer), response.getOutputStream());
+		}
 	}
 
 }
