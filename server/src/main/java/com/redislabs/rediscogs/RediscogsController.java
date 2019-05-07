@@ -1,5 +1,6 @@
 package com.redislabs.rediscogs;
 
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -10,14 +11,17 @@ import java.util.Map;
 import java.util.Set;
 import java.util.stream.Stream;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.apache.tomcat.util.http.fileupload.IOUtils;
 import org.ruaux.jdiscogs.JDiscogsConfiguration;
 import org.ruaux.jdiscogs.data.MasterIndexWriter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.CacheControl;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -25,7 +29,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.redislabs.lettusearch.StatefulRediSearchConnection;
@@ -158,12 +161,13 @@ class RediscogsController {
 		return album;
 	}
 
-	@ResponseBody
 	@GetMapping(value = "/album-image/{id}")
-	public ResponseEntity<byte[]> getImageAsResource(@PathVariable("id") String masterId) throws IOException {
+	public void getImageAsResource(@PathVariable("id") String masterId, HttpServletResponse response)
+			throws IOException {
 		final HttpHeaders headers = new HttpHeaders();
 		headers.setCacheControl(CacheControl.noCache().getHeaderValue());
-		return new ResponseEntity<>(imageRepository.getImage(masterId), headers, HttpStatus.OK);
+		response.setContentType(MediaType.IMAGE_JPEG_VALUE);
+		IOUtils.copy(new ByteArrayInputStream(imageRepository.getImage(masterId)), response.getOutputStream());
 	}
 
 }
