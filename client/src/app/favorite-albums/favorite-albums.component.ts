@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { StompService, StompConfig } from "@stomp/ng2-stompjs";
+import { StompService, StompConfig } from '@stomp/ng2-stompjs';
 import { HttpClient } from '@angular/common/http';
 
 @Component({
@@ -17,12 +17,12 @@ export class FavoriteAlbumsComponent implements OnInit {
   constructor(private http: HttpClient) { }
 
   ngOnInit() {
-    this.http.get(this.API_URL + 'likes').subscribe((history: any) => this.history=history);
-    let stompConfig: StompConfig = {
+    this.http.get(this.API_URL + 'likes').subscribe((history: any) => this.history = history);
+    const stompConfig: StompConfig = {
       url: 'ws://localhost:8080/api/websocket',
       headers: {
-        login: "",
-        passcode: ""
+        login: '',
+        passcode: ''
       },
       heartbeat_in: 0,
       heartbeat_out: 20000,
