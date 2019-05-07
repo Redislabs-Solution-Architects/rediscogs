@@ -29,6 +29,7 @@ export class SearchAlbumsComponent implements OnInit {
 
   ngOnInit() {
     this.userField = new FormControl();
+    this.userField.setValue('Anonymous Coward');
     this.getUsername().subscribe((res) => {
       if (res) {
         this.userField.setValue(res.name);
