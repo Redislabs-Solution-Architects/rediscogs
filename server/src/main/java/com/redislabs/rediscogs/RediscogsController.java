@@ -78,7 +78,7 @@ class RediscogsController {
 	public Stream<ArtistSuggestion> suggestArtists(
 			@RequestParam(name = "prefix", defaultValue = "", required = false) String prefix) {
 		List<SuggestResult<String>> results = connection.sync().sugget(discogs.getData().getArtistSuggestionIndex(),
-				prefix, SuggestGetOptions.builder().withPayloads(true).max(20l).build());
+				prefix, SuggestGetOptions.builder().withPayloads(true).max(20l).fuzzy(config.isFuzzySuggest()).build());
 		return results.stream().map(result -> artistSuggestion(result));
 	}
 

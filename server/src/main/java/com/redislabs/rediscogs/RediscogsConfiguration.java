@@ -21,6 +21,7 @@ public class RediscogsConfiguration {
 	private String likesStream = "likes:stream";
 	private int maxLikes = 10;
 	private StompConfig stomp = new StompConfig();
+	private boolean fuzzySuggest = true;
 
 	@Data
 	public static class StompConfig implements Serializable {
