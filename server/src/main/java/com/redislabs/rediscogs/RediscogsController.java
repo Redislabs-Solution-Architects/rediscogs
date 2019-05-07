@@ -3,6 +3,7 @@ package com.redislabs.rediscogs;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -37,6 +38,7 @@ import com.redislabs.lettusearch.search.SortBy;
 import com.redislabs.lettusearch.search.SortBy.Direction;
 import com.redislabs.lettusearch.suggest.SuggestGetOptions;
 import com.redislabs.lettusearch.suggest.SuggestResult;
+import com.redislabs.rediscogs.RediscogsConfiguration.StompConfig;
 import com.redislabs.rediscogs.model.Album;
 import com.redislabs.rediscogs.model.AlbumLike;
 import com.redislabs.rediscogs.model.ArtistSuggestion;
@@ -63,6 +65,11 @@ class RediscogsController {
 	private StatefulRediSearchConnection<String, String> connection;
 	@Autowired
 	private AlbumMarshaller marshaller;
+	
+	@GetMapping("/stomp-config")
+	public StompConfig stompConfig() {
+		return config.getStomp();
+	}
 
 	@GetMapping("/suggest-artists")
 	public Stream<ArtistSuggestion> suggestArtists(

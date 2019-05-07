@@ -42,7 +42,7 @@ public class LikeConsumer extends Thread {
 		while (!stopped) {
 			try {
 				for (StreamMessage<String, String> message : commands.xread(xargs, stream)) {
-					sendingOperations.convertAndSend(config.getLikesTopic(), marshaller.albumLike(message));
+					sendingOperations.convertAndSend(config.getStomp().getLikesTopic(), marshaller.albumLike(message));
 				}
 			} catch (RedisException e) {
 				log.error("Error reading stream messages", e);
