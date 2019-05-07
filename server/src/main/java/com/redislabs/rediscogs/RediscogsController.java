@@ -1,9 +1,12 @@
-package com.redislabs.rediscogs.server;
+package com.redislabs.rediscogs;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.stream.Stream;
 
@@ -33,13 +36,20 @@ import com.redislabs.lettusearch.search.SortBy;
 import com.redislabs.lettusearch.search.SortBy.Direction;
 import com.redislabs.lettusearch.suggest.SuggestGetOptions;
 import com.redislabs.lettusearch.suggest.SuggestResult;
+import com.redislabs.rediscogs.model.Album;
+import com.redislabs.rediscogs.model.AlbumLike;
+import com.redislabs.rediscogs.model.LikeHistory;
+import com.redislabs.rediscogs.model.User;
 
+import io.lettuce.core.Range;
+import io.lettuce.core.StreamMessage;
 import lombok.Builder;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 
 @RestController
 @Slf4j
+@SuppressWarnings("unchecked")
 class RediscogsController {
 
 	@Autowired
@@ -50,6 +60,8 @@ class RediscogsController {
 	private ImageRepository imageRepository;
 	@Autowired
 	private StatefulRediSearchConnection<String, String> connection;
+	@Autowired
+	private AlbumMarshaller marshaller;
 
 	@Data
 	@Builder
@@ -67,25 +79,52 @@ class RediscogsController {
 				.map(result -> ArtistSuggestion.builder().id(result.getPayload()).name(result.getString()).build());
 	}
 
-	@PostMapping("/favorite-album")
-	public ResponseEntity<Void> favoriteAlbum(@RequestBody Album album, HttpSession session) {
-		String username = (String) session.getAttribute(config.getUsernameAttribute());
-		log.info("Received favorite id {} from user {}", album.getId(), username);
-		connection.sync().xadd(config.getFavoritesStream(), "username", username, "albumId", album.getId());
-		Set<String> favorites = (Set<String>) session.getAttribute(config.getFavoritesAttribute());
-		if (favorites == null) {
-			favorites = new LinkedHashSet<>();
+	@PostMapping("/like-album")
+	public ResponseEntity<Void> likeAlbum(@RequestBody Album album, HttpSession session) {
+		User user = (User) session.getAttribute(config.getUserAttribute());
+		Map<String, String> fields = new HashMap<>();
+		if (user != null) {
+			fields.put(config.getUserAttribute(), user.getName());
 		}
-		favorites.add(album.getId());
-		session.setAttribute(config.getFavoritesAttribute(), favorites);
+		fields.put(MasterIndexWriter.FIELD_ID, album.getId());
+		fields.put(MasterIndexWriter.FIELD_ARTIST, album.getArtist());
+		fields.put(MasterIndexWriter.FIELD_ARTISTID, album.getArtistId());
+		fields.put(MasterIndexWriter.FIELD_GENRES, String.join(discogs.getHashArrayDelimiter(), album.getGenres()));
+		fields.put(MasterIndexWriter.FIELD_TITLE, album.getTitle());
+		fields.put(MasterIndexWriter.FIELD_YEAR, album.getYear());
+		connection.sync().xadd(config.getLikesStream(), fields);
+		Set<String> likes = (Set<String>) session.getAttribute(config.getLikesAttribute());
+		if (likes == null) {
+			likes = new LinkedHashSet<>();
+		}
+		likes.add(album.getId());
+		session.setAttribute(config.getLikesAttribute(), likes);
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
 
-	@PostMapping("/username")
-	public ResponseEntity<Void> username(@RequestBody String username, HttpSession session) {
-		log.info("Setting username '{}'", username);
-		session.setAttribute(config.getUsernameAttribute(), username);
+	@PostMapping("/user")
+	public ResponseEntity<Void> setUsername(@RequestBody User user, HttpSession session) {
+		log.info("Setting user '{}'", user.getName());
+		session.setAttribute(config.getUserAttribute(), user);
 		return new ResponseEntity<>(HttpStatus.OK);
+	}
+
+	@GetMapping("/user")
+	public User getUser(HttpSession session) {
+		return (User) session.getAttribute(config.getUserAttribute());
+	}
+
+	@GetMapping("/likes")
+	public LikeHistory getLikes() {
+		List<AlbumLike> likes = new ArrayList<>();
+		List<StreamMessage<String, String>> messages = connection.sync().xrange(config.getLikesStream(),
+				Range.unbounded(), io.lettuce.core.Limit.create(0, config.getMaxLikes()));
+		for (StreamMessage<String, String> message : messages) {
+			likes.add(marshaller.albumLike(message));
+		}
+		LikeHistory history = new LikeHistory();
+		history.setLikes(likes);
+		return history;
 	}
 
 	@GetMapping("/search-albums")
@@ -106,9 +145,9 @@ class RediscogsController {
 		album.setYear(result.getFields().get(MasterIndexWriter.FIELD_YEAR));
 		album.setGenres(Arrays.asList(result.getFields().getOrDefault(MasterIndexWriter.FIELD_GENRES, "")
 				.split(discogs.getHashArrayDelimiter())));
-		Set<String> favorites = (Set<String>) session.getAttribute(config.getFavoritesAttribute());
-		if (favorites != null) {
-			album.setFavorite(favorites.contains(album.getId()));
+		Set<String> likes = (Set<String>) session.getAttribute(config.getLikesAttribute());
+		if (likes != null) {
+			album.setLike(likes.contains(album.getId()));
 		}
 		return album;
 	}

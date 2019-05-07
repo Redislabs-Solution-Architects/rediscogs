@@ -1,0 +1,23 @@
+.toolbar-spacer {
+	flex: 1 1 auto;
+}
+
+.toolbar img {
+	height: 60%;
+	padding-left: 10px;
+}
+
+.album-image {
+	height: 150px;
+}
+
+.album-image img {
+	width: 80px;
+	height: 80px;
+}
+
+.like-list {
+  display: flex;
+  flex-flow: row wrap;
+
+}

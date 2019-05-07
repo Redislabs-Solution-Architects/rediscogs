@@ -1,4 +1,4 @@
-package com.redislabs.rediscogs.server;
+package com.redislabs.rediscogs;
 
 import org.ruaux.jdiscogs.JDiscogsConfiguration;
 import org.ruaux.jdiscogs.data.BatchConfiguration;
@@ -25,6 +25,8 @@ public class RediscogsApplication implements ApplicationRunner {
 
 	@Autowired
 	private BatchConfiguration batch;
+	@Autowired
+	private LikeConsumer streamListener;
 
 	public static void main(String[] args) {
 		SpringApplication.run(RediscogsApplication.class, args);
@@ -42,6 +44,7 @@ public class RediscogsApplication implements ApplicationRunner {
 	@Override
 	public void run(ApplicationArguments args) throws Exception {
 		batch.runJobs();
+		streamListener.start();
 	}
 
 }

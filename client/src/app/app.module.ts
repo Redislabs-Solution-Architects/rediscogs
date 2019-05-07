@@ -1,8 +1,9 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { FlexLayoutModule } from '@angular/flex-layout';
-import { AppComponent } from './app.component';
 import { HttpClientModule } from '@angular/common/http';
+import { AppRoutingModule } from './app-routing.module';
+import { AppComponent } from './app.component';
 import { SearchAlbumsComponent } from './search-albums/search-albums.component';
 
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
@@ -18,14 +19,17 @@ import {
   MatToolbarModule
 } from '@angular/material';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { FavoriteAlbumsComponent } from './favorite-albums/favorite-albums.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    SearchAlbumsComponent
+    SearchAlbumsComponent,
+    FavoriteAlbumsComponent
   ],
   imports: [
     BrowserModule,
+    AppRoutingModule,
     HttpClientModule,
     BrowserAnimationsModule,
     ReactiveFormsModule,

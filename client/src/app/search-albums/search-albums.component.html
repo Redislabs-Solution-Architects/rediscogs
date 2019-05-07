@@ -1,3 +1,16 @@
+<mat-toolbar class="toolbar" color="primary">
+    <mat-toolbar-row>
+        <span>ReDiscogs</span>
+        <img alt="RediSearch" src="https://oss.redislabs.com/redisearch/logo.png">        
+        <span class="toolbar-spacer"></span>
+        <form #userForm="ngForm" class="user-form">
+            <mat-form-field class="user-field">
+                <input matInput placeholder="User" [formControl]="userField">
+            </mat-form-field>
+        </form>
+    </mat-toolbar-row>
+</mat-toolbar>
+
 <form #searchForm="ngForm" (ngSubmit)="search()" class="search-form">
 	<mat-form-field class="artist-field"> <input matInput
 		placeholder="Artist" [matAutocomplete]="auto"
@@ -16,8 +29,8 @@
 <div class="search-results" fxLayout="row wrap" fxLayout.xs="column"
 	fxLayoutGap="1%" fxLayoutAlign="left">
 	<div class="album-card" *ngFor="let album of results | async">
-		<img src="album-image/{{album.id}}" alt="{{album.title}}">
-		<button mat-mini-fab color="primary" class="like-button-overlay mat-fab mat-primary" [disabled]="album.favorite" (click)="favorite(album)">
+		<img src="/api/album-image/{{album.id}}" alt="{{album.title}}">
+		<button mat-mini-fab color="primary" class="like-button-overlay mat-fab mat-primary" [disabled]="album.like" (click)="like(album)">
        		<mat-icon aria-label="Favorite">thumb_up_alt</mat-icon>
        	</button>
 		<div class="card-content">
