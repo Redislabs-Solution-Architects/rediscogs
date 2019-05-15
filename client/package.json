@@ -4,7 +4,7 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
-    "build": "ng build --output-path ui-src/META-INF/resources",
+    "build": "ng build --output-hashing=all --output-path ui-src/META-INF/resources",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e"
