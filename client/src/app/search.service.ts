@@ -16,7 +16,7 @@ export class SearchService {
     if (prefix != null) {
       params = params.set('prefix', prefix);
     }
-    return this.http.get(this.API_URL + 'suggest-artists', { params });
+    return this.http.get(this.API_URL + 'suggest/artists', { params });
   }
 
   searchAlbums(artistId: string, query: string): Observable<any> {
@@ -27,7 +27,7 @@ export class SearchService {
     if (query != null) {
       params = params.set('query', query);
     }
-    return this.http.get(this.API_URL + 'search-albums', { params });
+    return this.http.get(this.API_URL + 'search/albums', { params });
   }
 
   likeAlbum(album: any) {
@@ -36,7 +36,7 @@ export class SearchService {
         'Content-Type':  'application/json'
       })
     };
-    this.http.post(this.API_URL + 'like-album', album, options).subscribe(
+    this.http.post(this.API_URL + 'likes/album', album, options).subscribe(
       (val) => {
       },
       response => {

@@ -17,8 +17,8 @@ export class FavoriteAlbumsComponent implements OnInit {
   constructor(private http: HttpClient) { }
 
   ngOnInit() {
-    this.http.get(this.API_URL + 'likes').subscribe((history: any) => this.likes = history.likes);
-    this.http.get(this.API_URL + 'stomp-config').subscribe((stomp: any) => this.connectStompService(stomp));
+    this.http.get(this.API_URL + 'likes').subscribe((likes: any) => this.likes = likes);
+    this.http.get(this.API_URL + 'config/stomp').subscribe((stomp: any) => this.connectStompService(stomp));
   }
 
   connectStompService(config: any) {

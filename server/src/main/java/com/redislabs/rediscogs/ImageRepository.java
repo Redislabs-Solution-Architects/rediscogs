@@ -1,6 +1,64 @@
 package com.redislabs.rediscogs;
 
-public interface ImageRepository {
+import java.io.BufferedInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
 
-	byte[] getImage(String masterId);
+import org.ruaux.jdiscogs.api.DiscogsClient;
+import org.ruaux.jdiscogs.api.model.Image;
+import org.ruaux.jdiscogs.api.model.Master;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.stereotype.Component;
+
+import lombok.extern.slf4j.Slf4j;
+
+@Component
+@Slf4j
+public class ImageRepository {
+
+	@Autowired
+	private RediscogsProperties config;
+	@Autowired
+	private DiscogsClient discogs;
+
+	@Cacheable(value = "images", unless = "#result == null")
+	public byte[] getImage(String masterId) {
+		if (config.getImageDelay() > 0) {
+			try {
+				Thread.sleep(config.getImageDelay());
+			} catch (InterruptedException e) {
+				log.warn("Sleep interrupted", e);
+				return null;
+			}
+		}
+		Master response = discogs.getMaster(masterId);
+		if (response != null && response.getImages() != null && response.getImages().size() > 0) {
+			Image image = response.getPrimaryImage();
+			if (image == null) {
+				image = response.getImages().get(0);
+			}
+			String uriString = image.getUri();
+			try {
+				URL url = new URL(uriString);
+				try (BufferedInputStream in = new BufferedInputStream(url.openStream());
+						ByteArrayOutputStream outputStream = new ByteArrayOutputStream()) {
+					byte dataBuffer[] = new byte[1024];
+					int bytesRead;
+					while ((bytesRead = in.read(dataBuffer, 0, 1024)) != -1) {
+						outputStream.write(dataBuffer, 0, bytesRead);
+					}
+					return outputStream.toByteArray();
+				} catch (IOException e) {
+					log.error("Could not read stream from URL: {}", url, e);
+				}
+			} catch (MalformedURLException e) {
+				log.error("Invalid URL: {}", uriString);
+			}
+		}
+		return null;
+	}
+
 }

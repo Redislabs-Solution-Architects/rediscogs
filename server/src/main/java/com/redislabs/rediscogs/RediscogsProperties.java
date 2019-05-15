@@ -12,7 +12,7 @@ import lombok.Data;
 @ConfigurationProperties(prefix = "")
 @EnableAutoConfiguration
 @Data
-public class RediscogsConfiguration {
+public class RediscogsProperties {
 
 	private int searchResultsLimit = 20;
 	private long imageDelay = 3000;
@@ -23,6 +23,9 @@ public class RediscogsConfiguration {
 	private StompConfig stomp = new StompConfig();
 	private boolean fuzzySuggest = true;
 	private String anonymousUsername = "Anonymous Coward";
+	private String albumStatsKey = "stats:album";
+	private String artistStatsKey = "stats:artist";
+	private String userAgentStatsKey = "stats:user-agent";
 
 	@Data
 	public static class StompConfig implements Serializable {

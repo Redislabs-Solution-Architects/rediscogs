@@ -5,48 +5,41 @@ import java.time.Duration;
 import javax.annotation.PreDestroy;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.connection.stream.StreamOffset;
+import org.springframework.data.redis.connection.stream.StreamReadOptions;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.messaging.simp.SimpMessageSendingOperations;
 import org.springframework.stereotype.Component;
 
-import com.redislabs.lettusearch.RediSearchClient;
-import com.redislabs.lettusearch.RediSearchCommands;
+import com.redislabs.rediscogs.model.Like;
 
-import io.lettuce.core.RedisException;
-import io.lettuce.core.StreamMessage;
-import io.lettuce.core.XReadArgs;
-import io.lettuce.core.XReadArgs.StreamOffset;
 import lombok.Setter;
-import lombok.extern.slf4j.Slf4j;
 
 @Component
-@Slf4j
 public class LikeConsumer extends Thread {
 
 	@Autowired
-	private RediscogsConfiguration config;
+	private RediscogsProperties config;
 	@Setter
 	private boolean stopped;
 	@Autowired
 	private SimpMessageSendingOperations sendingOperations;
 	@Autowired
-	private AlbumMarshaller marshaller;
-	@Autowired
-	private RediSearchClient client;
+	private StringRedisTemplate template;
 
 	@SuppressWarnings("unchecked")
 	@Override
 	public void run() {
-		RediSearchCommands<String, String> commands = client.connect().sync();
-		XReadArgs xargs = XReadArgs.Builder.block(Duration.ofMillis(100));
-		StreamOffset<String> stream = StreamOffset.latest(config.getLikesStream());
+		StreamReadOptions options = StreamReadOptions.empty().block(Duration.ofMillis(100));
+		StreamOffset<String> offset = StreamOffset.latest(config.getLikesStream());
 		while (!stopped) {
-			try {
-				for (StreamMessage<String, String> message : commands.xread(xargs, stream)) {
-					sendingOperations.convertAndSend(config.getStomp().getLikesTopic(), marshaller.toLike(message));
-				}
-			} catch (RedisException e) {
-				log.error("Error reading stream messages", e);
-			}
+			template.opsForStream().read(Like.class, options, offset).forEach(r -> {
+				Like like = r.getValue();
+				sendingOperations.convertAndSend(config.getStomp().getLikesTopic(), like);
+				template.opsForZSet().incrementScore(config.getAlbumStatsKey(), like.getAlbum().getTitle(), 1);
+				template.opsForZSet().incrementScore(config.getArtistStatsKey(), like.getAlbum().getArtist(), 1);
+				template.opsForZSet().incrementScore(config.getUserAgentStatsKey(), like.getUserAgent(), 1);
+			});
 		}
 	}
 

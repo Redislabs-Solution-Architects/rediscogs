@@ -29,7 +29,7 @@
 <div class="search-results" fxLayout="row wrap" fxLayout.xs="column"
 	fxLayoutGap="1%" fxLayoutAlign="left">
 	<div class="album-card" *ngFor="let album of results | async">
-		<img src="/api/album-image/{{album.id}}" alt="{{album.title}}">
+		<img src="/api/image/album/{{album.id}}" alt="{{album.title}}">
 		<button mat-mini-fab color="primary" class="like-button-overlay mat-fab mat-primary" [disabled]="album.like" (click)="like(album)">
        		<mat-icon aria-label="Favorite">thumb_up_alt</mat-icon>
        	</button>
