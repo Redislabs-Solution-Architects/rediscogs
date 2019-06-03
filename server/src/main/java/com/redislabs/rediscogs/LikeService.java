@@ -27,7 +27,7 @@ public class LikeService {
 	private StringRedisTemplate template;
 
 	public Stream<Like> likes() {
-		return template.opsForStream().range(Like.class, config.getLikesStream(), Range.unbounded(),
+		return template.opsForStream().reverseRange(Like.class, config.getLikesStream(), Range.unbounded(),
 				Limit.limit().count(config.getMaxLikes())).stream().map(m -> m.getValue());
 	}
 
