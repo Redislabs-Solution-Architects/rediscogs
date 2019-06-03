@@ -12,9 +12,7 @@ import org.springframework.cache.annotation.EnableCaching;
 import com.redislabs.springredisearch.RediSearchConfiguration;
 
 @SpringBootApplication(scanBasePackageClasses = { RediscogsProperties.class, RediSearchConfiguration.class,
-		JDiscogsConfiguration.class
-
-})
+		JDiscogsConfiguration.class })
 @EnableCaching
 public class RediscogsApplication implements ApplicationRunner {
 
