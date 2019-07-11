@@ -69,9 +69,34 @@ Here are the most common configuration properties:
 - `spring.cache.redis.time-to-live`: TTL for cache entries (images) in milliseconds
 - `discogs.data.skip`: skip loading of Discogs data file
 
-== Data Model
+== Architecture
 
-=== Master
+image::https://redislabs-solution-architects.github.io/rediscogs/rediscogs-architecture.svg[Architecture]
+
+=== Discogs Master
+ masters from Discogs.com looks like this:
+[source,xml]
+```
+<master id="15786">
+	<artists>
+		<artist>
+			<id>8887</id>
+			<name>Parliament</name>
+		</artist>
+	</artists>
+	<genres>
+		<genre>Funk / Soul</genre>
+	</genres>
+	<styles>
+		<style>P.Funk</style>
+	</styles>
+	<year>1977</year>
+	<title>Funkentelechy Vs. The Placebo Syndrome</title>
+	<data_quality>Correct</data_quality>
+</master>
+```
+
+=== RediSearch Master
 Each master release (i.e. album) is stored as a RediSearch document under the `masters` index with the following fields:
 
 - `artist`: Text field
