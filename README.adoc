@@ -71,39 +71,62 @@ Here are the most common configuration properties:
 
 == Architecture
 
-image::https://redislabs-solution-architects.github.io/rediscogs/rediscogs-architecture.svg[Architecture]
+=== Getting Data In™
 
-=== Discogs Master
- masters from Discogs.com looks like this:
+Discogs.com makes monthly dumps of their whole database available for download: https://data.discogs.com[data.discogs.com]. The data is in XML format and formatted according to the discogs.com http://www.discogs.com/developers/[API spec].
+
+For example the masters XML file looks like this:
 [source,xml]
 ```
-<master id="15786">
-	<artists>
-		<artist>
-			<id>8887</id>
-			<name>Parliament</name>
-		</artist>
-	</artists>
-	<genres>
-		<genre>Funk / Soul</genre>
-	</genres>
-	<styles>
-		<style>P.Funk</style>
-	</styles>
-	<year>1977</year>
-	<title>Funkentelechy Vs. The Placebo Syndrome</title>
-	<data_quality>Correct</data_quality>
-</master>
+<masters>
+    <master id="12345">
+    ...
+    </master>
+	<master id="15786">
+		<artists>
+			<artist>
+				<id>8887</id>
+				<name>Parliament</name>
+			</artist>
+		</artists>
+		<genres>
+			<genre>Funk / Soul</genre>
+		</genres>
+		<styles>
+			<style>P.Funk</style>
+		</styles>
+		<year>1977</year>
+		<title>Funkentelechy Vs. The Placebo Syndrome</title>
+		<data_quality>Correct</data_quality>
+	</master>
+	...
+</masters>
 ```
 
-=== RediSearch Master
-Each master release (i.e. album) is stored as a RediSearch document under the `masters` index with the following fields:
+The ReDiscogs app streams in that Masters XML file using https://spring.io/projects/spring-batch[Spring Batch]: 
+
+image::https://redislabs-solution-architects.github.io/rediscogs/rediscogs-architecture-gdi.svg[Getting Data In]
+
+On the RediSearch side, the `masters` index has the following schema created using the https://oss.redislabs.com/redisearch/Commands.html#ftcreate[`FT.CREATE`] command:
 
 - `artist`: Text field
 - `artistId`: Tag field
 - `genres`: Tag field
 - `title`: Phonetic Text field
 - `year`: Numeric field
+
+
+Each `master` entry (i.e. album) is stored in RediSearch under that index using the https://oss.redislabs.com/redisearch/Commands.html#ftadd[`FT.ADD`] command.
+ 
+=== Search
+
+The data loaded previously is searchable via an Angular front-end accessing Spring Web services:
+
+image::https://redislabs-solution-architects.github.io/rediscogs/rediscogs-architecture-search.svg[Search]
+
+Queries submitted by the user translate into a REST API call that in turn calls the https://oss.redislabs.com/redisearch/Commands.html#ftsearch[`FT.SEARCH`] command.
+
+For each master returned from the search, ReDiscogs fetches the corresponding album cover image from the https://www.discogs.com/developers/[Discogs API] and caches it in Redis using https://docs.spring.io/spring-boot/docs/current/reference/html/boot-features-caching.html#boot-features-caching-provider-redis[Spring Cache]. Any album later returned by another search will have its image served from that Redis cache instead of the Discogs API making access much faster and cheaper (the Discogs API is throttled at 60 calls per minute).      
 
 == Demo Steps
 
