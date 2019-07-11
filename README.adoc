@@ -1,24 +1,42 @@
 = Rediscogs
-:source-highlighter: coderay
-:icons: font
+// Settings
+:idprefix:
+:idseparator: -
+ifdef::env-github,env-browser[:outfilesuffix: .adoc]
+:toc: preamble
+endif::[]
+ifndef::env-github[:icons: font]
+// URIs
+:project-repo: Redislabs-Solution-Architects/rediscogs
+:uri-repo: https://github.com/{project-repo}
+// GitHub customization
+ifdef::env-github[]
+:badges:
+:tag: master
+:!toc-title:
+:tip-caption: :bulb:
+:note-caption: :paperclip:
+:important-caption: :heavy_exclamation_mark:
+:caution-caption: :fire:
+:warning-caption: :warning:
+endif::[]
 
 RediSearch demo based on data from https://data.discogs.com[discogs.com].
 
-== Setup
+== Getting Started
 
-=== Requirements
+=== Setup
 This demo requires Java 8 or higher, https://oss.redislabs.com/redisearch/Quick_Start/[Redisearch] and https://www.npmjs.com[npm]
 
 If you would like to see album covers you will also need to register at Discogs.com and https://www.discogs.com/settings/developers[generate an API token]
 
-=== RediSearch
-You will need a RediSearch database to run the demo. To run a RediSearch using Docker:
+You will also need a RediSearch database to run the demo. To run a RediSearch using Docker:
 [source,shell]
 ----
 $ docker run -p 6379:6379 redislabs/redisearch:latest
 ----
 
-== Running the demo
+=== Running the demo
 Clone this git repository and build it:
 [source,shell]
 ----
@@ -27,14 +45,14 @@ $ cd rediscogs
 $ ./mvnw clean install
 ----
 
-=== Running locally
+==== Locally
 Run the application:
 [source,shell]
 ----
-$ java -jar server/target/rediscogs-server-1.2.0.jar --discogs.api.token=<your_discogs_token> --spring.redis.host=<host> --spring.redis.port=<port>
+$ java -jar server/target/rediscogs-server-2.1.0.jar --discogs.api.token=<your_discogs_token> --spring.redis.host=<host> --spring.redis.port=<port>
 ----
 
-=== Running in Docker
+==== Docker
 Build the Docker image:
 [source,shell]
 ----
@@ -48,7 +66,7 @@ Run the container:
 $ docker run  -e "spring.redis.host=docker.for.mac.localhost" -e "discogs.api.token=<your_discogs_token>" -p 8080:8080 redislabs/rediscogs
 ----
 
-=== Deploying to Cloud Foundry
+==== Cloud Foundry
 . Create a Redis service instance named `rediscogs_redis` with Apps Manager or `cf create-service`
 . Push the application
 [source,shell]
@@ -56,7 +74,7 @@ $ docker run  -e "spring.redis.host=docker.for.mac.localhost" -e "discogs.api.to
 $ cf push
 ----
 
-== Configuration
+=== Configuration
 
 Here are the most common configuration properties:
 
@@ -138,7 +156,7 @@ For each master returned from the search, ReDiscogs fetches the corresponding al
 
 == Demo Steps
 
-=== Searching with redis-cli
+=== RediSearch
 . Launch `redis-cli`
 . Show number of documents in RediSearch index:
 +
@@ -151,8 +169,6 @@ NOTE: `title` is a phonetic text field so you will notice results containing wor
 . Run prefix search:
 +
 `FT.SEARCH masters spring*`
-
-=== Search
 . Open http://localhost:8080
 . Enter some characters in the Artist field to retrieve suggestions from RediSearch (e.g. `Dusty`)
 . Select an artist from the auto-complete options and click on the `Submit` button
@@ -163,7 +179,7 @@ NOTE: `title` is a phonetic text field so you will notice results containing wor
 +
 `@year:[1960 1970] @genres:{pop | rock}`
 
-=== Cache
+=== Caching
 . Select a different artist and hit `Submit`
 . Notice how long it takes to load images from the https://api.discogs.com[Discogs API]
 . After all images have been loaded, click on the `Submit` button again
@@ -191,7 +207,7 @@ NOTE: `title` is a phonetic text field so you will notice results containing wor
 +
 `HGETALL "spring:session:sessions:d1e08957-6cee-49b6-81af-b21720d3c372"`
 
-=== Streams
+=== Redis Streams
 . Open http://localhost:8080/#/likes in another browser window, side-by-side with the previous one 
 . In the search page click `like` on any album. Notice the likes showing up in real-time in the other browser window
 . In a terminal window listen for messages on the stream:

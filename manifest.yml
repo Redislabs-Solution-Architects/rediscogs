@@ -1,6 +1,6 @@
 applications:
 - name: rediscogs
   memory: 1024M
-  path: server/target/rediscogs-server-1.2.0.jar
+  path: server/target/rediscogs-server-2.1.0.jar
   services:
   - rediscogs_redis
