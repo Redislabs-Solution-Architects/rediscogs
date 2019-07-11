@@ -152,7 +152,7 @@ image::https://redislabs-solution-architects.github.io/rediscogs/rediscogs-archi
 
 Queries submitted by the user translate into a REST API call that in turn calls the https://oss.redislabs.com/redisearch/Commands.html#ftsearch[`FT.SEARCH`] command.
 
-For each master returned from the search, ReDiscogs fetches the corresponding album cover image from the https://www.discogs.com/developers/[Discogs API] and caches it in Redis using https://docs.spring.io/spring-boot/docs/current/reference/html/boot-features-caching.html#boot-features-caching-provider-redis[Spring Cache]. Any album later returned by another search will have its image served from that Redis cache instead of the Discogs API making access much faster and cheaper (the Discogs API is throttled at 60 calls per minute).      
+For each master returned from the search, ReDiscogs fetches the corresponding album cover image from the https://www.discogs.com/developers/[Discogs API] and caches it in Redis using https://docs.spring.io/spring-boot/docs/current/reference/html/boot-features-caching.html#boot-features-caching-provider-redis[Spring Cache]. Any album later returned by another search will have its image served from cache instead of the API, making access much faster and cheaper (the Discogs API is throttled at 60 calls per minute).      
 
 == Demo Steps
 
