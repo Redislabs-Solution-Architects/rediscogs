@@ -103,9 +103,13 @@ For example the masters XML file looks like this:
 </masters>
 ```
 
-The ReDiscogs app streams in that Masters XML file using https://spring.io/projects/spring-batch[Spring Batch]: 
+The ReDiscogs app streams in that Masters XML file using https://spring.io/projects/spring-batch[Spring Batch]:
+
+{empty} +
 
 image::https://redislabs-solution-architects.github.io/rediscogs/rediscogs-architecture-gdi.svg[Getting Data In]
+
+{empty} +
 
 On the RediSearch side, the `masters` index has the following schema created using the https://oss.redislabs.com/redisearch/Commands.html#ftcreate[`FT.CREATE`] command:
 
@@ -122,7 +126,11 @@ Each `master` entry (i.e. album) is stored in RediSearch under that index using 
 
 The data loaded previously is searchable via an Angular front-end accessing Spring Web services:
 
+{empty} +
+
 image::https://redislabs-solution-architects.github.io/rediscogs/rediscogs-architecture-search.svg[Search]
+
+{empty} +
 
 Queries submitted by the user translate into a REST API call that in turn calls the https://oss.redislabs.com/redisearch/Commands.html#ftsearch[`FT.SEARCH`] command.
 
