@@ -165,7 +165,7 @@ For each master returned from the search, ReDiscogs fetches the corresponding al
 +
 `FT.SEARCH masters java`
 +
-NOTE: `title` is a phonetic text field so you will notice results containing words that sound similar 
+TIP: `title` is a phonetic text field so you will notice results containing words that sound similar 
 . Run prefix search:
 +
 `FT.SEARCH masters spring*`
