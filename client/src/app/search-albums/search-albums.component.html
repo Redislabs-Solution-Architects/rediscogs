@@ -1,26 +1,18 @@
-<mat-toolbar class="toolbar" color="primary">
-    <mat-toolbar-row>
-        <span>ReDiscogs</span>
-        <img alt="RediSearch" src="https://oss.redislabs.com/redisearch/logo.png">        
-        <span class="toolbar-spacer"></span>
-        <form #userForm="ngForm" class="user-form">
-            <mat-form-field class="user-field">
-                <input matInput placeholder="User" [formControl]="userField">
-            </mat-form-field>
-        </form>
-    </mat-toolbar-row>
-</mat-toolbar>
+<form #userForm="ngForm" class="user-form">
+    <mat-form-field class="user-field" hintLabel="Enter your name">
+        <input matInput placeholder="User" [formControl]="userField">
+    </mat-form-field>
+</form>
 
 <form #searchForm="ngForm" (ngSubmit)="search()" class="search-form">
-	<mat-form-field class="artist-field"> <input matInput
-		placeholder="Artist" [matAutocomplete]="auto"
-		[formControl]="artistField"> </mat-form-field>
+	<mat-form-field class="artist-field" hintLabel="Type a few characters">
+		<input matInput placeholder="Artist" [matAutocomplete]="auto" [formControl]="artistField"> </mat-form-field>
 	<mat-autocomplete class="artist-field" #auto="matAutocomplete"
 		[displayWith]="displayFn"
 		(optionSelected)='artistSelected($event.option.value)'>
 	<mat-option *ngFor="let artist of artists" [value]="artist">
 	<span>{{artist.name }}</span> <small> | ID: {{artist.id}}</small> </mat-option> </mat-autocomplete>
-	<mat-form-field class="search-field"> <input matInput
+	<mat-form-field class="search-field" hintLabel="RediSearch query, e.g. '@genres:{Funk} @year:[1968 1983]'"> <input matInput
 		placeholder="Query" [formControl]="searchField"> </mat-form-field>
 	<button mat-raised-button color="primary" type="submit">Submit</button>
 </form>

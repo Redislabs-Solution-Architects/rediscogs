@@ -1,16 +1,12 @@
 .user-form {
 	display: flex;
 	height: 50px;
-	margin: 0;
+	margin-left: 75%;
 }
 
-.toolbar-spacer {
-	flex: 1 1 auto;
-}
-
-.toolbar img {
-	height: 60%;
-	padding-left: 10px;
+.user-field {
+	flex: 18%;
+	margin: 1%;
 }
 
 .search-form {

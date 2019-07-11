@@ -21,12 +21,14 @@ import {
 } from '@angular/material';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FavoriteAlbumsComponent } from './favorite-albums/favorite-albums.component';
+import { HeaderComponent } from './header/header.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     SearchAlbumsComponent,
-    FavoriteAlbumsComponent
+    FavoriteAlbumsComponent,
+    HeaderComponent
   ],
   imports: [
     BrowserModule,
