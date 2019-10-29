@@ -7,11 +7,11 @@
 <form #searchForm="ngForm" (ngSubmit)="search()" class="search-form">
 	<mat-form-field class="artist-field" hintLabel="Type a few characters">
 		<input matInput placeholder="Artist" [matAutocomplete]="auto" [formControl]="artistField"> </mat-form-field>
-	<mat-autocomplete class="artist-field" #auto="matAutocomplete"
-		[displayWith]="displayFn"
-		(optionSelected)='artistSelected($event.option.value)'>
-	<mat-option *ngFor="let artist of artists" [value]="artist">
-	<span>{{artist.name }}</span> <small> | ID: {{artist.id}}</small> </mat-option> </mat-autocomplete>
+	<mat-autocomplete class="artist-field" #auto="matAutocomplete" [displayWith]="displayFn" (optionSelected)='artistSelected($event.option.value)'>
+		<mat-option *ngFor="let artist of artists" [value]="artist">
+			<span>{{artist.name }}</span> <small> | ID: {{artist.id}}</small>
+		</mat-option>
+	</mat-autocomplete>
 	<mat-form-field class="search-field" hintLabel="RediSearch query, e.g. '@genres:{Funk} @year:[1968 1983]'"> <input matInput
 		placeholder="Query" [formControl]="searchField"> </mat-form-field>
 	<button mat-raised-button color="primary" type="submit">Submit</button>
