@@ -21,16 +21,18 @@ ifdef::env-github[]
 :warning-caption: :warning:
 endif::[]
 
-RediSearch demo based on data from https://data.discogs.com[discogs.com].
+Redis demo based on data from https://data.discogs.com[discogs.com].
 
 == Getting Started
 
 === Setup
-This demo requires Java 8 or higher, https://oss.redislabs.com/redisearch/Quick_Start/[Redisearch] and https://www.npmjs.com[npm]
+This demo requires Java 8 or higher and https://www.npmjs.com[npm]
 
 If you would like to see album covers you will also need to register at Discogs.com and https://www.discogs.com/settings/developers[generate an API token]
 
-You will also need a RediSearch database to run the demo. To run a RediSearch using Docker:
+You will also need a https://oss.redislabs.com/redisearch/Quick_Start/[RediSearch] database to run the demo.
+
+To run RediSearch using Docker:
 [source,shell]
 ----
 $ docker run -p 6379:6379 redislabs/redisearch:latest
