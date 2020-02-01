@@ -1,0 +1,7 @@
+docs
+rediscogs-ui/node_modules
+rediscogs-ui/dist
+rediscogs-ui/build
+rediscogs-api/build
+.git
+.gitignore
