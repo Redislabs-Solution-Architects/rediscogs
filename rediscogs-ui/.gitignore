@@ -41,3 +41,5 @@ Thumbs.db
 /target/
 /yarn.lock
 /ui-src/
+/build/
+/.gradle/

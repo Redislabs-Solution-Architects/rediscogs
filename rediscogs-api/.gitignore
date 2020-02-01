@@ -16,3 +16,5 @@ buildNumber.properties
 /.project
 /.mvn/
 /.factorypath
+/build/
+/bin/

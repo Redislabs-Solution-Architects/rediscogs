@@ -1,0 +1,3 @@
+rootProject.name = 'rediscogs'
+
+include 'rediscogs-api', 'rediscogs-ui'

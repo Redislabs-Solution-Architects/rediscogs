@@ -1,6 +1,6 @@
 applications:
 - name: rediscogs
   memory: 1024M
-  path: server/target/rediscogs-server-2.1.0.jar
+  path: brewdis-api/build/libs/rediscogs-api-1.0.0-SNAPSHOT.jar
   services:
   - rediscogs_redis
