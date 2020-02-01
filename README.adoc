@@ -87,7 +87,7 @@ Here are the most common configuration properties:
 - `search-results-limit`: Maximum number of results for searches (`LIMIT` argument in `FT.SEARCH`)
 - `spring.cache.cache-names`: Caches to be created on startup
 - `spring.cache.redis.time-to-live`: TTL for cache entries (images) in milliseconds
-- `discogs.data.skip`: skip loading of Discogs data file
+- `discogs.data.skip`: skip loading of Discogs data file, boolean
 
 == Architecture
 
