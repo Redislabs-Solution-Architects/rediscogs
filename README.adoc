@@ -23,71 +23,131 @@ endif::env-github[]
 
 Redis demo based on data from https://data.discogs.com[discogs.com].
 
-== Getting Started
+== Run the demo
 
-=== Setup
-This demo requires Java 8 or higher and https://www.npmjs.com[npm]
-
-If you would like to see album covers you will also need to register at Discogs.com and https://www.discogs.com/settings/developers[generate an API token]
-
-You will also need a https://oss.redislabs.com/redisearch/Quick_Start/[RediSearch] database to run the demo.
-
-To run RediSearch using Docker:
 [source,shell]
 ----
-$ docker run -p 6379:6379 redislabs/redisearch:latest
+git clone https://github.com/Redislabs-Solution-Architects/rediscogs.git
+cd rediscogs
+docker-compose up
 ----
 
-=== Running the demo
-Clone this git repository and build it:
+Access the demo at http://localhost[]
+
+TIP: You will need a https://www.discogs.com/developers[Discogs API token] to have album covers displayed. +
+Use the following environment variable to pass it to Rediscogs: +
 [source,shell]
 ----
-$ git clone https://github.com/Redislabs-Solution-Architects/rediscogs.git
-$ cd rediscogs
-$ ./mvnw clean install
+export DISCOGS_API_TOKEN=<token>
+docker-compose up
 ----
 
-==== Locally
-Run the application:
+
+== Demo Steps
+
+=== RediSearch
+. Launch `redis-cli`
+. Show number of documents in RediSearch index:
++
+`FT.INFO masters`
+. Run simple keyword search:
++
+`FT.SEARCH masters java`
++
+TIP: `title` is a phonetic text field so you will notice results containing words that sound similar 
+. Run prefix search:
++
+`FT.SEARCH masters spring*`
+. Open http://localhost[]
+. Enter some characters in the Artist field to retrieve suggestions from RediSearch (e.g. `Dusty`)
+. Select an artist from the auto-complete options and click on the `Submit` button
+. Refine the search by adding a numeric filter on release year in `Query` field:
++
+`@year:[1960 1970]`
+. Refine the search further by adding a filter on release genres:
++
+`@year:[1960 1970] @genres:{pop | rock}`
+
+=== Caching
+. Select a different artist and hit `Submit`
+. Notice how long it takes to load images from the https://api.discogs.com[Discogs API]
+. After all images have been loaded, click on the `Submit` button again
+. Notice how fast the images are loading this time around
+. In `redis-cli` show cached images:
++
+`KEYS "images::*"`
+. Show type of a cached image:
++
+`TYPE "images::319832"`
+. Display image bytes stored in String data structure:
++
+`GET "images::319832"`
+
+=== Session Store
+. Enter your name in the top right section of the page 
+. Choose an artist and hit `Submit`
+. Click `like` on some of the returned albums
+. Hit `Submit` again to refresh the list of albums
+. Notice how your likes are kept in the current session
+. In `redis-cli` show session-related keys:
++
+`KEYS "spring:session:*"`
+. Choose a session entry and show its content:
++
+`HGETALL "spring:session:sessions:d1e08957-6cee-49b6-81af-b21720d3c372"`
+
+=== Redis Streams
+. Open http://localhost/#/likes[] in another browser window, side-by-side with the previous one 
+. In the search page click `like` on any album. Notice the likes showing up in real-time in the other browser window
+. In a terminal window listen for messages on the stream:
++
 [source,shell]
 ----
-$ java -jar server/target/rediscogs-server-2.1.0.jar --discogs.api.token=<your_discogs_token> --spring.redis.host=<host> --spring.redis.port=<port>
+$ while true; do redis-cli XREAD BLOCK 0 STREAMS likes:stream $; done
+...
+5) 1) "1557884829631-0"
+   2)  1) "_class"
+       2) "com.redislabs.rediscogs.model.LikeMessage"
+       3) "album.id"
+       4) "171410"
+       5) "album.artist"
+       6) "Lalo Schifrin"
+       7) "album.artistId"
+       8) "23165"
+       9) "album.title"
+      10) "Bullitt (Original Motion Picture Soundtrack)"
+      11) "album.year"
+      12) "1968"
+      13) "album.like"
+      14) "0"
+      15) "album.genres.[0]"
+      16) "Jazz"
+      17) "album.genres.[1]"
+      18) "Stage & Screen"
+      19) "album.genres.[2]"
+      20) "Soundtrack"
+      21) "album.genres.[3]"
+      22) "Smooth Jazz"
+      23) "album.genres.[4]"
+      24) "Jazz-Funk"
+      25) "user.name"
+      26) "Julien"
+      27) "userAgent"
+      28) "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_4) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/12.1 Safari/605.1.15"
+      29) "time"
+      30) "2019-05-15T01:47:09.629678Z"
 ----
-
-==== Docker
-Build the Docker image:
+. In redis-cli show the stats being maintained off the stream
 [source,shell]
 ----
-$ cd server
-$ mvn dockerfile:build
+127.0.0.1:6379> zrevrange stats:album 0 3 WITHSCORES
+1) "You Don't Love Me"
+2) "3"
+3) "No. 1 In Your Heart"
+4) "2"
+5) "Bullitt (Original Motion Picture Soundtrack)"
+6) "1"
 ----
-
-Run the container:
-[source,shell]
-----
-$ docker run  -e "spring.redis.host=docker.for.mac.localhost" -e "discogs.api.token=<your_discogs_token>" -p 8080:8080 redislabs/rediscogs
-----
-
-==== Cloud Foundry
-. Create a Redis service instance named `rediscogs_redis` with Apps Manager or `cf create-service`
-. Push the application
-[source,shell]
-----
-$ cf push
-----
-
-=== Configuration
-
-Here are the most common configuration properties:
-
-- `spring.redis.host`: Redis database hostname
-- `spring.redis.port`: Redis database port
-- `discogs.api.token`: Your Discogs API token
-- `image-delay`: Duration in milliseconds to sleep before getting an image from Discogs API (useful to demonstrate  caching)
-- `search-results-limit`: Maximum number of results for searches (`LIMIT` argument in `FT.SEARCH`)
-- `spring.cache.cache-names`: Caches to be created on startup
-- `spring.cache.redis.time-to-live`: TTL for cache entries (images) in milliseconds
-- `discogs.data.skip`: skip loading of Discogs data file, boolean
 
 == Architecture
 
@@ -155,109 +215,3 @@ image::https://redislabs-solution-architects.github.io/rediscogs/rediscogs-archi
 Queries submitted by the user translate into a REST API call that in turn calls the https://oss.redislabs.com/redisearch/Commands.html#ftsearch[`FT.SEARCH`] command.
 
 For each master returned from the search, ReDiscogs fetches the corresponding album cover image from the https://www.discogs.com/developers/[Discogs API] and caches it in Redis using https://docs.spring.io/spring-boot/docs/current/reference/html/boot-features-caching.html#boot-features-caching-provider-redis[Spring Cache]. Any album later returned by another search will have its image served from cache instead of the API, making access much faster and cheaper (the Discogs API is throttled at 60 calls per minute).      
-
-== Demo Steps
-
-=== RediSearch
-. Launch `redis-cli`
-. Show number of documents in RediSearch index:
-+
-`FT.INFO masters`
-. Run simple keyword search:
-+
-`FT.SEARCH masters java`
-+
-TIP: `title` is a phonetic text field so you will notice results containing words that sound similar 
-. Run prefix search:
-+
-`FT.SEARCH masters spring*`
-. Open http://localhost:8080
-. Enter some characters in the Artist field to retrieve suggestions from RediSearch (e.g. `Dusty`)
-. Select an artist from the auto-complete options and click on the `Submit` button
-. Refine the search by adding a numeric filter on release year in `Query` field:
-+
-`@year:[1960 1970]`
-. Refine the search further by adding a filter on release genres:
-+
-`@year:[1960 1970] @genres:{pop | rock}`
-
-=== Caching
-. Select a different artist and hit `Submit`
-. Notice how long it takes to load images from the https://api.discogs.com[Discogs API]
-. After all images have been loaded, click on the `Submit` button again
-. Notice how fast the images are loading this time around
-. In `redis-cli` show cached images:
-+
-`KEYS "images::*"`
-. Show type of a cached image:
-+
-`TYPE "images::319832"`
-. Display image bytes stored in String data structure:
-+
-`GET "images::319832"`
-
-=== Session Store
-. Enter your name in the top right section of the page 
-. Choose an artist and hit `Submit`
-. Click `like` on some of the returned albums
-. Hit `Submit` again to refresh the list of albums
-. Notice how your likes are kept in the current session
-. In `redis-cli` show session-related keys:
-+
-`KEYS "spring:session:*"`
-. Choose a session entry and show its content:
-+
-`HGETALL "spring:session:sessions:d1e08957-6cee-49b6-81af-b21720d3c372"`
-
-=== Redis Streams
-. Open http://localhost:8080/#/likes in another browser window, side-by-side with the previous one 
-. In the search page click `like` on any album. Notice the likes showing up in real-time in the other browser window
-. In a terminal window listen for messages on the stream:
-+
-[source,shell]
-----
-$ while true; do redis-cli XREAD BLOCK 0 STREAMS likes:stream $; done
-...
-5) 1) "1557884829631-0"
-   2)  1) "_class"
-       2) "com.redislabs.rediscogs.model.LikeMessage"
-       3) "album.id"
-       4) "171410"
-       5) "album.artist"
-       6) "Lalo Schifrin"
-       7) "album.artistId"
-       8) "23165"
-       9) "album.title"
-      10) "Bullitt (Original Motion Picture Soundtrack)"
-      11) "album.year"
-      12) "1968"
-      13) "album.like"
-      14) "0"
-      15) "album.genres.[0]"
-      16) "Jazz"
-      17) "album.genres.[1]"
-      18) "Stage & Screen"
-      19) "album.genres.[2]"
-      20) "Soundtrack"
-      21) "album.genres.[3]"
-      22) "Smooth Jazz"
-      23) "album.genres.[4]"
-      24) "Jazz-Funk"
-      25) "user.name"
-      26) "Julien"
-      27) "userAgent"
-      28) "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_4) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/12.1 Safari/605.1.15"
-      29) "time"
-      30) "2019-05-15T01:47:09.629678Z"
-----
-. In redis-cli show the stats being maintained off the stream
-[source,shell]
-----
-127.0.0.1:6379> zrevrange stats:album 0 3 WITHSCORES
-1) "You Don't Love Me"
-2) "3"
-3) "No. 1 In Your Heart"
-4) "2"
-5) "Bullitt (Original Motion Picture Soundtrack)"
-6) "1"
-----

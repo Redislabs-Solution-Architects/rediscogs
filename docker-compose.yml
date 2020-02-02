@@ -13,6 +13,7 @@ services:
     environment:
       SPRING_REDIS_HOST: redisearch
       STOMP_PORT: 80
+      DISCOGS_API_TOKEN: ${DISCOGS_API_TOKEN}
 
   redisearch:
     image: redislabs/redisearch:latest
