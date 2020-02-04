@@ -12,9 +12,15 @@
 			<span>{{artist.name }}</span> <small> | ID: {{artist.id}}</small>
 		</mat-option>
 	</mat-autocomplete>
-	<mat-form-field class="search-field" hintLabel="RediSearch query, e.g. '@genres:{Funk} @year:[1968 1983]'"> <input matInput
-		placeholder="Query" [formControl]="searchField"> </mat-form-field>
-	<button mat-raised-button color="primary" type="submit">Submit</button>
+	<mat-form-field hintLabel="Enter a RediSearch query" class="search-field">
+		<input matInput placeholder="Search" [formControl]="searchField">
+		<button *ngIf="searchField.value" mat-button matSuffix mat-icon-button type="button" aria-label="Clear" (click)="searchField.setValue('')">
+			<mat-icon>close</mat-icon>
+		</button>
+	</mat-form-field>
+	<button mat-flat-button type="submit">
+		<mat-icon>search</mat-icon>
+	</button>
 </form>
 <br>
 

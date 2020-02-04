@@ -1,3 +1,25 @@
-<!--The content below is only a placeholder and can be replaced.-->
-<app-header></app-header>
+<mat-toolbar color="primary" class="toolbar">
+    <mat-toolbar-row>
+        <div>
+            <a mat-button [routerLink]="'/catalog'" class="main">
+                <img alt="Redis Labs" src="assets/redisearch.svg" class="logo">
+                <span class="home">ReDiscogs</span>
+            </a>
+        </div>
+        <span class="menu-spacer"></span>
+        <div>
+            <a mat-button [routerLink]="'/search'" class="link">
+                <mat-icon>search</mat-icon> Search
+            </a>
+            <a mat-button [routerLink]="'/likes'" class="link">
+                <mat-icon>favorite</mat-icon> Likes
+            </a>
+        </div>
+        <div>
+            <a mat-button href="https://redislabs.com">
+                <img alt="Redis Labs" src="assets/redislabs.svg" class="redislabs">
+            </a>
+        </div>
+    </mat-toolbar-row>
+</mat-toolbar>
 <router-outlet></router-outlet>

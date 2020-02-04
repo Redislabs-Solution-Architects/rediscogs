@@ -13,8 +13,8 @@ import {
 
 @Component({
   selector: 'app-search-albums',
-  templateUrl: './search-albums.component.html',
-  styleUrls: ['./search-albums.component.css']
+  templateUrl: './search.component.html',
+  styleUrls: ['./search.component.css']
 })
 export class SearchAlbumsComponent implements OnInit {
   API_URL = '/api/';

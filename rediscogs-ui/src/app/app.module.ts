@@ -5,36 +5,35 @@ import { HashLocationStrategy, LocationStrategy } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { SearchAlbumsComponent } from './search-albums/search-albums.component';
-
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatPaginatorModule } from '@angular/material/paginator';
 
 import {
-  MatButtonModule,
-  MatIconModule,
-  MatCardModule,
-  MatInputModule,
-  MatAutocompleteModule,
-  MatListModule,
-  MatGridListModule,
-  MatToolbarModule
+  MatButtonModule, MatIconModule, MatCardModule,
+  MatInputModule, MatAutocompleteModule, MatListModule,
+  MatGridListModule, MatToolbarModule, MatSelectModule,
+  MatTableModule, MatSortModule, MatButtonToggleModule, MatExpansionModule
 } from '@angular/material';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { FavoriteAlbumsComponent } from './favorite-albums/favorite-albums.component';
-import { HeaderComponent } from './header/header.component';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { MaterialModule } from './material.module';
+import { FavoriteAlbumsComponent } from './favorites/favorites.component';
+import { SearchAlbumsComponent } from './search/search.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     SearchAlbumsComponent,
-    FavoriteAlbumsComponent,
-    HeaderComponent
+    FavoriteAlbumsComponent
   ],
   imports: [
     BrowserModule,
+    BrowserAnimationsModule,
+    MatTooltipModule,
+    MaterialModule,
     AppRoutingModule,
     HttpClientModule,
-    BrowserAnimationsModule,
     ReactiveFormsModule,
     FormsModule,
     FlexLayoutModule,
@@ -45,9 +44,16 @@ import { HeaderComponent } from './header/header.component';
     MatAutocompleteModule,
     MatListModule,
     MatGridListModule,
-    MatToolbarModule
+    MatToolbarModule,
+    MatSelectModule,
+    MatTableModule,
+    MatSortModule,
+    MatButtonToggleModule,
+    MatDialogModule,
+    MatPaginatorModule,
+    MatExpansionModule
   ],
-  providers: [{provide: LocationStrategy, useClass: HashLocationStrategy}],
+  providers: [{provide: LocationStrategy, useClass: HashLocationStrategy }],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

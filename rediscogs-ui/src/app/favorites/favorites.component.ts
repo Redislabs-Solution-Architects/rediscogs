@@ -3,9 +3,9 @@ import { StompService, StompConfig } from '@stomp/ng2-stompjs';
 import { HttpClient } from '@angular/common/http';
 
 @Component({
-  selector: 'app-favorite-albums',
-  templateUrl: './favorite-albums.component.html',
-  styleUrls: ['./favorite-albums.component.css']
+  selector: 'app-favorites',
+  templateUrl: './favorites.component.html',
+  styleUrls: ['./favorites.component.css']
 })
 export class FavoriteAlbumsComponent implements OnInit {
 

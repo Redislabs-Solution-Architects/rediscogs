@@ -1,0 +1,33 @@
+.toolbar {
+	color: white;
+}
+
+.menu-spacer {
+    flex: 1 1 auto;
+}
+
+.main {
+    height: 3em;
+}
+
+.logo {
+    height: 100%;
+    margin-right: 5px;
+}
+
+.home {
+    font-size: 2em;
+}
+
+.redislabs {
+    height: 3em;
+}
+
+.link {
+    font-size: 1em;
+}
+
+mat-toolbar-row {
+    margin-top: 3px;
+    margin-bottom: 3px;
+}
