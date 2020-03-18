@@ -2,12 +2,14 @@ plugins {
 	id 'org.springframework.boot' version '2.2.4.RELEASE'
 	id 'io.spring.dependency-management' version '1.0.9.RELEASE'
 	id 'java'
+	id 'com.github.ben-manes.versions' version '0.27.0'
 }
 
 sourceCompatibility = '1.8'
 
 repositories {
 	mavenCentral()
+	mavenLocal()
 }
 
 dependencies {
@@ -16,7 +18,7 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-cache'
     implementation 'org.springframework.boot:spring-boot-starter-data-redis-reactive'
     implementation 'org.springframework.session:spring-session-data-redis'
-    implementation 'org.ruaux:jdiscogs:1.0.7'
+    implementation 'org.ruaux:jdiscogs:1.1.3'
     compileOnly 'org.projectlombok:lombok'
     annotationProcessor 'org.projectlombok:lombok'
     implementation project(path: ':rediscogs-ui', configuration: 'default')

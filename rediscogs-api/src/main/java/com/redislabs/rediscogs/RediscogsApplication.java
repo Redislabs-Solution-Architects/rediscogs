@@ -1,7 +1,6 @@
 package com.redislabs.rediscogs;
 
-import org.ruaux.jdiscogs.JDiscogsConfiguration;
-import org.ruaux.jdiscogs.data.BatchConfiguration;
+import org.ruaux.jdiscogs.data.JDiscogsBatchConfiguration;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
@@ -9,15 +8,12 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cache.annotation.EnableCaching;
 
-import com.redislabs.springredisearch.RediSearchConfiguration;
-
-@SpringBootApplication(scanBasePackageClasses = { RediscogsProperties.class, RediSearchConfiguration.class,
-		JDiscogsConfiguration.class })
+@SpringBootApplication
 @EnableCaching
 public class RediscogsApplication implements ApplicationRunner {
 
 	@Autowired
-	private BatchConfiguration batch;
+	private JDiscogsBatchConfiguration batch;
 	@Autowired
 	private LikeConsumer likeConsumer;
 
